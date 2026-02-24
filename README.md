@@ -9,6 +9,15 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creat
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
+## Technical Requirements
+
+| Requirement | Version | Notes |
+| --- | --- | --- |
+| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | — | This is a Claude Code plugin marketplace |
+| Node.js | >= 16 | For `cache-snapshot.js` only. Uses built-in modules, no `npm install` needed |
+| git | — | Assumed for most features |
+| gh (GitHub CLI) | — | Required for `/sdlc:pr`. Falls back to showing the description if unavailable |
+
 ## Installation
 
 ```text
@@ -44,9 +53,19 @@ To audit an existing setup:
 
 ---
 
-## Plugin: ai-setup-automation
+## Plugins
 
-### Commands
+This marketplace ships two plugins:
+
+**ai-setup-automation** (namespace: `aisa`) — Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `.claude/` directory). Provides 9 skills for initial setup, ongoing evolution, health checks, caching, and post-incident learning.
+
+**sdlc-utilities** (namespace: `sdlc`) — Automates common SDLC tasks. Currently ships a smart pull request command that generates structured PR descriptions from commits and diffs.
+
+---
+
+## Commands
+
+### aisa (ai-setup-automation)
 
 | Command | Description |
 | --- | --- |
@@ -55,46 +74,17 @@ To audit an existing setup:
 | `/aisa:postmortem` | Interactive guided post-mortem: gather incident context, then run `aisa-evolve-postmortem` |
 | `/aisa:postmortem <description>` | Fast post-mortem: skip Q&A, jump straight to the skill with a pre-written description |
 
-#### `/aisa:postmortem` — Guided incident analysis
+### sdlc (sdlc-utilities)
 
-Walks you through describing an incident with interactive questions, checks recent git history for
-evidence, then hands off to the `aisa-evolve-postmortem` skill to encode the lessons into your
-skills so the same mistake can't happen again.
+| Command | Description |
+| --- | --- |
+| `/sdlc:pr` | Create a pull request with an auto-generated description from commits and diffs |
+| `/sdlc:pr --draft` | Create a draft PR |
+| `/sdlc:pr --base <branch>` | Create a PR targeting a specific base branch |
 
-```text
-/aisa:postmortem
-```
+---
 
-Answer questions one at a time:
-
-```text
-What went wrong? Describe the incident, bug, or painful situation.
-> webhook retry loop caused duplicate payments in checkout
-
-How did you find out?
-> customer support tickets, 3 duplicate charges reported
-
-How was it fixed — or is it still open?
-> added idempotency key check before processing retry
-
-How long did it take to identify the root cause?
-> ~4 hours
-
-Which part of the codebase or system was involved?
-> payments/webhook_handler.py and the Stripe retry config
-```
-
-Or skip the Q&A by providing a description upfront:
-
-```text
-/aisa:postmortem webhook retry loop caused duplicate payments in checkout
-/aisa:postmortem OIDC token refresh race condition in concurrent requests
-/aisa:postmortem test suite passed but feature broke in production due to mocked repo
-```
-
-**When**: After incidents, painful bugs, production issues, long debugging sessions.
-**Requires**: A project with `.claude/` configured (run `/aisa:setup-ai` first if not).
-**Delegates to**: `aisa:aisa-evolve-postmortem` skill for root cause → skill gap analysis.
+## Plugin: ai-setup-automation — Detailed Reference
 
 ### Skills
 
@@ -224,6 +214,47 @@ aisa:aisa-evolve-cache invalidate   # force full scan on next run
 
 > **`aisa:aisa-evolve-principles`** — Shared principles, tool registry, and behavioral rules for all `aisa-*` skills. Dependency only — never invoked directly.
 
+### `/aisa:postmortem` — Guided incident analysis
+
+Walks you through describing an incident with interactive questions, checks recent git history for
+evidence, then hands off to the `aisa-evolve-postmortem` skill to encode the lessons into your
+skills so the same mistake can't happen again.
+
+```text
+/aisa:postmortem
+```
+
+Answer questions one at a time:
+
+```text
+What went wrong? Describe the incident, bug, or painful situation.
+> webhook retry loop caused duplicate payments in checkout
+
+How did you find out?
+> customer support tickets, 3 duplicate charges reported
+
+How was it fixed — or is it still open?
+> added idempotency key check before processing retry
+
+How long did it take to identify the root cause?
+> ~4 hours
+
+Which part of the codebase or system was involved?
+> payments/webhook_handler.py and the Stripe retry config
+```
+
+Or skip the Q&A by providing a description upfront:
+
+```text
+/aisa:postmortem webhook retry loop caused duplicate payments in checkout
+/aisa:postmortem OIDC token refresh race condition in concurrent requests
+/aisa:postmortem test suite passed but feature broke in production due to mocked repo
+```
+
+**When**: After incidents, painful bugs, production issues, long debugging sessions.
+**Requires**: A project with `.claude/` configured (run `/aisa:setup-ai` first if not).
+**Delegates to**: `aisa:aisa-evolve-postmortem` skill for root cause → skill gap analysis.
+
 ### Recommended Cadence
 
 | When | Skill to run |
@@ -318,13 +349,7 @@ Enforced across all commands:
 
 ---
 
-## Plugin: sdlc-utilities
-
-| Command | Description |
-| --- | --- |
-| `/sdlc:pr` | Create a pull request with an auto-generated description from commits and diffs |
-| `/sdlc:pr --draft` | Create a draft PR |
-| `/sdlc:pr --base <branch>` | Create a PR targeting a specific base branch |
+## Plugin: sdlc-utilities — Detailed Reference
 
 ### `/sdlc:pr` — Smart pull request creation
 

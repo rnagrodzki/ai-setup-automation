@@ -2,8 +2,8 @@
 
 This repository is a **Claude Code plugin marketplace** that ships two plugins for AI-driven project configuration and software development lifecycle (SDLC) automation. It is installed as a single marketplace via:
 
-```bash
-claude plugin add github:rnagrodzki/ai-setup-automation
+```text
+/plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
 ---

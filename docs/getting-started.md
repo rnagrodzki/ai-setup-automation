@@ -6,8 +6,8 @@
 
 Add the marketplace to your Claude Code installation:
 
-```bash
-claude plugin add github:rnagrodzki/ai-setup-automation
+```text
+/plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
 This registers the marketplace and installs the `ai-setup-automation` plugin with all

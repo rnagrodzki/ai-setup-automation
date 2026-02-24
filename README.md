@@ -11,8 +11,8 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creat
 
 ## Installation
 
-```bash
-claude plugin add github:rnagrodzki/ai-setup-automation
+```text
+/plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
 Start a new Claude Code session to verify:

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[sdlc-utilities] Plugin loaded. Use /pr to create a pull request with an auto-generated description.'"
+          }
+        ]
+      }
+    ]
+  }
+}

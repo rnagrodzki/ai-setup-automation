@@ -314,6 +314,93 @@ Enforced across all commands:
 
 ---
 
+## Plugin: sdlc-utilities
+
+| Command | Description |
+| --- | --- |
+| `/pr` | Create a pull request with an auto-generated description from commits and diffs |
+| `/pr --draft` | Create a draft PR |
+| `/pr --base <branch>` | Create a PR targeting a specific base branch |
+
+### `/pr` — Smart pull request creation
+
+Analyzes all commits and the diff on your branch, then generates a Conventional PR description
+(What / Why / How / Testing) and creates the PR via the GitHub CLI. Presents the generated
+description for your review before creating.
+
+```text
+/pr
+```
+
+Generates a title and structured description, then prompts:
+
+```text
+PR Title: feat: add webhook retry with idempotency keys
+
+PR Description:
+─────────────────────────────────────────────
+## What
+Added idempotency key validation to the webhook retry handler to prevent
+duplicate payment processing on retried events (#142).
+
+## Why
+Retried webhook events were being processed multiple times, causing duplicate
+charges in checkout. Stripe sends the same event ID on retries, which we can
+use as an idempotency key.
+
+## How
+- `payments/webhook_handler.py`: check event ID against `processed_events`
+  table before processing; store ID after successful processing
+- `db/migrations/`: new `processed_events` table with TTL index
+- `payments/tests/test_webhook_handler.py`: added retry deduplication tests
+
+## Testing
+Automated: 4 new unit tests covering duplicate event detection, first-time
+processing, expired TTL, and concurrent retry scenarios. All pass.
+Manual: triggered test webhooks with repeated event IDs via Stripe CLI.
+─────────────────────────────────────────────
+
+Create this PR? (yes / edit / cancel)
+```
+
+With flags:
+
+```text
+/pr --draft                    # create as a draft PR
+/pr --base develop             # target the develop branch instead of main
+/pr --draft --base release/2   # combine flags
+```
+
+**When**: Ready to open a PR and want a structured, consistent description without writing it by hand.
+**Requires**: `gh` CLI installed and authenticated (`gh auth login`). Falls back to showing the description for manual use if `gh` is unavailable.
+**Delegates to**: `creating-pull-requests` skill for description generation.
+
+### `creating-pull-requests` skill
+
+Reusable knowledge skill that analyzes commits and diffs to generate PR descriptions in the
+Conventional PR format. Loaded by the `/pr` command and available to any other command or
+skill that needs to produce PR content.
+
+**Template:**
+
+```text
+## What
+[1-3 sentences: what changed, feature/fix/refactor type, issue references]
+
+## Why
+[1-3 sentences: concrete problem or need, never "because it was needed"]
+
+## How
+[Bullet list grouped by concern: architectural decisions, key files, non-obvious choices]
+
+## Testing
+[Automated tests added/modified, manual steps, edge cases. Honest about gaps.]
+```
+
+**When triggered**: "create PR", "open pull request", "write PR description", "conventional PR format"
+
+---
+
 ## Architecture
 
 This repository serves dual roles:

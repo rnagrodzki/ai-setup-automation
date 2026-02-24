@@ -9,6 +9,10 @@
     {
       "name": "ai-setup-automation",
       "source": "./plugins/ai-setup-automation"
+    },
+    {
+      "name": "sdlc-utilities",
+      "source": "./plugins/sdlc-utilities"
     }
   ]
 }

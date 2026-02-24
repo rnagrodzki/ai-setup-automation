@@ -7,7 +7,7 @@ argument-hint: "[--draft] [--base <branch>]"
 # /pr Command
 
 Create a pull request on the current branch with a description auto-generated
-from commit history and diffs. Uses the Conventional PR format (What/Why/How/Testing).
+from commit history and diffs. Uses the Conventional PR format.
 
 ## Usage
 
@@ -39,7 +39,7 @@ git branch --show-current
 
 If on `main` or `master`, stop immediately and tell the user:
 
-```
+```text
 You are on the main/master branch. Switch to a feature branch before creating a PR.
 ```
 
@@ -51,121 +51,17 @@ git status --porcelain
 
 If there are uncommitted changes, warn the user before continuing:
 
-```
+```text
 Warning: you have uncommitted changes. They will NOT be included in the PR.
 Commit or stash them first if you want them included. Continue anyway? (yes/no)
 ```
 
-### Step 2: Determine Base Branch
+### Step 2: Delegate to Skill
 
-If `--base` was provided, use that value. Otherwise, auto-detect:
+Invoke the `creating-pull-requests` skill, passing:
 
-```bash
-git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'
-```
+- The `--draft` flag if set
+- The `--base <branch>` value if provided
 
-Fall back to `main` if detection returns nothing. Then verify the branch exists:
-
-```bash
-git rev-parse --verify origin/<base-branch> 2>/dev/null && echo "ok" || echo "not found"
-```
-
-If the base branch does not exist on the remote, ask the user which branch to target.
-
-### Step 3: Check Remote State
-
-Check if the current branch is pushed and up to date:
-
-```bash
-git rev-parse --abbrev-ref --symbolic-full-name @{upstream} 2>/dev/null
-git status -sb
-```
-
-If no upstream tracking branch exists, push the branch:
-
-```bash
-git push -u origin $(git branch --show-current)
-```
-
-If the local branch is ahead of the remote, push the latest commits:
-
-```bash
-git push
-```
-
-### Step 4: Check for Existing PR
-
-Before creating, check if a PR already exists for this branch:
-
-```bash
-gh pr view --json number,title,url,state 2>/dev/null
-```
-
-If an open PR exists, present it to the user:
-
-```
-A pull request already exists for this branch:
-  #<number>: <title>
-  <url>
-
-Would you like to update its description instead? (yes/no)
-```
-
-If yes → generate the description (Step 5), then update using `gh pr edit --body "<body>"`.
-If no → stop and let the user decide.
-
-### Step 5: Generate PR Description
-
-Load the `creating-pull-requests` skill and use it to analyze the branch
-commits and diff against the base branch, then generate the PR title and
-description in the Conventional PR format.
-
-Pass the base branch name so the skill knows what to compare against.
-
-### Step 6: Present for Review
-
-Show the generated title and description to the user:
-
-```
-PR Title: <title>
-
-PR Description:
-─────────────────────────────────────────────
-<description>
-─────────────────────────────────────────────
-
-Create this PR? (yes / edit / cancel)
-  yes    — create the PR as shown
-  edit   — tell me what to change
-  cancel — abort without creating
-```
-
-If the user chooses `edit`, ask what to change, regenerate, and present again.
-Wait for explicit `yes` before creating.
-
-### Step 7: Create the PR
-
-Create the PR using the GitHub CLI:
-
-```bash
-gh pr create --title "<title>" --body "<body>" [--draft]
-```
-
-After successful creation, display the PR URL:
-
-```
-Pull request created: <url>
-```
-
-**If `gh` is unavailable or fails**, display the error and show a fallback:
-
-```
-The GitHub CLI (gh) could not create the PR. You can:
-  1. Install gh: https://cli.github.com/
-  2. Authenticate: gh auth login
-  3. Create the PR manually — here is your generated description to copy:
-
-Title: <title>
-
-<description>
-```
+The skill handles everything from here: base branch detection, remote state,
+existing PR check, description generation, user review, and PR creation.

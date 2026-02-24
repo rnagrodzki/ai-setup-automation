@@ -32,7 +32,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
       "mtime": "2025-02-20T10:15:00Z",
       "has_quality_gates": true,
       "has_learning_capture": true,
-      "has_pdci_workflow": true,
+      "has_pcidci_workflow": true,
       "exempt_from_gates": false
     }
   },
@@ -110,7 +110,7 @@ The script lives at `plugins/ai-setup-automation/scripts/cache-snapshot.js` rela
 marketplace root, or can be located with `Glob` pattern `**/cache-snapshot.js`.
 
 **Principle compliance flags** — populated automatically by the script:
-- For each skill: detects Quality Gates, Learning Capture, and PDCI workflow via regex patterns
+- For each skill: detects Quality Gates, Learning Capture, and PCIDCI workflow via regex patterns
 - For each agent: validates frontmatter fields, tool list, self-review, and learning capture
 - During incremental scans: trust cached flags for hash-matching files (don't re-read to verify)
 - Flags are only re-evaluated when the file hash changes or when `/aisa-evolve-validate` runs explicitly

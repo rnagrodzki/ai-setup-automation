@@ -1,6 +1,6 @@
 # ai-setup-automation
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creating and maintaining AI-ready project configurations.
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that ships two plugins: `ai-setup-automation` for creating and maintaining AI-ready project configurations, and `sdlc-utilities` for SDLC automation (pull requests, etc.).
 
 ## What It Does
 
@@ -9,12 +9,28 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creat
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
+## Key Benefits
+
+### Self-Learning AI Configuration
+
+Your `.claude/` setup grows smarter with every session. When bugs, painful debugging sessions, or incidents happen, `/aisa:postmortem` encodes the lessons directly into your skills so the same mistake can't recur. The `aisa-evolve-harvest` skill promotes recurring patterns from the learning log into permanent skill rules. Over time, your AI configuration becomes a living artifact that reflects your actual codebase, team patterns, and hard-won knowledge — not a static template.
+
+### Cache-First Audits — Fast When Nothing Changed
+
+Every `aisa-evolve-*` skill snapshots file hashes into `.claude/cache/snapshot.json`. On the next run, unchanged files are skipped entirely — only modified, new, or deleted files get a full audit. This cuts token consumption by 60–80% on typical runs, making weekly health checks fast enough to actually run weekly. The cache also makes drift visible at a glance: a file that hasn't changed since the last snapshot is unlikely to need attention; one that has changed is immediately flagged.
+
+### Plan → Critique → Improve → Do → Critique → Improve — Enforced as Workflow
+
+Every skill and agent in the setup applies two mandatory critique gates: one after planning (before any work is done) and one after execution (before output is delivered). The plan is critiqued and improved before a single action is taken, eliminating flawed approaches early. The output is then critiqued and improved before delivery, catching shallow or incorrect results. This isn't optional guidance — `aisa-evolve-validate` will flag any skill that skips either critique gate as non-compliant. The pattern applies recursively: the evolution skills themselves follow this same two-gate discipline when generating or updating your project skills.
+
+---
+
 ## Technical Requirements
 
 | Requirement | Version | Notes |
 | --- | --- | --- |
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | — | This is a Claude Code plugin marketplace |
-| Node.js | >= 16 | For `cache-snapshot.js` only. Uses built-in modules, no `npm install` needed |
+| Node.js | >= 16 | For `cache-snapshot.js` and `verify-setup.js` scripts. Uses built-in modules, no `npm install` needed |
 | git | — | Assumed for most features |
 | gh (GitHub CLI) | — | Required for `/sdlc:pr`. Falls back to showing the description if unavailable |
 
@@ -183,7 +199,7 @@ aisa:aisa-evolve-postmortem test suite passed but feature broke in production du
 
 #### `aisa:aisa-evolve-validate` — Principle compliance check
 
-Validates all skills and agents against architectural principles (self-learning, Plan→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
+Validates all skills and agents against architectural principles (self-learning, Plan→Critique→Improve→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
 
 ```text
 aisa:aisa-evolve-validate
@@ -261,7 +277,7 @@ Or skip the Q&A by providing a description upfront:
 
 Thin wrapper around the `aisa-evolve-validate` skill. Validates all `.claude/` skills and agents
 against architectural principles — structural completeness, self-learning directives, and
-Plan→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
+Plan→Critique→Improve→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
 
 ```text
 /aisa:validate
@@ -361,9 +377,9 @@ Enforced across all commands:
 2. **Functional-first testing** — real infra, mock only at lowest external boundary
 3. **Three-dimensional domains** — technical + business + design
 4. **Continuous learning** — capture during work, promote to skills over time (self-learning directives mandatory)
-5. **Plan → Do → Critique → Improve** — every skill/agent workflow must include a review step before output is done (quality gates mandatory)
+5. **Plan → Critique → Improve → Do → Critique → Improve** — every skill/agent workflow must critique the plan before executing and review output before delivery (dual quality gates mandatory)
 6. **Specificity over generics** — every skill must be THIS project's skill, not generic advice
-7. **Critique gates** — mandatory quality checks prevent shallow output
+7. **Critique gates** — mandatory dual quality checks (one before execution, one before delivery) prevent both flawed plans and shallow output
 8. **Structural completeness** — agents must have valid frontmatter, real tools, and capability-tool consistency
 9. **Cache-first scanning** — check snapshot hashes before deep-reading files; skip unchanged content to minimize token consumption
 10. **Always parallel** — use subagent workstreams or Agent Teams for every audit; never single-thread through the full setup
@@ -374,9 +390,7 @@ Enforced across all commands:
 
 ### `/sdlc:pr` — Smart pull request creation
 
-Analyzes all commits and the diff on your branch, then generates a Conventional PR description
-(What / Why / How / Testing) and creates the PR via the GitHub CLI. Presents the generated
-description for your review before creating.
+Analyzes all commits and the diff on your branch, then generates a structured 8-section PR description and creates the PR via the GitHub CLI. Presents the generated description for your review before creating.
 
 ```text
 /sdlc:pr
@@ -389,20 +403,33 @@ PR Title: feat: add webhook retry with idempotency keys
 
 PR Description:
 ─────────────────────────────────────────────
-## What
+## Summary
 Added idempotency key validation to the webhook retry handler to prevent
-duplicate payment processing on retried events (#142).
+duplicate payment processing on retried events.
 
-## Why
+## JIRA Ticket
+PAY-142
+
+## Business Context
 Retried webhook events were being processed multiple times, causing duplicate
-charges in checkout. Stripe sends the same event ID on retries, which we can
-use as an idempotency key.
+charges for customers at checkout.
 
-## How
-- `payments/webhook_handler.py`: check event ID against `processed_events`
-  table before processing; store ID after successful processing
-- `db/migrations/`: new `processed_events` table with TTL index
-- `payments/tests/test_webhook_handler.py`: added retry deduplication tests
+## Business Benefits
+Eliminates duplicate charge risk; reduces customer support tickets for payment
+issues on retries.
+
+## Technical Design
+Use Stripe's event ID as an idempotency key, stored in a `processed_events`
+table with a TTL index to bound storage growth.
+
+## Technical Impact
+New `processed_events` table migration required. Webhook handler logic changes
+are backward-compatible.
+
+## Changes Overview
+- Webhook handler validates event ID before processing and records it after success
+- New migration adds `processed_events` table with TTL index
+- Retry deduplication test coverage added
 
 ## Testing
 Automated: 4 new unit tests covering duplicate event detection, first-time
@@ -417,6 +444,7 @@ With flags:
 
 ```text
 /sdlc:pr --draft                    # create as a draft PR
+/sdlc:pr --update                   # update description of an existing PR on this branch
 /sdlc:pr --base develop             # target the develop branch instead of main
 /sdlc:pr --draft --base release/2   # combine flags
 ```
@@ -431,23 +459,20 @@ Reusable knowledge skill that analyzes commits and diffs to generate PR descript
 Conventional PR format. Loaded by the `/sdlc:pr` command and available to any other command or
 skill that needs to produce PR content.
 
-**Template:**
+**Template (8 sections, always all present):**
 
 ```text
-## What
-[1-3 sentences: what changed, feature/fix/refactor type, issue references]
-
-## Why
-[1-3 sentences: concrete problem or need, never "because it was needed"]
-
-## How
-[Bullet list grouped by concern: architectural decisions, key files, non-obvious choices]
-
-## Testing
-[Automated tests added/modified, manual steps, edge cases. Honest about gaps.]
+## Summary          — 1-3 sentence plain-language overview, no jargon
+## JIRA Ticket      — auto-detected from branch/commits, or "Not detected"
+## Business Context — why this change is needed from a business perspective
+## Business Benefits— value delivered: user impact, efficiency, risk reduction
+## Technical Design — architecture, key decisions, trade-offs
+## Technical Impact — affected systems, breaking changes, migration needs
+## Changes Overview — what changed, grouped by concern (no file paths)
+## Testing          — how it was verified: automated tests, manual steps
 ```
 
-**When triggered**: "create PR", "open pull request", "write PR description", "conventional PR format"
+**When triggered**: "create PR", "open pull request", "update PR", "write PR description"
 
 ---
 
@@ -456,17 +481,24 @@ skill that needs to produce PR content.
 This repository serves dual roles:
 
 - **Marketplace** — the root `.claude-plugin/marketplace.json` makes it installable via `claude plugin add`
-- **Plugin** — `plugins/ai-setup-automation/` contains the skills, commands, and hooks
+- **Plugins** — `plugins/ai-setup-automation/` and `plugins/sdlc-utilities/` contain the skills, commands, hooks, and scripts
 
 ```text
 ai-setup-automation/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
 ├── plugins/
-│   └── ai-setup-automation/
+│   ├── ai-setup-automation/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # Plugin manifest (v0.4.0)
+│   │   ├── skills/               # 9 skill definitions
+│   │   ├── commands/             # Slash commands
+│   │   ├── hooks/                # Session hooks
+│   │   └── scripts/              # Node.js helper scripts (verify-setup.js, cache-snapshot.js, lib/)
+│   └── sdlc-utilities/
 │       ├── .claude-plugin/
-│       │   └── plugin.json       # Plugin manifest (v0.1.0)
-│       ├── skills/               # 9 skill definitions
+│       │   └── plugin.json       # Plugin manifest
+│       ├── skills/               # 1 skill definition
 │       ├── commands/             # Slash commands
 │       └── hooks/                # Session hooks
 └── docs/                         # Documentation

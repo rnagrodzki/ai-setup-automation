@@ -37,17 +37,20 @@ grep -c "Quality Gates\|quality gate\|pass criteria\|fail action\|self-review\|c
 - Max iterations (to prevent infinite loops)
 - OR: a workflow that includes a review/validation step before output is considered complete
 
-### 2c. Plan → Do → Critique → Improve Pattern
+### 2c. Plan → Critique → Improve → Do → Critique → Improve Pattern
 
 Does the skill's workflow or process description follow this pattern?
 
-- **Plan**: Define what needs to happen before doing it (gather context, understand requirements)
-- **Do**: Execute the work
+- **Plan**: Define what needs to happen (gather context, understand requirements)
+- **Critique**: Review the plan against rules/requirements before executing — check approach, edge cases, completeness
+- **Improve**: Refine the plan based on critique findings
+- **Do**: Execute the (now-critiqued) work
 - **Critique**: Review/validate the output against rules/criteria
-- **Improve**: Fix issues found during critique, iterate if needed
+- **Improve**: Fix issues found during output critique, iterate if needed
 
-A skill that says "do X, then do Y, done" without any review step → ❌ FAIL.
-A skill that says "do X, review result against criteria, fix if needed" → ✅ PASS.
+A skill that says "plan, do X, done" without any review at plan or output stage → ❌ FAIL.
+A skill that says "plan, review plan, improve plan, do X, review result against criteria, fix if needed" → ✅ PASS.
+A skill that critiques only the output (old PDCI) partially satisfies this — flag as partial if plan critique is missing.
 
 **Note:** Reference/knowledge skills (collections of rules, patterns, domain knowledge) satisfy
 this requirement through their Quality Gates section — the gate IS the critique-improve step.
@@ -152,7 +155,7 @@ ls -la ".claude/skills/X.md"
 ### Skill Compliance Table
 
 ```markdown
-| Skill | Self-Learning | Quality Gates | Plan→Do→Critique→Improve | Status |
+| Skill | Self-Learning | Quality Gates | Plan→Critique→Improve→Do→Critique→Improve | Status |
 |-------|--------------|---------------|--------------------------|--------|
 | {name} | ✅/❌ | ✅/❌/EXEMPT | ✅/❌ | PASS/FAIL |
 ```

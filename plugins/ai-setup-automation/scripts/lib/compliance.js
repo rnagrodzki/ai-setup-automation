@@ -32,7 +32,7 @@ const SKILL_QUALITY_GATE_PATTERNS = [
   /review.*before.*deliver/i,
 ];
 
-const SKILL_PDCI_EXTRA_PATTERNS = [
+const SKILL_PCIDCI_EXTRA_PATTERNS = [
   /critique/i,
   /verify.*before/i,
   /check.*pass/i,
@@ -91,9 +91,9 @@ function stripFrontmatter(content) {
 function evaluateSkillCompliance(name, content) {
   const has_learning_capture = anyMatch(content, SKILL_LEARNING_PATTERNS);
   const has_quality_gates = anyMatch(content, SKILL_QUALITY_GATE_PATTERNS);
-  const has_pdci_workflow = has_quality_gates || anyMatch(content, SKILL_PDCI_EXTRA_PATTERNS);
+  const has_pcidci_workflow = has_quality_gates || anyMatch(content, SKILL_PCIDCI_EXTRA_PATTERNS);
   const exempt_from_gates = name.startsWith('openspec-');
-  return { has_quality_gates, has_learning_capture, has_pdci_workflow, exempt_from_gates };
+  return { has_quality_gates, has_learning_capture, has_pcidci_workflow, exempt_from_gates };
 }
 
 // ---------------------------------------------------------------------------
@@ -214,7 +214,7 @@ module.exports = {
   VALID_TOOLS,
   SKILL_LEARNING_PATTERNS,
   SKILL_QUALITY_GATE_PATTERNS,
-  SKILL_PDCI_EXTRA_PATTERNS,
+  SKILL_PCIDCI_EXTRA_PATTERNS,
   AGENT_SELF_REVIEW_PATTERNS,
   AGENT_LEARNING_PATTERNS,
   anyMatch,

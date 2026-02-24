@@ -1,6 +1,6 @@
 ---
 name: aisa-evolve-validate
-description: "Validate all skills and agents against architectural principles — self-learning, Plan→Do→Critique→Improve, structural completeness. Does NOT check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing."
+description: "Validate all skills and agents against architectural principles — self-learning, Plan→Critique→Improve→Do→Critique→Improve, structural completeness. Does NOT check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing."
 argument-hint: "[path-to-specific-file-or-directory]"
 ---
 
@@ -35,7 +35,7 @@ node <plugin-path>/scripts/verify-setup.js validate --project-root . --json
 If validating a specific file or directory, add `--target <path>`.
 
 The script outputs JSON with:
-- Skill checks 2a (learning capture), 2b (quality gates), 2c (PDCI pattern)
+- Skill checks 2a (learning capture), 2b (quality gates), 2c (PCIDCI pattern)
 - Agent checks 3a (frontmatter), 3b (tools), 3c (capability-tool warnings), 3d (self-review), 3e (learning), 3f (skill refs)
 - `issues` array with proposed fixes for every failure
 - `overall`: COMPLIANT / HAS_ISSUES / NON-COMPLIANT
@@ -47,7 +47,7 @@ Cache-aware: UNCHANGED files with all flags passing are skipped automatically.
 Use the script's JSON output as ground truth for all mechanical checks.
 Focus your effort on items the script cannot evaluate mechanically:
 
-- **2c deep check** — For any skill with `check_2c_pdci: false`: read the workflow section and determine whether it genuinely lacks a review step or expresses the PDCI pattern in an unconventional way.
+- **2c deep check** — For any skill with `check_2c_pcidci: false`: read the workflow section and determine whether it genuinely lacks critique gates or expresses the PCIDCI pattern (plan critique + output critique) in an unconventional way.
 - **3c warnings** — Review each capability-tool warning in context. These are flags for review, not hard failures — verify whether the agent actually performs the claimed capability.
 
 ### Step 3 — Agent Principle Validation (supplementary)

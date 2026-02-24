@@ -13,10 +13,13 @@ a `SKILL.md` file with YAML frontmatter and optional supporting files.
 mkdir -p plugins/ai-setup-automation/skills/<skill-name>/
 ```
 
-Use a gerund (verb + -ing) form for the directory name:
-- `writing-unit-tests` (not `unit-tests`)
-- `configuring-linters` (not `linter-config`)
-- `reviewing-pull-requests` (not `pr-review`)
+Choose a directory name that makes the skill's purpose immediately obvious. Two conventions
+are used in this repo — pick the one that fits the plugin's naming style:
+
+- **Prefix pattern** (used by `aisa` skills): `<plugin-prefix>-<noun>`, e.g., `aisa-init`, `aisa-evolve-health`
+- **Gerund pattern** (used by `sdlc` skills): `<verb>-ing-<noun>`, e.g., `creating-pull-requests`
+
+Use lowercase and hyphens only. Avoid vague names (`setup`, `utils`) — names should be specific.
 
 > **Name resolution:** When loaded from a marketplace plugin, skills are referenced as
 > `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-init`). The plugin name
@@ -79,7 +82,7 @@ See `./checklist.md` for the full verification checklist.
 
 | Rule | Limit |
 |---|---|
-| `name` field | Gerund form (e.g., "setting-up-X"), lowercase, hyphens only, max 64 chars |
+| `name` field | Lowercase, hyphens only, max 64 chars. Use prefix or gerund pattern (see above). |
 | `description` field | Maximum 1024 characters |
 | `SKILL.md` content | Maximum 500 lines |
 

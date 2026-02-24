@@ -26,6 +26,7 @@ Each plugin lives under `plugins/<name>/` and follows the structure:
 commands/                    # Slash commands (*.md)
 skills/                      # Skills (one subdirectory each)
 hooks/hooks.json             # Session-start and other hooks
+scripts/                     # Node.js helper scripts (optional; invoked via Bash)
 ```
 
 ---
@@ -41,6 +42,7 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 | `/aisa:setup` | Detect tech stack and scaffold full `CLAUDE.md` + `.claude/` configuration |
 | `/aisa:audit` | Audit existing AI configuration and suggest improvements |
 | `/aisa:postmortem` | Guided incident analysis; encodes lessons into skills |
+| `/aisa:validate` | Validate all skills and agents against architectural principles |
 
 ### Plugin 1 Skills
 
@@ -66,20 +68,20 @@ Automates common SDLC tasks.
 
 | Command | Purpose |
 | --- | --- |
-| `/sdlc:pr [--draft] [--base <branch>]` | Open a pull request with an auto-generated Conventional PR description |
+| `/sdlc:pr [--draft] [--update] [--base <branch>]` | Open or update a pull request with an auto-generated PR description |
 
 ### Plugin 2 Skills
 
 | Skill | Purpose |
 | --- | --- |
-| `sdlc:creating-pull-requests` | Analyse commits and diffs; generate structured What/Why/How/Testing PR descriptions |
+| `sdlc:creating-pull-requests` | Analyse commits and diffs; generate structured 8-section PR descriptions (Summary / JIRA Ticket / Business Context / Business Benefits / Technical Design / Technical Impact / Changes Overview / Testing) |
 
 ---
 
 ## Architecture Principles
 
 1. **Spec-driven development** — design before implementation
-2. **Plan → Do → Critique → Improve** — mandatory critique gates in every pipeline
+2. **Plan → Critique → Improve → Do → Critique → Improve** — mandatory dual critique gates in every pipeline (critique the plan, then critique the output)
 3. **Cache-first incremental scanning** — snapshot hashing in `.claude/cache/`
 4. **Parallel execution** — always run independent steps concurrently
 5. **Self-learning directives** — learnings flow into `.claude/learnings/log.md` and are harvested into skills
@@ -93,5 +95,3 @@ Automates common SDLC tasks.
 - **Adding a command:** Follow `docs/adding-commands.md`. Place it under `plugins/<plugin>/commands/<command>.md`.
 - **Adding a hook:** Follow `docs/adding-hooks.md`. Edit `plugins/<plugin>/hooks/hooks.json`.
 - **Plugin manifest fields:** See `docs/architecture.md` for required fields in `plugin.json`.
-- **Current branch:** `fix/docs` — documentation fixes.
-- **Target merge branch:** `main`.

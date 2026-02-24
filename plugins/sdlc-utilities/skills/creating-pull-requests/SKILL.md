@@ -1,6 +1,6 @@
 ---
 name: creating-pull-requests
-description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, auto-detect create-or-update mode, description generation with plan-critique-improve-do, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
+description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, auto-detect create-or-update mode, description generation with plan-critique-improve-do-critique-improve, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
 ---
 
 # Creating Pull Requests
@@ -192,6 +192,7 @@ Before presenting to the user, review the draft against every quality gate:
 | No fabrication | All claims traceable to commits, diff, or user input | Nothing invented |
 | JIRA accuracy | JIRA value matches evidence or is "Not detected" | No guessed ticket numbers |
 | Audience check | Readable by non-technical stakeholders | No unexplained jargon in Summary/Business sections |
+| Documentation sync | If diff adds new commands, changes structure, renames concepts, or adds new directories/scripts: check that at least one `docs:` commit exists on this branch OR ask the user to confirm docs are updated | PR does not silently ship structural changes without a corresponding docs update |
 
 Note every failing gate.
 
@@ -285,6 +286,7 @@ Title: <title>
 4. **No file paths in Changes Overview** — reviewers think in concepts, not paths
 5. **Flag risks** — call out migrations, permission changes, or config changes
 6. **Preserve author intent** — if commit messages express design rationale, carry it into the description
+7. **Trigger doc evolution after structural PRs** — if a PR adds new plugins, directories, commands, or scripts, recommend running `/aisa-evolve-target` after merge to keep skills and docs in sync with the new structure
 
 ## DO NOT
 
@@ -293,7 +295,7 @@ Title: <title>
 - Fabricate a JIRA ticket, business reason, or technical claim
 - Include file paths in the Changes Overview section
 - Execute `gh pr create` or `gh pr edit` without explicit user approval
-- Skip the plan-critique-improve cycle before presenting to the user
+- Skip the plan-critique-improve-do-critique-improve cycle before presenting to the user
 
 ## Learning Capture
 

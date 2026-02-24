@@ -6,8 +6,9 @@ This repository serves two roles:
 
 1. **Marketplace** — The root `.claude-plugin/marketplace.json` makes the repo installable
    as a Claude Code marketplace
-2. **Plugin** — The `plugins/ai-setup-automation/` directory contains the actual plugin
-   with skills, commands, and hooks
+2. **Plugins** — Two plugins live under `plugins/`: `ai-setup-automation` (AI config scaffolding
+   and evolution) and `sdlc-utilities` (PR automation), each with their own skills, commands, hooks,
+   and optionally scripts
 
 ## Directory Structure
 
@@ -16,15 +17,26 @@ ai-setup-automation/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest (entry point)
 ├── plugins/
-│   └── ai-setup-automation/
+│   ├── ai-setup-automation/      # Plugin 1: AI config scaffolding and evolution
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # Plugin manifest (name: "aisa")
+│   │   ├── skills/               # Skill definitions
+│   │   │   └── <skill-name>/
+│   │   │       ├── SKILL.md      # Skill entry point (YAML frontmatter + instructions)
+│   │   │       └── *.md          # Optional supporting files
+│   │   ├── commands/             # Slash command definitions
+│   │   │   └── <command>.md      # Command file (YAML frontmatter + instructions)
+│   │   ├── hooks/
+│   │   │   └── hooks.json        # Hook configuration
+│   │   └── scripts/              # Node.js helper scripts invoked by skills via Bash
+│   │       ├── verify-setup.js   # Health check and principle compliance scanner
+│   │       ├── cache-snapshot.js # Snapshot hashing for cache-first scanning
+│   │       └── lib/              # Shared modules (discovery, compliance, hashing, etc.)
+│   └── sdlc-utilities/           # Plugin 2: SDLC automation
 │       ├── .claude-plugin/
-│       │   └── plugin.json       # Plugin manifest
+│       │   └── plugin.json       # Plugin manifest (name: "sdlc")
 │       ├── skills/               # Skill definitions
-│       │   └── <skill-name>/
-│       │       ├── SKILL.md      # Skill entry point (YAML frontmatter + instructions)
-│       │       └── *.md          # Optional supporting files
 │       ├── commands/             # Slash command definitions
-│       │   └── <command>.md      # Command file (YAML frontmatter + instructions)
 │       └── hooks/
 │           └── hooks.json        # Hook configuration
 └── docs/                         # Documentation
@@ -57,20 +69,20 @@ with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<
 
 **Commands** — invoked as `/<plugin-name>:<command-name>`:
 
-| File | Plugin name | Resolved command |
+| File | `plugin.json` `name` | Resolved command |
 |---|---|---|
-| `commands/setup.md` | `ai-setup-automation` | `/aisa:setup` |
-| `commands/pr.md` | `sdlc-utilities` | `/sdlc:pr` |
+| `commands/setup.md` | `aisa` | `/aisa:setup` |
+| `commands/pr.md` | `sdlc` | `/sdlc:pr` |
 
 **Skills** — referenced as `<plugin-name>:<skill-name>`:
 
-| Directory | Plugin name | Resolved name |
+| Directory | `plugin.json` `name` | Resolved name |
 |---|---|---|
-| `skills/aisa-init/` | `ai-setup-automation` | `aisa:aisa-init` |
-| `skills/creating-pull-requests/` | `sdlc-utilities` | `sdlc:creating-pull-requests` |
+| `skills/aisa-init/` | `aisa` | `aisa:aisa-init` |
+| `skills/creating-pull-requests/` | `sdlc` | `sdlc:creating-pull-requests` |
 
-The `name` field in `plugin.json` is the namespace prefix. Keep it stable — renaming it
-changes every command and skill name for all installed users.
+The `name` field in `plugin.json` is the namespace prefix — **not** the directory name. Keep it
+stable — renaming it changes every command and skill name for all installed users.
 
 ### Skills
 
@@ -79,7 +91,7 @@ contain a `SKILL.md` file with YAML frontmatter:
 
 ```yaml
 ---
-name: skill-name-in-gerund-form
+name: skill-name
 description: "When Claude should invoke this skill (max 1024 characters)"
 ---
 ```
@@ -114,9 +126,9 @@ Hooks are defined in `plugins/<plugin>/hooks/hooks.json`. Available hook points:
 | `PreToolUse` | Before a tool is invoked (use `matcher` to filter by tool name) |
 | `PostToolUse` | After a tool completes |
 
-## Adding Multiple Plugins
+## Adding a New Plugin
 
-To add a second plugin to this marketplace:
+To add another plugin to this marketplace:
 
 1. Create `plugins/<new-plugin-name>/` with its own `.claude-plugin/plugin.json`
 2. Add an entry to the root `marketplace.json`:
@@ -128,4 +140,4 @@ To add a second plugin to this marketplace:
    }
    ```
 
-3. Follow the same structure: `skills/`, `commands/`, `hooks/`
+3. Follow the same structure: `skills/`, `commands/`, `hooks/` (and optionally `scripts/`)

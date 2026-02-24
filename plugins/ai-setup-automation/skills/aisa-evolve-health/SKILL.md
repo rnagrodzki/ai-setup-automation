@@ -83,8 +83,8 @@ Present a concise health report:
 {same format — classify as CURRENT/OUTDATED/STALE/CRITICAL}
 
 ### Principle Compliance Summary
-| File | Type | Self-Learning | Quality Gates | Plan→Do→Critique→Improve | Tools Valid |
-|------|------|--------------|---------------|--------------------------|-------------|
+| File | Type | Self-Learning | Quality Gates | Plan→Critique→Improve→Do→Critique→Improve | Tools Valid |
+|------|------|--------------|---------------|------------------------------------------|-------------|
 | {name} | skill/agent | ✅/❌ | ✅/❌/EXEMPT | ✅/❌ | ✅/❌/N/A |
 
 ### CLAUDE.md: [CURRENT / OUTDATED / STALE]

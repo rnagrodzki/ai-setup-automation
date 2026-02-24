@@ -197,7 +197,7 @@ function validateMode(projectRoot, opts) {
           source: 'cache',
           check_2a_learning: c.has_learning_capture,
           check_2b_quality_gates: c.has_quality_gates,
-          check_2c_pdci: c.has_pdci_workflow,
+          check_2c_pcidci: c.has_pcidci_workflow,
           exempt_from_gates: c.exempt_from_gates,
           status: 'PASS',
           issues: [],
@@ -231,10 +231,10 @@ function validateMode(projectRoot, opts) {
         proposed_fix: 'Add ## Quality Gates section with gate table (trigger, check, pass criteria, fail action, max iterations)',
       });
     }
-    if (!compliance.has_pdci_workflow) {
+    if (!compliance.has_pcidci_workflow) {
       issues.push({
         check: '2c',
-        message: 'Workflow lacks Plan→Do→Critique→Improve pattern',
+        message: 'Workflow lacks Plan→Critique→Improve→Do→Critique→Improve pattern',
         proposed_fix: 'Ensure workflow includes a review/validation step before output is considered complete',
       });
     }
@@ -245,7 +245,7 @@ function validateMode(projectRoot, opts) {
       source: 'scan',
       check_2a_learning: compliance.has_learning_capture,
       check_2b_quality_gates: compliance.has_quality_gates,
-      check_2c_pdci: compliance.has_pdci_workflow,
+      check_2c_pcidci: compliance.has_pcidci_workflow,
       exempt_from_gates: compliance.exempt_from_gates,
       status: issues.length === 0 ? 'PASS' : 'FAIL',
       issues,
@@ -756,11 +756,11 @@ function renderValidateMarkdown(result) {
   lines.push('');
 
   lines.push('## Skills');
-  lines.push('| Skill | Self-Learning | Quality Gates | PDCI | Status |');
+  lines.push('| Skill | Self-Learning | Quality Gates | PCIDCI | Status |');
   lines.push('|-------|:------------:|:-------------:|:----:|--------|');
   for (const s of result.skills) {
     const exempt = s.exempt_from_gates ? ' (exempt)' : '';
-    lines.push(`| ${s.name} | ${s.check_2a_learning ? '✅' : '❌'} | ${s.check_2b_quality_gates ? '✅' : '❌'}${exempt} | ${s.check_2c_pdci ? '✅' : '❌'} | ${s.status} |`);
+    lines.push(`| ${s.name} | ${s.check_2a_learning ? '✅' : '❌'} | ${s.check_2b_quality_gates ? '✅' : '❌'}${exempt} | ${s.check_2c_pcidci ? '✅' : '❌'} | ${s.status} |`);
   }
 
   lines.push('');

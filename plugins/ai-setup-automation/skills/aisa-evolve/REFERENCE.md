@@ -859,7 +859,7 @@ mkdir -p .claude/cache
 
 Generate new `snapshot.json` with:
 - Fresh sha256 hashes for all skills, agents, CLAUDE.md, learnings log
-- Updated principle compliance flags (quality gates, learning capture, PDCI)
+- Updated principle compliance flags (quality gates, learning capture, PCIDCI)
 - Updated project indicator hashes (go.mod, package.json, spec dirs, src dirs)
 - `generated_at` timestamp and `generated_by: "aisa-evolve v8.0"`
 

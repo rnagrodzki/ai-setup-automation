@@ -81,7 +81,7 @@ Automates common SDLC tasks.
 ## Architecture Principles
 
 1. **Spec-driven development** — design before implementation
-2. **Plan → Do → Critique → Improve** — mandatory critique gates in every pipeline
+2. **Plan → Critique → Improve → Do → Critique → Improve** — mandatory dual critique gates in every pipeline (critique the plan, then critique the output)
 3. **Cache-first incremental scanning** — snapshot hashing in `.claude/cache/`
 4. **Parallel execution** — always run independent steps concurrently
 5. **Self-learning directives** — learnings flow into `.claude/learnings/log.md` and are harvested into skills

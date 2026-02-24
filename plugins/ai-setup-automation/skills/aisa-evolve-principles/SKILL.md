@@ -40,9 +40,11 @@ Apply to every skill (except `openspec-*` which are exempt from Quality Gates):
 - Each gate defines: trigger, check, pass criteria, fail action
 - Max iterations specified (prevents infinite loops)
 
-**P3 · Plan → Do → Critique → Improve Pattern:**
-- Workflow/process sections include a review step before output is considered done
-- Not just "do X, do Y, done" — must have validate/check/review before delivery
+**P3 · Plan → Critique → Improve → Do → Critique → Improve Pattern:**
+- Critique the plan before executing: review approach, requirements, and edge cases; improve before acting
+- Execute the (now-critiqued) work
+- Critique the output: validate result against rules/criteria; improve before delivery
+- Not just "plan, do, done" — must critique and improve at both the planning and execution stage
 - Reference/knowledge skills satisfy this through their Quality Gates section
 
 **Violation classification:**

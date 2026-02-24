@@ -7,7 +7,7 @@ argument-hint: "[path-to-specific-file-or-directory]"
 # /validate Command
 
 Validate `.claude/` skills and agents against architectural principles — structural completeness,
-self-learning directives, and Plan→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
+self-learning directives, and Plan→Critique→Improve→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
 
 ## Usage
 

@@ -19,9 +19,9 @@ Your `.claude/` setup grows smarter with every session. When bugs, painful debug
 
 Every `aisa-evolve-*` skill snapshots file hashes into `.claude/cache/snapshot.json`. On the next run, unchanged files are skipped entirely — only modified, new, or deleted files get a full audit. This cuts token consumption by 60–80% on typical runs, making weekly health checks fast enough to actually run weekly. The cache also makes drift visible at a glance: a file that hasn't changed since the last snapshot is unlikely to need attention; one that has changed is immediately flagged.
 
-### Plan → Do → Critique → Improve — Enforced as Workflow
+### Plan → Critique → Improve → Do → Critique → Improve — Enforced as Workflow
 
-Every skill and agent in the setup is validated to include a mandatory critique gate before it produces output. This isn't optional guidance — `aisa-evolve-validate` will flag any skill that skips the review step as non-compliant. The pattern applies recursively: the evolution skills themselves run a critique phase before executing changes, so the AI configuration process follows the same discipline it enforces in your project skills.
+Every skill and agent in the setup applies two mandatory critique gates: one after planning (before any work is done) and one after execution (before output is delivered). The plan is critiqued and improved before a single action is taken, eliminating flawed approaches early. The output is then critiqued and improved before delivery, catching shallow or incorrect results. This isn't optional guidance — `aisa-evolve-validate` will flag any skill that skips either critique gate as non-compliant. The pattern applies recursively: the evolution skills themselves follow this same two-gate discipline when generating or updating your project skills.
 
 ---
 
@@ -199,7 +199,7 @@ aisa:aisa-evolve-postmortem test suite passed but feature broke in production du
 
 #### `aisa:aisa-evolve-validate` — Principle compliance check
 
-Validates all skills and agents against architectural principles (self-learning, Plan→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
+Validates all skills and agents against architectural principles (self-learning, Plan→Critique→Improve→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
 
 ```text
 aisa:aisa-evolve-validate
@@ -277,7 +277,7 @@ Or skip the Q&A by providing a description upfront:
 
 Thin wrapper around the `aisa-evolve-validate` skill. Validates all `.claude/` skills and agents
 against architectural principles — structural completeness, self-learning directives, and
-Plan→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
+Plan→Critique→Improve→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
 
 ```text
 /aisa:validate
@@ -377,9 +377,9 @@ Enforced across all commands:
 2. **Functional-first testing** — real infra, mock only at lowest external boundary
 3. **Three-dimensional domains** — technical + business + design
 4. **Continuous learning** — capture during work, promote to skills over time (self-learning directives mandatory)
-5. **Plan → Do → Critique → Improve** — every skill/agent workflow must include a review step before output is done (quality gates mandatory)
+5. **Plan → Critique → Improve → Do → Critique → Improve** — every skill/agent workflow must critique the plan before executing and review output before delivery (dual quality gates mandatory)
 6. **Specificity over generics** — every skill must be THIS project's skill, not generic advice
-7. **Critique gates** — mandatory quality checks prevent shallow output
+7. **Critique gates** — mandatory dual quality checks (one before execution, one before delivery) prevent both flawed plans and shallow output
 8. **Structural completeness** — agents must have valid frontmatter, real tools, and capability-tool consistency
 9. **Cache-first scanning** — check snapshot hashes before deep-reading files; skip unchanged content to minimize token consumption
 10. **Always parallel** — use subagent workstreams or Agent Teams for every audit; never single-thread through the full setup

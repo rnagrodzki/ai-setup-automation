@@ -1,6 +1,6 @@
 ---
 name: creating-pull-requests
-description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, auto-detect create-or-update mode, description generation with plan-critique-improve-do, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
+description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, auto-detect create-or-update mode, description generation with plan-critique-improve-do-critique-improve, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
 ---
 
 # Creating Pull Requests
@@ -295,7 +295,7 @@ Title: <title>
 - Fabricate a JIRA ticket, business reason, or technical claim
 - Include file paths in the Changes Overview section
 - Execute `gh pr create` or `gh pr edit` without explicit user approval
-- Skip the plan-critique-improve cycle before presenting to the user
+- Skip the plan-critique-improve-do-critique-improve cycle before presenting to the user
 
 ## Learning Capture
 

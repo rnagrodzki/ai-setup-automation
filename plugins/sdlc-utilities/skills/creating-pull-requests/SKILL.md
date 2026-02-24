@@ -1,16 +1,17 @@
 ---
 name: creating-pull-requests
-description: "Use this skill when creating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, existing PR check, description generation with plan-critique-improve-do, user review, and gh CLI execution. Triggers on: create PR, open pull request, write PR description, PR summary, update PR, or when asked to describe changes for a pull request."
+description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, auto-detect create-or-update mode, description generation with plan-critique-improve-do, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
 ---
 
 # Creating Pull Requests
 
-Full PR creation workflow — from git state to merged description — using an
-8-section template readable by both technical and non-technical stakeholders.
+Full PR create-or-update workflow — from git state to merged description — using
+an 8-section template readable by both technical and non-technical stakeholders.
 
 ## When to Use This Skill
 
 - Creating a new pull request on any branch
+- Updating an existing PR title or description
 - Writing or rewriting a PR description
 - Summarizing branch changes for review
 - When the `/pr` command delegates here after basic validation
@@ -106,24 +107,23 @@ If the local branch is ahead of remote, push:
 git push
 ```
 
-### Step 3: Check for Existing PR
+### Step 3: Detect PR Mode
 
 ```bash
 gh pr view --json number,title,url,state 2>/dev/null
 ```
 
-If an open PR exists, present it to the user:
+Determine the operating mode silently — no user prompt at this step:
 
-```text
-A pull request already exists for this branch:
-  #<number>: <title>
-  <url>
+1. **`--update` flag set + PR exists** → mode = `update`, record PR `#number` and URL
+2. **`--update` flag set + no PR exists** → stop with error:
+   ```text
+   No existing PR found for this branch. Remove --update to create a new PR.
+   ```
+3. **No `--update` flag + PR exists** → mode = `update`, record PR `#number` and URL
+4. **No `--update` flag + no PR exists** → mode = `create`
 
-Would you like to update its description instead? (yes/no)
-```
-
-If yes → continue to generate the description, then use `gh pr edit` at Step 11.
-If no → stop.
+Carry the mode variable forward through the remaining steps.
 
 ### Step 4: Gather Commit History
 
@@ -220,10 +220,17 @@ PR Description:
 <full description>
 ─────────────────────────────────────────────
 
+<if mode = create>
 Create this PR? (yes / edit / cancel)
-  yes    — create (or update) the PR as shown
+  yes    — create the PR as shown
   edit   — tell me what to change
   cancel — abort without creating
+
+<if mode = update>
+Update PR #<number>? (yes / edit / cancel)
+  yes    — update the PR title and description as shown
+  edit   — tell me what to change
+  cancel — abort without updating
 ```
 
 If the user chooses `edit`, ask what to change, revise, and present again.
@@ -233,13 +240,13 @@ Loop until explicit `yes` or `cancel`.
 
 **Only execute after explicit `yes` from Step 10.**
 
-**New PR:**
+**Create mode:**
 
 ```bash
 gh pr create --title "<title>" --body "<body>" [--draft]
 ```
 
-**Existing PR (update description):**
+**Update mode:**
 
 ```bash
 gh pr edit --title "<title>" --body "<body>"
@@ -248,16 +255,20 @@ gh pr edit --title "<title>" --body "<body>"
 After success, display the PR URL:
 
 ```text
+# Create mode:
 Pull request created: <url>
+
+# Update mode:
+Pull request updated: <url>
 ```
 
 **If `gh` is unavailable or fails**, show the error and provide a fallback:
 
 ```text
-The GitHub CLI (gh) could not create the PR. You can:
+The GitHub CLI (gh) could not complete the operation. You can:
   1. Install gh: https://cli.github.com/
   2. Authenticate: gh auth login
-  3. Create the PR manually — here is your generated description to copy:
+  3. Create or update the PR manually — here is your generated description to copy:
 
 Title: <title>
 

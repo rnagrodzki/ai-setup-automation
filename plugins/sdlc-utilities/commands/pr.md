@@ -1,19 +1,23 @@
 ---
-description: Create a pull request with an auto-generated description from commits and diffs
+description: Create or update a pull request with an auto-generated description from commits and diffs
 allowed-tools: [Read, Glob, Grep, Bash, Skill]
-argument-hint: "[--draft] [--base <branch>]"
+argument-hint: "[--draft] [--update] [--base <branch>]"
 ---
 
 # /pr Command
 
-Create a pull request on the current branch with a description auto-generated
-from commit history and diffs. Uses the Conventional PR format.
+Create or update a pull request on the current branch with a description
+auto-generated from commit history and diffs. Uses the Conventional PR format.
+
+Auto-detects whether a PR already exists: if one does, updates it; otherwise
+creates a new one.
 
 ## Usage
 
-- `/pr` — Create a PR against the auto-detected base branch
-- `/pr --draft` — Create a draft PR
-- `/pr --base develop` — Create a PR targeting a specific base branch
+- `/pr` — Auto-detect: create a new PR or update the existing one
+- `/pr --draft` — Create a draft PR (new PRs only)
+- `/pr --update` — Force update mode (error if no PR exists for this branch)
+- `/pr --base develop` — Target a specific base branch
 
 ## Workflow
 
@@ -22,8 +26,9 @@ from commit history and diffs. Uses the Conventional PR format.
 Check `$ARGUMENTS` for flags:
 
 - `--draft` present → set draft mode on
+- `--update` present → set update mode on (force update; error if no PR exists)
 - `--base <branch>` present → use that as the base branch
-- No arguments → auto-detect base branch, non-draft mode
+- No arguments → auto-detect base branch, auto-detect create/update mode
 
 ### Step 1: Validate Git State
 
@@ -61,7 +66,8 @@ Commit or stash them first if you want them included. Continue anyway? (yes/no)
 Invoke the `creating-pull-requests` skill, passing:
 
 - The `--draft` flag if set
+- The `--update` flag if set
 - The `--base <branch>` value if provided
 
 The skill handles everything from here: base branch detection, remote state,
-existing PR check, description generation, user review, and PR creation.
+PR mode detection, description generation, user review, and PR creation or update.

@@ -1,8 +1,6 @@
 ---
 name: aisa-evolve-health
 description: "Quick health check of the .claude/ setup. Runs snapshot and drift audit only — no expansion, no changes unless critical issues found. Use weekly or before sprints."
-model: sonnet
-skills: aisa-evolve, aisa-evolve-principles
 ---
 
 # Skills & Agents Health Check

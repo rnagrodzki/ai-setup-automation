@@ -59,6 +59,29 @@ This will review what exists and suggest improvements.
 | `/aisa:postmortem` | Guided incident analysis — encodes lessons into skills to prevent recurrence |
 | `/aisa:validate` | Validate all skills and agents in `.claude/` against architectural principles |
 
+### Code Review Setup
+
+The `sdlc-utilities` plugin provides a project-customizable multi-dimension code review system.
+
+**Step 1 — Create review dimensions** (one-time per project):
+
+```text
+/sdlc:review-init
+```
+
+Scans your tech stack and proposes tailored dimension files (security, API contracts,
+test coverage, etc.) in `.claude/review-dimensions/`. Run with `--add` to expand an
+existing set.
+
+**Step 2 — Run reviews** (on any feature branch):
+
+```text
+/sdlc:review
+```
+
+Matches dimensions to your changed files, dispatches parallel review subagents,
+deduplicates findings, and posts a consolidated comment to the PR.
+
 ## What Gets Created
 
 | File/Directory | Purpose |
@@ -67,6 +90,7 @@ This will review what exists and suggest improvements.
 | `.claude/settings.json` | Permissions and environment config |
 | `.claude/skills/` | Directory for project-specific skills |
 | `.claude/commands/` | Directory for slash commands |
+| `.claude/review-dimensions/` | Per-project code review dimension files (created by `/sdlc:review-init`) |
 
 ## Next Steps
 

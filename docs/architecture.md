@@ -37,8 +37,10 @@ ai-setup-automation/
 │       │   └── plugin.json       # Plugin manifest (name: "sdlc")
 │       ├── skills/               # Skill definitions
 │       ├── commands/             # Slash command definitions
-│       └── hooks/
-│           └── hooks.json        # Hook configuration
+│       ├── hooks/
+│       │   └── hooks.json        # Hook configuration
+│       └── scripts/
+│           └── validate-dimensions.js  # Validates .claude/review-dimensions/ files (D1–D12)
 └── docs/                         # Documentation
 ```
 

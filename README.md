@@ -78,15 +78,19 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 
 ### sdlc-utilities
 
-Generates structured 8-section PR descriptions from your commits and diffs — readable by both engineers and non-technical stakeholders.
+Automates SDLC tasks: generates structured PR descriptions from commits and diffs, and runs
+project-customizable multi-dimension code reviews matched to your changed files.
 
 | Command | Description |
 | --- | --- |
 | `/sdlc:pr` | Create a PR with an auto-generated structured description |
+| `/sdlc:review` | Run multi-dimension code review on the current branch |
+| `/sdlc:review-init` | Scan the project and create tailored review dimension files |
 
-Supports `--draft`, `--update`, and `--base <branch>` flags.
+`/sdlc:pr` supports `--draft`, `--update`, and `--base <branch>` flags.
+`/sdlc:review` supports `--base`, `--dimensions`, and `--dry-run` flags.
 
-> **[Full reference →](docs/plugin-sdlc-utilities.md)** Usage examples, flag reference, example PR output, skill template
+> **[Full reference →](docs/plugin-sdlc-utilities.md)** Usage examples, flag reference, example PR output, code review workflow, dimension format
 
 ---
 

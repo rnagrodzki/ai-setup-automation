@@ -97,3 +97,213 @@ Reusable knowledge skill that analyzes commits and diffs to generate PR descript
 ### Trigger Phrases
 
 **When triggered**: "create PR", "open pull request", "update PR", "write PR description"
+
+---
+
+## `/sdlc:review` — Multi-Dimension Code Review
+
+Loads project review dimensions from `.claude/review-dimensions/`, matches them to changed
+files via glob patterns, dispatches parallel review subagents, deduplicates findings, and
+posts a single consolidated comment to the PR.
+
+```text
+/sdlc:review
+```
+
+### Review Flags
+
+```text
+/sdlc:review --base develop             # diff against develop instead of auto-detected base
+/sdlc:review --dimensions security-review,api-review  # run only named dimensions
+/sdlc:review --dry-run                  # show review plan without dispatching subagents
+```
+
+### Consolidated Comment Format
+
+The skill posts a PR comment structured as:
+
+```markdown
+## Code Review — 3 dimension(s), 7 finding(s)
+
+> Automated review by `sdlc:reviewing-changes` · 2026-02-25
+
+### Summary
+
+| Dimension       | Findings | Critical | High | Medium | Low | Info |
+|-----------------|----------|----------|------|--------|-----|------|
+| security-review | 3        | 0        | 2    | 1      | 0   | 0    |
+| code-quality    | 4        | 0        | 0    | 2      | 2   | 0    |
+| **Total**       | **7**    | **0**    | **2**| **3**  | **2**| **0**|
+
+### Verdict: APPROVED WITH NOTES
+
+Two high-severity security findings require attention before merging.
+
+---
+
+### security-review — 3 finding(s)
+
+<details>
+<summary>0 critical · 2 high · 1 medium · 0 low · 0 info</summary>
+
+#### [HIGH] Unvalidated user input passed to exec()
+**File:** `src/handlers/deploy.ts:47`
+User-supplied `command` parameter is passed directly to `child_process.exec()` without sanitization.
+**Suggestion:** Use `execFile()` with a fixed command and pass arguments as an array.
+
+</details>
+```
+
+### Review Prerequisites
+
+**Requires:** Project must have at least one dimension file in `.claude/review-dimensions/`.
+Run `/sdlc:review-init` first if no dimensions exist. `gh` CLI recommended for posting PR
+comments; falls back to terminal output if unavailable.
+
+---
+
+## `/sdlc:review-init` — Review Dimension Initialization
+
+Scans the project's tech stack, dependencies, and file structure to propose and create
+tailored review dimension files in `.claude/review-dimensions/`.
+
+```text
+/sdlc:review-init
+```
+
+### Init Flags
+
+```text
+/sdlc:review-init --add   # expansion mode: propose only dimensions not already installed
+```
+
+### Example Session
+
+```text
+Scanning project tech stack...
+  ✓ Found: TypeScript, Express.js, Prisma ORM, Jest
+  ✓ Directories: src/routes/ (12 files), src/middleware/ (4 files), src/models/ (8 files)
+
+Proposed review dimensions:
+
+1. code-quality-review (medium severity) — always included
+   Coverage: **/*.ts, **/*.tsx
+   Why: TypeScript project with 67 source files
+
+2. security-review (high severity)
+   Coverage: **/middleware/**, **/routes/**
+   Why: Found `jsonwebtoken` in package.json; src/middleware/ with auth handlers
+
+3. api-review (high severity)
+   Coverage: **/routes/**, **/*.yaml
+   Why: Express routes in src/routes/ (12 files)
+
+4. test-coverage-review (medium severity)
+   Coverage: **/*.ts (excluding **/*.test.ts)
+   Why: Jest test files present; 31% of source files have no corresponding test
+
+Install which? (numbers comma-separated, or "all"): all
+
+✓ Created .claude/review-dimensions/code-quality-review.md
+✓ Created .claude/review-dimensions/security-review.md
+✓ Created .claude/review-dimensions/api-review.md
+✓ Created .claude/review-dimensions/test-coverage-review.md
+
+Validation: 4/4 dimensions pass all checks.
+```
+
+---
+
+## `sdlc:reviewing-changes` Skill
+
+Loaded by `/sdlc:review`. Implements the full 11-step PCIDCI workflow: dimension discovery
+and validation, file matching, parallel subagent dispatch, deduplication, and PR comment posting.
+
+**Trigger phrases**: "review changes", "code review", "review PR", "multi-dimension review", "run review"
+
+---
+
+## `sdlc:initializing-review-dimensions` Skill
+
+Loaded by `/sdlc:review-init`. Scans the tech stack, generates project-specific evidence for
+each proposal, refines with a critique/improve pass, creates files, and validates them.
+
+**Trigger phrases**: "initialize review dimensions", "add review dimension", "setup code review", "create dimension files", "expand review config"
+
+---
+
+## Review Dimensions Format
+
+Each project defines review dimensions as `.md` files in `.claude/review-dimensions/`.
+
+### Schema
+
+```yaml
+---
+name: security-review          # REQUIRED. Lowercase letters, digits, hyphens. Max 64 chars.
+description: "..."             # REQUIRED. What this dimension reviews. Max 256 chars.
+triggers:                      # REQUIRED. Non-empty array of glob patterns.
+  - "**/middleware/**"
+  - "**/auth/**"
+skip-when:                     # OPTIONAL. Files excluded even if triggers match.
+  - "**/*.test.*"
+  - "**/node_modules/**"
+severity: high                 # OPTIONAL. Default: medium. One of: critical|high|medium|low|info
+max-files: 50                  # OPTIONAL. Default: 100. Positive integer.
+requires-full-diff: false      # OPTIONAL. Default: false. Full diff for matched files.
+---
+
+[Review instructions — free-form Markdown. Minimum 10 characters.]
+```
+
+### Validation
+
+Run the bundled validation script to check all dimension files:
+
+```bash
+node $(find ~/.claude -name validate-dimensions.js -path '*/sdlc-utilities/*') \
+  --project-root . --markdown
+```
+
+The script checks 12 rules (D1–D12): required fields, glob syntax, body length, name
+uniqueness, and type correctness. Exit codes: `0` = pass, `1` = errors found, `2` = script error.
+
+### Example Dimension File
+
+```markdown
+---
+name: security-review
+description: "Reviews changes for authentication, authorization, injection vulnerabilities, and secrets exposure"
+triggers:
+  - "**/middleware/**"
+  - "**/auth/**"
+  - "**/*auth*"
+  - "**/*token*"
+skip-when:
+  - "**/*.test.*"
+  - "**/*.spec.*"
+severity: high
+max-files: 50
+---
+
+# Security Review
+
+Review all changes for security vulnerabilities.
+
+## Checklist
+
+- [ ] No hardcoded credentials, API keys, or secrets in code or config files
+- [ ] All user-supplied input is validated before use
+- [ ] Authentication checks are present on protected routes
+- [ ] No SQL injection vectors (use parameterized queries, not string concat)
+- [ ] No command injection (avoid exec/shell with user input)
+
+## Severity Guide
+
+| Finding | Severity |
+|---------|----------|
+| Hardcoded secret / credential | critical |
+| Missing authentication on protected route | critical |
+| SQL / command injection vector | critical |
+| Missing authorization check | high |
+```

@@ -2,8 +2,8 @@
 
 This repository is a **Claude Code plugin marketplace** that ships two plugins for AI-driven project configuration and software development lifecycle (SDLC) automation. It is installed as a single marketplace via:
 
-```bash
-claude plugin add github:rnagrodzki/ai-setup-automation
+```text
+/plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
 ---
@@ -38,22 +38,22 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 
 | Command | Purpose |
 | --- | --- |
-| `/setup-ai` | Detect tech stack and scaffold full `CLAUDE.md` + `.claude/` configuration |
-| `/postmortem` | Guided incident analysis; encodes lessons into skills |
+| `/aisa:setup-ai` | Detect tech stack and scaffold full `CLAUDE.md` + `.claude/` configuration |
+| `/aisa:postmortem` | Guided incident analysis; encodes lessons into skills |
 
 ### Plugin 1 Skills
 
 | Skill | When to invoke |
 | --- | --- |
-| `aisa-init` | New project or full rebuild — 6-phase discovery → generate pipeline |
-| `aisa-evolve` | Full evolution cycle (every 2–4 weeks) — 7-phase drift → execute pipeline |
-| `aisa-evolve-health` | Weekly read-only drift scan and status report |
-| `aisa-evolve-harvest` | Promote accumulated learnings into skills/docs |
-| `aisa-evolve-target` | Scoped update after a feature, refactor, or integration |
-| `aisa-evolve-validate` | Validate all skills against architectural principles |
-| `aisa-evolve-cache` | Manage `.claude/cache/` snapshot hashes (60–80 % token reduction) |
-| `aisa-evolve-postmortem` | Create learning entries and skill gaps from an incident |
-| `aisa-evolve-principles` | Shared principles / tool registry — dependency only, never invoked directly |
+| `aisa:aisa-init` | New project or full rebuild — 6-phase discovery → generate pipeline |
+| `aisa:aisa-evolve` | Full evolution cycle (every 2–4 weeks) — 7-phase drift → execute pipeline |
+| `aisa:aisa-evolve-health` | Weekly read-only drift scan and status report |
+| `aisa:aisa-evolve-harvest` | Promote accumulated learnings into skills/docs |
+| `aisa:aisa-evolve-target` | Scoped update after a feature, refactor, or integration |
+| `aisa:aisa-evolve-validate` | Validate all skills against architectural principles |
+| `aisa:aisa-evolve-cache` | Manage `.claude/cache/` snapshot hashes (60–80 % token reduction) |
+| `aisa:aisa-evolve-postmortem` | Create learning entries and skill gaps from an incident |
+| `aisa:aisa-evolve-principles` | Shared principles / tool registry — dependency only, never invoked directly |
 
 ---
 
@@ -65,13 +65,13 @@ Automates common SDLC tasks.
 
 | Command | Purpose |
 | --- | --- |
-| `/pr [--draft] [--base <branch>]` | Open a pull request with an auto-generated Conventional PR description |
+| `/sdlc:pr [--draft] [--base <branch>]` | Open a pull request with an auto-generated Conventional PR description |
 
 ### Plugin 2 Skills
 
 | Skill | Purpose |
 | --- | --- |
-| `creating-pull-requests` | Analyse commits and diffs; generate structured What/Why/How/Testing PR descriptions |
+| `sdlc:creating-pull-requests` | Analyse commits and diffs; generate structured What/Why/How/Testing PR descriptions |
 
 ---
 
@@ -92,5 +92,5 @@ Automates common SDLC tasks.
 - **Adding a command:** Follow `docs/adding-commands.md`. Place it under `plugins/<plugin>/commands/<command>.md`.
 - **Adding a hook:** Follow `docs/adding-hooks.md`. Edit `plugins/<plugin>/hooks/hooks.json`.
 - **Plugin manifest fields:** See `docs/architecture.md` for required fields in `plugin.json`.
-- **Current branch:** `feat/sdlc-utilities` — active development on the SDLC plugin.
+- **Current branch:** `fix/docs` — documentation fixes.
 - **Target merge branch:** `main`.

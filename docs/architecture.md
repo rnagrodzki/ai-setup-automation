@@ -37,7 +37,7 @@ ai-setup-automation/
 The root `marketplace.json` tells Claude Code: "This repository contains plugins. Here
 is where to find them." It lists each plugin with a name and a relative source path.
 
-When a user runs `claude plugin add github:rnagrodzki/ai-setup-automation`, Claude Code:
+When a user runs `/plugin marketplace add rnagrodzki/ai-setup-automation` in Claude Code:
 1. Clones or references this repository
 2. Reads `.claude-plugin/marketplace.json`
 3. Discovers the listed plugins
@@ -49,7 +49,28 @@ Each plugin has its own `.claude-plugin/plugin.json` that declares:
 - **name** and **description** — Identification
 - **version** — Semantic version for tracking updates
 - **author** — Who maintains this plugin
-- **hooks** — Relative path to the hooks configuration file
+
+### Name Resolution
+
+When a plugin is loaded from a marketplace, Claude Code prefixes all commands and skills
+with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<item-name>`.
+
+**Commands** — invoked as `/<plugin-name>:<command-name>`:
+
+| File | Plugin name | Resolved command |
+|---|---|---|
+| `commands/setup-ai.md` | `ai-setup-automation` | `/aisa:setup-ai` |
+| `commands/pr.md` | `sdlc-utilities` | `/sdlc:pr` |
+
+**Skills** — referenced as `<plugin-name>:<skill-name>`:
+
+| Directory | Plugin name | Resolved name |
+|---|---|---|
+| `skills/aisa-init/` | `ai-setup-automation` | `aisa:aisa-init` |
+| `skills/creating-pull-requests/` | `sdlc-utilities` | `sdlc:creating-pull-requests` |
+
+The `name` field in `plugin.json` is the namespace prefix. Keep it stable — renaming it
+changes every command and skill name for all installed users.
 
 ### Skills
 

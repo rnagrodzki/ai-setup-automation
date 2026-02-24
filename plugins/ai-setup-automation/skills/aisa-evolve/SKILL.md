@@ -61,11 +61,27 @@ in `.claude/skills/aisa-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
 Violations are classified as OUTDATED minimum (P2 DRIFT UPDATE). See principles file for
 the valid tools list, section templates, and behavioral rules.
 
+## Quality Gate
+
+Before proceeding from Phase 6 (Critique) to Phase 7 (Execute), verify:
+
+- [ ] Every P0 item has a concrete fix — no "investigate later" deferrals
+- [ ] The change plan covers all drift identified in Phase 2
+- [ ] New skills proposed in Phase 4 cite concrete evidence in today's codebase
+- [ ] All changes are surgical — no full regeneration without justification
+- [ ] Phase 6 critique was genuinely performed and is not an approval rubber-stamp
+
 ## Pause Points
 
 After Phase 2 (Drift Audit) — present drift findings, wait for approval.
 After Phase 5 (Change Plan) — present prioritized manifest, wait for approval.
 After Phase 6 (Critique) — present quality scores, wait for approval.
+
+## Learning Capture
+
+After each evolution cycle, if meta-patterns emerge about the setup's structure
+(e.g., recurring drift in a specific skill cluster, evolution bottlenecks, unexpected
+inter-skill dependencies), append entries to `.claude/learnings/log.md` using the standard format.
 
 ## Output
 

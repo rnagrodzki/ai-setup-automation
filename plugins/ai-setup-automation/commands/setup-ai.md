@@ -1,6 +1,7 @@
 ---
 description: Initialize or audit AI configuration for the current project
-allowed-tools: [Read, Write, Edit, Glob, Grep, Bash]
+allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
+argument-hint: "[audit]"
 ---
 
 # /setup-ai Command
@@ -15,6 +16,13 @@ and hooks based on the detected tech stack.
 - `/setup-ai audit` — Audit existing setup and suggest improvements
 
 ## Workflow
+
+### Step 0: Route by Arguments
+
+Check `$ARGUMENTS`:
+
+- If empty or not provided → run full setup (Steps 1–5 below)
+- If `audit` → run Steps 1–2 only, then present a report of what exists and what is missing, with recommended improvements and priority (high/medium/low). Do not create any files.
 
 ### Step 1: Detect Tech Stack
 
@@ -63,7 +71,7 @@ Wait for explicit user confirmation before creating any files.
 
 ### Step 4: Execute Setup
 
-Use the `initializing-ai-project-config` skill to perform the actual setup based on
+Use the `aisa-init` skill to perform the actual setup based on
 the detected tech stack and user confirmation.
 
 ### Step 5: Report Results
@@ -72,4 +80,4 @@ After setup, summarize what was created:
 
 - List all files created (with relative paths)
 - List recommended next steps
-- Remind the user how to add more skills: see `docs/adding-skills.md`
+- Remind the user how to add more skills: see the plugin's documentation at `https://github.com/rnagrodzki/ai-setup-automation/blob/main/docs/adding-skills.md`

@@ -48,27 +48,177 @@ To audit an existing setup:
 | --- | --- |
 | `/setup-ai` | Full setup: detect tech stack, create `CLAUDE.md`, scaffold `.claude/` |
 | `/setup-ai audit` | Audit existing setup and suggest improvements |
+| `/postmortem` | Interactive guided post-mortem: gather incident context, then run `aisa-evolve-postmortem` |
+| `/postmortem <description>` | Fast post-mortem: skip Q&A, jump straight to the skill with a pre-written description |
+
+#### `/postmortem` — Guided incident analysis
+
+Walks you through describing an incident with interactive questions, checks recent git history for
+evidence, then hands off to the `aisa-evolve-postmortem` skill to encode the lessons into your
+skills so the same mistake can't happen again.
+
+```text
+/postmortem
+```
+
+Answer questions one at a time:
+
+```text
+What went wrong? Describe the incident, bug, or painful situation.
+> webhook retry loop caused duplicate payments in checkout
+
+How did you find out?
+> customer support tickets, 3 duplicate charges reported
+
+How was it fixed — or is it still open?
+> added idempotency key check before processing retry
+
+How long did it take to identify the root cause?
+> ~4 hours
+
+Which part of the codebase or system was involved?
+> payments/webhook_handler.py and the Stripe retry config
+```
+
+Or skip the Q&A by providing a description upfront:
+
+```text
+/postmortem webhook retry loop caused duplicate payments in checkout
+/postmortem OIDC token refresh race condition in concurrent requests
+/postmortem test suite passed but feature broke in production due to mocked repo
+```
+
+**When**: After incidents, painful bugs, production issues, long debugging sessions.
+**Requires**: A project with `.claude/` configured (run `/setup-ai` first if not).
+**Delegates to**: `aisa-evolve-postmortem` skill for root cause → skill gap analysis.
 
 ### Skills
 
-#### Setup
+#### `/aisa-init` — Build from scratch
 
-| Skill | Model | Description |
-| --- | --- | --- |
-| `aisa-init` | opus | Generate a complete `.claude/` setup from scratch via a 6-phase pipeline: Discovery → Architecture Design → Architecture Critique → Generation → Generation Critique → Wiring & Validation. |
+Full 6-phase pipeline: discover project → design skills/agents → critique → generate → critique → wire.
 
-#### Evolution
+```text
+/aisa-init specs/
+/aisa-init openspec/
+/aisa-init          # auto-detects specs location
+```
 
-| Skill | Model | Description |
-| --- | --- | --- |
-| `aisa-evolve` | opus | Full evolution cycle: snapshot, drift audit, learnings harvest, expansion analysis, change plan, critique, execute. Recommended every 2–4 weeks or after major features. |
-| `aisa-evolve-health` | sonnet | Quick read-only health check. Runs snapshot and drift audit only. Auto-fixes critical drift only. |
-| `aisa-evolve-target` | sonnet | Targeted evolution after a specific change. Uses `git diff` to scope the audit to only affected skills and agents. |
-| `aisa-evolve-harvest` | sonnet | Promote accumulated learnings from `.claude/learnings/log.md` into skills and docs. Use when 10+ active entries exist. |
-| `aisa-evolve-postmortem` | opus | Post-incident analysis: create learning entries, identify skill gaps, propose updates to prevent recurrence. |
-| `aisa-evolve-cache` | sonnet | Manage `.claude/cache/` snapshots for incremental audits. Subcommands: `rebuild`, `status`, `invalidate`. |
-| `aisa-evolve-validate` | sonnet | Validate skills and agents against architectural principles (P1–P3 for skills, A1–A6 for agents). |
-| `aisa-evolve-principles` | — | Shared principles, tool registry, and behavioral rules for all `aisa-*` skills. Dependency only — never invoked directly. |
+**When**: New project setup, full `.claude/` rebuild, starting fresh.
+**Model**: opus
+**Phases**: Discovery → Design → Critique → Generate → Critique → Wire
+
+---
+
+#### `/aisa-evolve` — Full evolution cycle
+
+7-phase pipeline: snapshot → drift audit → harvest learnings → expansion analysis → change plan → critique → execute.
+
+```text
+/aisa-evolve
+/aisa-evolve payment-integration   # emphasize a specific area
+```
+
+**When**: Every 2-4 weeks, after major features, when setup feels stale.
+**Model**: opus
+**Phases**: Snapshot → Drift → Harvest → Expand → Plan → Critique → Execute
+
+---
+
+#### `/aisa-evolve-health` — Quick health check
+
+Read-only drift scan. Reports status of every skill/agent/CLAUDE.md. Only fixes critical issues.
+
+```text
+/aisa-evolve-health
+```
+
+**When**: Weekly, before sprints, quick sanity check.
+**Model**: sonnet
+**Output**: Health report with CURRENT/OUTDATED/STALE/CRITICAL status per file.
+
+---
+
+#### `/aisa-evolve-harvest` — Promote learnings
+
+Processes ACTIVE entries in `.claude/learnings/log.md` into skills, docs, and specs.
+
+```text
+/aisa-evolve-harvest
+```
+
+**When**: 10+ ACTIVE learning entries, or oldest entry >2 weeks old.
+**Model**: sonnet
+**Actions**: Promotes to skill gotchas, creates new skills, fills doc gaps, rewrites unclear rules.
+
+---
+
+#### `/aisa-evolve-target` — Targeted update
+
+Scoped update after a specific change. Fast, focused, no full evolution.
+
+```text
+/aisa-evolve-target added Stripe webhook handler for subscription cancellation
+/aisa-evolve-target refactored auth module from sessions to JWT
+/aisa-evolve-target new PIX payment integration
+```
+
+**When**: After shipping a feature, completing a refactor, adding an integration.
+**Model**: sonnet
+**Scope**: Only the affected skills/agents. Flags but doesn't fix unrelated drift.
+
+---
+
+#### `/aisa-evolve-postmortem` — Learn from incidents
+
+Creates learning entries, identifies skill gaps that allowed the incident, proposes prevention.
+
+```text
+/aisa-evolve-postmortem webhook retry loop caused duplicate payments
+/aisa-evolve-postmortem OIDC token refresh race condition in concurrent requests
+/aisa-evolve-postmortem test suite passed but feature broke in production due to mocked repo
+```
+
+**When**: After incidents, painful bugs, production issues, long debugging sessions.
+**Model**: opus
+**Actions**: Creates learning entries, updates skills with prevention rules, closes test gaps.
+
+---
+
+#### `/aisa-evolve-validate` — Principle compliance check
+
+Validates all skills and agents against architectural principles (self-learning, Plan→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
+
+```text
+/aisa-evolve-validate
+/aisa-evolve-validate .claude/skills/my-new-skill.md     # validate specific file
+/aisa-evolve-validate .claude/agents/                      # validate all agents
+```
+
+**When**: After introducing new skills/agents independently, before committing skill changes, after manual edits.
+**Model**: sonnet
+**Checks**: Self-learning directives, Quality Gates sections, agent frontmatter, tool validity, self-review workflow, capability-tool consistency.
+**Does NOT**: Check codebase accuracy, file paths, symbol signatures, or content quality — that's `/aisa-evolve-health`.
+
+---
+
+#### `/aisa-evolve-cache` — Manage snapshot cache
+
+Maintains `.claude/cache/` for incremental scanning. Reduces token consumption by 60-80% on repeat evolution runs.
+
+```text
+/aisa-evolve-cache              # rebuild cache from current state
+/aisa-evolve-cache status       # report cache freshness
+/aisa-evolve-cache invalidate   # force full scan on next run
+```
+
+**When**: After any aisa-evolve cycle (auto-rebuilt), or manually when cache seems stale.
+**Model**: sonnet
+**Output**: `.claude/cache/snapshot.json` (file hashes + principle flags) and `drift-report.json` (last audit results).
+
+---
+
+> **`aisa-evolve-principles`** — Shared principles, tool registry, and behavioral rules for all `aisa-*` skills. Dependency only — never invoked directly.
 
 ### Recommended Cadence
 
@@ -81,6 +231,86 @@ To audit an existing setup:
 | When 10+ learning log entries accumulate | `aisa-evolve-harvest` |
 | After an incident or painful bug | `aisa-evolve-postmortem` |
 | After writing new skills or agents | `aisa-evolve-validate` |
+
+### File Structure
+
+```text
+.claude/skills/
+├── aisa-init/
+│   ├── SKILL.md          # /aisa-init command — build from scratch
+│   └── REFERENCE.md      # Full pipeline specification
+├── aisa-evolve/
+│   ├── SKILL.md          # /aisa-evolve command — full evolution cycle
+│   └── REFERENCE.md      # Full Evolver pipeline specification
+├── aisa-evolve-health/
+│   └── SKILL.md          # /aisa-evolve-health — quick health check
+├── aisa-evolve-harvest/
+│   └── SKILL.md          # /aisa-evolve-harvest — promote learnings
+├── aisa-evolve-target/
+│   └── SKILL.md          # /aisa-evolve-target — scoped update
+├── aisa-evolve-validate/
+│   ├── SKILL.md          # /aisa-evolve-validate — principle compliance
+│   └── REFERENCE.md      # Validation checks specification
+├── aisa-evolve-cache/
+│   └── SKILL.md          # /aisa-evolve-cache — snapshot cache management
+├── aisa-evolve-postmortem/
+│   └── SKILL.md          # /aisa-evolve-postmortem — incident learning
+└── aisa-evolve-principles/
+    └── SKILL.md          # Shared principles and rules (dependency only)
+```
+
+### Lifecycle
+
+```text
+New project ──→ /aisa-init ──→ daily development ──→ /aisa-evolve-target (after features)
+                    │                  │                       │
+                    │                  ├── /aisa-evolve-health (weekly)
+                    │                  ├── /aisa-evolve-harvest (when log fills up)
+                    │                  ├── /aisa-evolve-validate (after adding/editing skills)
+                    │                  ├── /aisa-evolve (every 2-4 weeks)
+                    │                  └── /aisa-evolve-postmortem (after incidents)
+                    │
+                    └── /aisa-evolve-cache (auto-rebuilt after each cycle)
+```
+
+### Scaling: Execution Modes & Token Optimization
+
+#### Execution Mode Selector (auto-detected)
+
+| Setup size (skills + agents) | Mode | Token multiplier | Best for |
+| --- | --- | --- | --- |
+| ≤ 15 | Subagent parallel (`Task` tool) | ~2× | Independent workstreams, fresh context per audit |
+| > 15 | Agent Teams (experimental) | ~3-4× | Cross-cutting drift, inter-agent coordination |
+
+**Always parallel.** Even small setups benefit from workstream isolation — each subagent gets a fresh context window, preventing audit fatigue and token bloat in the orchestrator.
+
+**Agent Teams** require `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. Teammates get their own context windows and can share findings with each other (unlike subagents which only report back to the orchestrator). Use when workstreams have cross-cutting dependencies — e.g., a renamed type affects both domain and technical skills.
+
+#### Cache-First Incremental Scanning
+
+All `aisa-evolve-*` skills check `.claude/cache/snapshot.json` before scanning:
+
+- **UNCHANGED** files (hash match) → skip deep audit, carry forward cached status
+- **MODIFIED** files (hash differs) → full audit
+- **NEW** files (not in cache) → full audit
+- **DELETED** files (in cache, not on disk) → flag for cleanup
+
+Token savings: **60-80%** on typical runs where <30% of files changed. Cache is rebuilt automatically after every full `aisa-evolve` cycle.
+
+### Core Principles
+
+Enforced across all commands:
+
+1. **Spec-driven development** — specs are source of truth
+2. **Functional-first testing** — real infra, mock only at lowest external boundary
+3. **Three-dimensional domains** — technical + business + design
+4. **Continuous learning** — capture during work, promote to skills over time (self-learning directives mandatory)
+5. **Plan → Do → Critique → Improve** — every skill/agent workflow must include a review step before output is done (quality gates mandatory)
+6. **Specificity over generics** — every skill must be THIS project's skill, not generic advice
+7. **Critique gates** — mandatory quality checks prevent shallow output
+8. **Structural completeness** — agents must have valid frontmatter, real tools, and capability-tool consistency
+9. **Cache-first scanning** — check snapshot hashes before deep-reading files; skip unchanged content to minimize token consumption
+10. **Always parallel** — use subagent workstreams or Agent Teams for every audit; never single-thread through the full setup
 
 ---
 

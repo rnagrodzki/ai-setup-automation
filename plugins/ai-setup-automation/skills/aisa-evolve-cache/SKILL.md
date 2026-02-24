@@ -182,7 +182,7 @@ When any `aisa-evolve-*` skill starts, it should:
 
 The cache should be fully rebuilt when:
 - `aisa-evolve` completes a full cycle (it rebuilds automatically)
-- `aisa-architect` generates a new setup
+- `aisa-init` generates a new setup
 - User runs `/aisa-evolve-cache rebuild`
 
 The cache should be partially invalidated when:

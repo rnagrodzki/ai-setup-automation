@@ -73,7 +73,7 @@ For each action, present:
 After approval:
 
 1. Add promoted content to skill files (Learned Gotchas, Anti-Patterns, or Rules sections)
-2. Create new skills following the template from `.claude/skills/aisa-architect/REFERENCE.md` Phase 4.1
+2. Create new skills following the template from `.claude/skills/aisa-init/REFERENCE.md` Phase 4.1
 3. Update docs/ files as proposed
 4. Mark entries in log.md: change `- **Status**: ACTIVE` to `- **Status**: PROMOTED:{target}` or `STALE`
 5. Update CLAUDE.md skills/agents tables if new skills were created

@@ -1,8 +1,6 @@
 ---
 name: aisa-evolve
-description: Full evolution cycle for an existing .claude/ setup. Verifies skills/agents against current codebase, detects drift, harvests learnings, identifies expansion needs, and applies prioritized updates. Run every 2-4 weeks or after major features.
-model: opus
-skills: aisa-evolve-principles
+description: "Full evolution cycle for an existing .claude/ setup. Verifies skills/agents against current codebase, detects drift, harvests learnings, identifies expansion needs, and applies prioritized updates. Run every 2-4 weeks or after major features."
 argument-hint: "[focus-area]"
 ---
 

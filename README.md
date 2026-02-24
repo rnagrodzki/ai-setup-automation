@@ -484,6 +484,18 @@ See [docs/architecture.md](docs/architecture.md) for details.
 | [Adding Commands](docs/adding-commands.md) | Create custom slash commands |
 | [Adding Hooks](docs/adding-hooks.md) | Set up automated actions on session events |
 
+## CI Checks
+
+### Version Bump Check
+
+A GitHub Actions workflow runs on every pull request targeting `main` and verifies that modified plugins have their `version` field bumped in `plugin.json`. The check:
+
+- Detects which plugins have changed files in the PR
+- Compares the `plugin.json` version against the base branch
+- Fails if a plugin's files changed but its version was not incremented
+
+To skip the check when a version bump is intentionally not needed, add the **`skip-version-check`** label to the pull request. The workflow will pass with a notice.
+
 ## License
 
 [AGPL-3.0](LICENSE)

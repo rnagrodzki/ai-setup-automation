@@ -3,24 +3,81 @@
 ## Overview
 
 Hooks run shell commands at specific points in the Claude Code lifecycle. They are
-defined in `plugins/ai-setup-automation/hooks/hooks.json`.
+defined in `plugins/<plugin>/hooks/hooks.json`.
 
-## Hook Points
+## All Hook Events
 
-| Hook | When It Fires | Common Use Case |
+### Session Lifecycle
+
+| Hook | When It Fires | Matcher Support |
 |---|---|---|
-| `SessionStart` | Session begins | Load context, show welcome message |
-| `PreToolUse` | Before a tool runs | Validate inputs, enforce guards |
-| `PostToolUse` | After a tool completes | Run linters, validate output |
+| `SessionStart` | Session begins or resumes | `startup`, `resume`, `clear`, `compact` |
+| `SessionEnd` | Session terminates | `clear`, `logout`, `prompt_input_exit` |
+| `PreCompact` | Before context compaction | `manual`, `auto` |
+
+### User Interaction
+
+| Hook | When It Fires | Matcher Support |
+|---|---|---|
+| `UserPromptSubmit` | After you submit a prompt, before Claude processes it | None — always fires |
+| `Notification` | When Claude sends a notification | `permission_prompt`, `idle_prompt`, `auth_success` |
+
+### Tool Execution
+
+| Hook | When It Fires | Matcher Support |
+|---|---|---|
+| `PreToolUse` | Before a tool runs (can block it) | Tool name regex, e.g. `Bash`, `Edit\|Write` |
+| `PostToolUse` | After a tool succeeds | Tool name regex |
+| `PostToolUseFailure` | After a tool fails | Tool name regex |
+| `PermissionRequest` | When a permission dialog appears | Tool name regex |
+
+### Agent Lifecycle
+
+| Hook | When It Fires | Matcher Support |
+|---|---|---|
+| `SubagentStart` | When a subagent is spawned | Agent type, e.g. `Bash`, `Explore`, `Plan` |
+| `SubagentStop` | When a subagent finishes | Agent type |
+| `TeammateIdle` | When a team teammate is about to go idle | None — always fires |
+
+### Task Management
+
+| Hook | When It Fires | Matcher Support |
+|---|---|---|
+| `Stop` | When Claude finishes responding | None — always fires |
+| `TaskCompleted` | When a task is being marked as completed | None — always fires |
+
+### Configuration & Worktrees
+
+| Hook | When It Fires | Matcher Support |
+|---|---|---|
+| `ConfigChange` | When a config file changes during a session | `user_settings`, `project_settings`, `local_settings`, `skills` |
+| `WorktreeCreate` | When a worktree is being created | None — always fires |
+| `WorktreeRemove` | When a worktree is being removed | None — always fires |
+
+## Hook Types
+
+| Type | Description |
+|---|---|
+| `command` | Run a shell command. Fastest, most common. |
+| `prompt` | Send hook data to an LLM (Haiku by default) for a yes/no judgment. |
+| `agent` | Spawn a subagent that can read files, search code, and run commands. |
+
+## Exit Code Behavior (command hooks)
+
+| Exit Code | Effect |
+|---|---|
+| `0` | Action proceeds. Stdout is added to Claude's context (SessionStart / UserPromptSubmit only). |
+| `2` | Action is **blocked**. Stderr becomes feedback to Claude explaining why. |
+| Other | Action proceeds. Stderr is logged silently (visible in verbose mode). |
 
 ## Configuration Format
 
-Edit `plugins/ai-setup-automation/hooks/hooks.json`:
+Edit `plugins/<plugin>/hooks/hooks.json`:
 
 ```json
 {
   "hooks": {
-    "<HookPoint>": [
+    "<HookEvent>": [
       {
         "matcher": "<regex-pattern>",
         "hooks": [
@@ -39,9 +96,10 @@ Edit `plugins/ai-setup-automation/hooks/hooks.json`:
 
 | Field | Description |
 |---|---|
-| `matcher` | Regex matching tool names (e.g., `Edit\|Write`). Omit for hooks that always fire (e.g., `SessionStart`). |
-| `type` | Always `"command"` for shell commands |
-| `command` | Shell command to execute |
+| `matcher` | Regex matching tool names, agent types, or session sources. Omit for events that have no matcher support. |
+| `type` | `command`, `prompt`, or `agent` |
+| `command` | Shell command to execute (for `type: command`) |
+| `timeout` | Optional timeout in milliseconds (default: 10 minutes) |
 
 ## Examples
 
@@ -52,6 +110,7 @@ Edit `plugins/ai-setup-automation/hooks/hooks.json`:
   "hooks": {
     "SessionStart": [
       {
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
@@ -84,6 +143,46 @@ Edit `plugins/ai-setup-automation/hooks/hooks.json`:
 }
 ```
 
+### Block Edits to Protected Files
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/protect-files.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Desktop Notification When Claude Needs Input
+
+```json
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ### Validate Markdown After Writes
 
 ```json
@@ -105,8 +204,6 @@ Edit `plugins/ai-setup-automation/hooks/hooks.json`:
 ```
 
 ## Multiple Hooks in One File
-
-You can define hooks for multiple events in a single `hooks.json`:
 
 ```json
 {
@@ -137,6 +234,7 @@ You can define hooks for multiple events in a single `hooks.json`:
 3. **Keep hooks fast** — Long-running hooks block the session; avoid slow commands
 4. **Test commands manually first** — Run the command in your terminal before adding it
 5. **One concern per hook** — Don't combine linting and testing in one hook entry
+6. **Use matchers** — Filter by tool name or session source to avoid unnecessary runs
 
 ## Plugin Hooks vs Project Hooks
 
@@ -144,6 +242,7 @@ You can define hooks for multiple events in a single `hooks.json`:
 |---|---|
 | `plugins/<plugin>/hooks/hooks.json` | Applied everywhere the plugin is installed |
 | `.claude/settings.json` (in a project) | Applied to that specific project only |
+| `~/.claude/settings.json` | Applied to all your projects globally |
 
 Plugin hooks are portable — they follow the plugin across all projects. Project-level
 hooks in `settings.json` are scoped to that repo.

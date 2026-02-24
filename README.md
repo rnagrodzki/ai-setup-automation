@@ -9,6 +9,22 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
+## Key Benefits
+
+### Self-Learning AI Configuration
+
+Your `.claude/` setup grows smarter with every session. When bugs, painful debugging sessions, or incidents happen, `/aisa:postmortem` encodes the lessons directly into your skills so the same mistake can't recur. The `aisa-evolve-harvest` skill promotes recurring patterns from the learning log into permanent skill rules. Over time, your AI configuration becomes a living artifact that reflects your actual codebase, team patterns, and hard-won knowledge — not a static template.
+
+### Cache-First Audits — Fast When Nothing Changed
+
+Every `aisa-evolve-*` skill snapshots file hashes into `.claude/cache/snapshot.json`. On the next run, unchanged files are skipped entirely — only modified, new, or deleted files get a full audit. This cuts token consumption by 60–80% on typical runs, making weekly health checks fast enough to actually run weekly. The cache also makes drift visible at a glance: a file that hasn't changed since the last snapshot is unlikely to need attention; one that has changed is immediately flagged.
+
+### Plan → Do → Critique → Improve — Enforced as Workflow
+
+Every skill and agent in the setup is validated to include a mandatory critique gate before it produces output. This isn't optional guidance — `aisa-evolve-validate` will flag any skill that skips the review step as non-compliant. The pattern applies recursively: the evolution skills themselves run a critique phase before executing changes, so the AI configuration process follows the same discipline it enforces in your project skills.
+
+---
+
 ## Technical Requirements
 
 | Requirement | Version | Notes |

@@ -10,8 +10,8 @@ Add the marketplace to your Claude Code installation:
 /plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
-This registers the marketplace and installs the `ai-setup-automation` plugin with all
-its skills, commands, and hooks.
+This registers the marketplace and installs both plugins (`ai-setup-automation` and
+`sdlc-utilities`) with all their skills, commands, and hooks.
 
 ### Verifying Installation
 
@@ -51,6 +51,13 @@ If your project already has some AI configuration:
 ```
 
 This will review what exists and suggest improvements.
+
+### Other `aisa` Commands
+
+| Command | Purpose |
+|---|---|
+| `/aisa:postmortem` | Guided incident analysis — encodes lessons into skills to prevent recurrence |
+| `/aisa:validate` | Validate all skills and agents in `.claude/` against architectural principles |
 
 ## What Gets Created
 

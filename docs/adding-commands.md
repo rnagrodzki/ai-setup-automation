@@ -23,7 +23,8 @@ The filename (without `.md`) becomes the slash command name, prefixed with the p
 ```markdown
 ---
 description: "Short description shown when listing commands"
-allowed-tools: [Read, Write, Edit, Glob, Grep, Bash]
+argument-hint: "[optional-arg]"
+allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Skill, TodoWrite]
 ---
 
 # /<command-name> Command
@@ -62,6 +63,8 @@ Explain what this command does.
 | Read-only analysis | `[Read, Glob, Grep, Bash]` |
 | Code generation | `[Read, Write, Edit, Glob, Grep, Bash]` |
 | Git operations | `[Bash]` |
+| Skill delegation | Add `Skill` — required for commands that invoke skills with the `Skill` tool |
+| Progress tracking | Add `TodoWrite` — for commands that manage multi-step workflows with a todo list |
 
 ## Tips
 

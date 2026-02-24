@@ -192,6 +192,7 @@ Before presenting to the user, review the draft against every quality gate:
 | No fabrication | All claims traceable to commits, diff, or user input | Nothing invented |
 | JIRA accuracy | JIRA value matches evidence or is "Not detected" | No guessed ticket numbers |
 | Audience check | Readable by non-technical stakeholders | No unexplained jargon in Summary/Business sections |
+| Documentation sync | If diff adds new commands, changes structure, renames concepts, or adds new directories/scripts: check that at least one `docs:` commit exists on this branch OR ask the user to confirm docs are updated | PR does not silently ship structural changes without a corresponding docs update |
 
 Note every failing gate.
 
@@ -285,6 +286,7 @@ Title: <title>
 4. **No file paths in Changes Overview** — reviewers think in concepts, not paths
 5. **Flag risks** — call out migrations, permission changes, or config changes
 6. **Preserve author intent** — if commit messages express design rationale, carry it into the description
+7. **Trigger doc evolution after structural PRs** — if a PR adds new plugins, directories, commands, or scripts, recommend running `/aisa-evolve-target` after merge to keep skills and docs in sync with the new structure
 
 ## DO NOT
 

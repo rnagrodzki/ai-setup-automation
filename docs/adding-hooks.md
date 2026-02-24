@@ -110,7 +110,6 @@ Edit `plugins/<plugin>/hooks/hooks.json`:
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
@@ -122,6 +121,10 @@ Edit `plugins/<plugin>/hooks/hooks.json`:
   }
 }
 ```
+
+> **Note:** Plugin `SessionStart` hooks typically omit the `matcher` field to fire on every
+> session start. Add `"matcher": "startup"` only if you want to fire exclusively on fresh starts
+> (not on resume or compaction).
 
 ### Lint After File Edits
 

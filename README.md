@@ -1,6 +1,6 @@
 # ai-setup-automation
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creating and maintaining AI-ready project configurations.
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that ships two plugins: `ai-setup-automation` for creating and maintaining AI-ready project configurations, and `sdlc-utilities` for SDLC automation (pull requests, etc.).
 
 ## What It Does
 
@@ -14,7 +14,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creat
 | Requirement | Version | Notes |
 | --- | --- | --- |
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | — | This is a Claude Code plugin marketplace |
-| Node.js | >= 16 | For `cache-snapshot.js` only. Uses built-in modules, no `npm install` needed |
+| Node.js | >= 16 | For `cache-snapshot.js` and `verify-setup.js` scripts. Uses built-in modules, no `npm install` needed |
 | git | — | Assumed for most features |
 | gh (GitHub CLI) | — | Required for `/sdlc:pr`. Falls back to showing the description if unavailable |
 
@@ -374,9 +374,7 @@ Enforced across all commands:
 
 ### `/sdlc:pr` — Smart pull request creation
 
-Analyzes all commits and the diff on your branch, then generates a Conventional PR description
-(What / Why / How / Testing) and creates the PR via the GitHub CLI. Presents the generated
-description for your review before creating.
+Analyzes all commits and the diff on your branch, then generates a structured 8-section PR description and creates the PR via the GitHub CLI. Presents the generated description for your review before creating.
 
 ```text
 /sdlc:pr
@@ -389,20 +387,33 @@ PR Title: feat: add webhook retry with idempotency keys
 
 PR Description:
 ─────────────────────────────────────────────
-## What
+## Summary
 Added idempotency key validation to the webhook retry handler to prevent
-duplicate payment processing on retried events (#142).
+duplicate payment processing on retried events.
 
-## Why
+## JIRA Ticket
+PAY-142
+
+## Business Context
 Retried webhook events were being processed multiple times, causing duplicate
-charges in checkout. Stripe sends the same event ID on retries, which we can
-use as an idempotency key.
+charges for customers at checkout.
 
-## How
-- `payments/webhook_handler.py`: check event ID against `processed_events`
-  table before processing; store ID after successful processing
-- `db/migrations/`: new `processed_events` table with TTL index
-- `payments/tests/test_webhook_handler.py`: added retry deduplication tests
+## Business Benefits
+Eliminates duplicate charge risk; reduces customer support tickets for payment
+issues on retries.
+
+## Technical Design
+Use Stripe's event ID as an idempotency key, stored in a `processed_events`
+table with a TTL index to bound storage growth.
+
+## Technical Impact
+New `processed_events` table migration required. Webhook handler logic changes
+are backward-compatible.
+
+## Changes Overview
+- Webhook handler validates event ID before processing and records it after success
+- New migration adds `processed_events` table with TTL index
+- Retry deduplication test coverage added
 
 ## Testing
 Automated: 4 new unit tests covering duplicate event detection, first-time
@@ -417,6 +428,7 @@ With flags:
 
 ```text
 /sdlc:pr --draft                    # create as a draft PR
+/sdlc:pr --update                   # update description of an existing PR on this branch
 /sdlc:pr --base develop             # target the develop branch instead of main
 /sdlc:pr --draft --base release/2   # combine flags
 ```
@@ -431,23 +443,20 @@ Reusable knowledge skill that analyzes commits and diffs to generate PR descript
 Conventional PR format. Loaded by the `/sdlc:pr` command and available to any other command or
 skill that needs to produce PR content.
 
-**Template:**
+**Template (8 sections, always all present):**
 
 ```text
-## What
-[1-3 sentences: what changed, feature/fix/refactor type, issue references]
-
-## Why
-[1-3 sentences: concrete problem or need, never "because it was needed"]
-
-## How
-[Bullet list grouped by concern: architectural decisions, key files, non-obvious choices]
-
-## Testing
-[Automated tests added/modified, manual steps, edge cases. Honest about gaps.]
+## Summary          — 1-3 sentence plain-language overview, no jargon
+## JIRA Ticket      — auto-detected from branch/commits, or "Not detected"
+## Business Context — why this change is needed from a business perspective
+## Business Benefits— value delivered: user impact, efficiency, risk reduction
+## Technical Design — architecture, key decisions, trade-offs
+## Technical Impact — affected systems, breaking changes, migration needs
+## Changes Overview — what changed, grouped by concern (no file paths)
+## Testing          — how it was verified: automated tests, manual steps
 ```
 
-**When triggered**: "create PR", "open pull request", "write PR description", "conventional PR format"
+**When triggered**: "create PR", "open pull request", "update PR", "write PR description"
 
 ---
 
@@ -456,17 +465,24 @@ skill that needs to produce PR content.
 This repository serves dual roles:
 
 - **Marketplace** — the root `.claude-plugin/marketplace.json` makes it installable via `claude plugin add`
-- **Plugin** — `plugins/ai-setup-automation/` contains the skills, commands, and hooks
+- **Plugins** — `plugins/ai-setup-automation/` and `plugins/sdlc-utilities/` contain the skills, commands, hooks, and scripts
 
 ```text
 ai-setup-automation/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
 ├── plugins/
-│   └── ai-setup-automation/
+│   ├── ai-setup-automation/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # Plugin manifest (v0.4.0)
+│   │   ├── skills/               # 9 skill definitions
+│   │   ├── commands/             # Slash commands
+│   │   ├── hooks/                # Session hooks
+│   │   └── scripts/              # Node.js helper scripts (verify-setup.js, cache-snapshot.js, lib/)
+│   └── sdlc-utilities/
 │       ├── .claude-plugin/
-│       │   └── plugin.json       # Plugin manifest (v0.1.0)
-│       ├── skills/               # 9 skill definitions
+│       │   └── plugin.json       # Plugin manifest
+│       ├── skills/               # 1 skill definition
 │       ├── commands/             # Slash commands
 │       └── hooks/                # Session hooks
 └── docs/                         # Documentation

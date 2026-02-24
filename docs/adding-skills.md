@@ -18,6 +18,10 @@ Use a gerund (verb + -ing) form for the directory name:
 - `configuring-linters` (not `linter-config`)
 - `reviewing-pull-requests` (not `pr-review`)
 
+> **Name resolution:** When loaded from a marketplace plugin, skills are referenced as
+> `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-init`). The plugin name
+> comes from the `name` field in `plugin.json`.
+
 ### Step 2: Create SKILL.md
 
 ```markdown

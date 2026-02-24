@@ -18,8 +18,12 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creat
 Start a new Claude Code session to verify:
 
 ```text
-[ai-setup-automation] Plugin loaded. Use /setup-ai to initialize AI configuration for your project.
+[ai-setup-automation] Plugin loaded. Use /aisa:setup-ai to initialize AI configuration for your project.
+[sdlc-utilities] Plugin loaded. Use /sdlc:pr to create or update a pull request with an auto-generated description.
 ```
+
+> **Note:** Commands and skills are namespaced with the plugin name (e.g., `/aisa:setup-ai`,
+> not `/setup-ai`). See [docs/architecture.md](docs/architecture.md#name-resolution) for details.
 
 See [docs/getting-started.md](docs/getting-started.md) for a full first-use walkthrough.
 
@@ -27,7 +31,7 @@ See [docs/getting-started.md](docs/getting-started.md) for a full first-use walk
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/setup-ai`
+3. Run `/aisa:setup-ai`
 4. Follow the interactive prompts
 
 The command detects your tech stack, presents a setup plan for your approval, and scaffolds the full `.claude/` directory.
@@ -35,7 +39,7 @@ The command detects your tech stack, presents a setup plan for your approval, an
 To audit an existing setup:
 
 ```text
-/setup-ai audit
+/aisa:setup-ai audit
 ```
 
 ---
@@ -46,19 +50,19 @@ To audit an existing setup:
 
 | Command | Description |
 | --- | --- |
-| `/setup-ai` | Full setup: detect tech stack, create `CLAUDE.md`, scaffold `.claude/` |
-| `/setup-ai audit` | Audit existing setup and suggest improvements |
-| `/postmortem` | Interactive guided post-mortem: gather incident context, then run `aisa-evolve-postmortem` |
-| `/postmortem <description>` | Fast post-mortem: skip Q&A, jump straight to the skill with a pre-written description |
+| `/aisa:setup-ai` | Full setup: detect tech stack, create `CLAUDE.md`, scaffold `.claude/` |
+| `/aisa:setup-ai audit` | Audit existing setup and suggest improvements |
+| `/aisa:postmortem` | Interactive guided post-mortem: gather incident context, then run `aisa-evolve-postmortem` |
+| `/aisa:postmortem <description>` | Fast post-mortem: skip Q&A, jump straight to the skill with a pre-written description |
 
-#### `/postmortem` — Guided incident analysis
+#### `/aisa:postmortem` — Guided incident analysis
 
 Walks you through describing an incident with interactive questions, checks recent git history for
 evidence, then hands off to the `aisa-evolve-postmortem` skill to encode the lessons into your
 skills so the same mistake can't happen again.
 
 ```text
-/postmortem
+/aisa:postmortem
 ```
 
 Answer questions one at a time:
@@ -83,25 +87,25 @@ Which part of the codebase or system was involved?
 Or skip the Q&A by providing a description upfront:
 
 ```text
-/postmortem webhook retry loop caused duplicate payments in checkout
-/postmortem OIDC token refresh race condition in concurrent requests
-/postmortem test suite passed but feature broke in production due to mocked repo
+/aisa:postmortem webhook retry loop caused duplicate payments in checkout
+/aisa:postmortem OIDC token refresh race condition in concurrent requests
+/aisa:postmortem test suite passed but feature broke in production due to mocked repo
 ```
 
 **When**: After incidents, painful bugs, production issues, long debugging sessions.
-**Requires**: A project with `.claude/` configured (run `/setup-ai` first if not).
-**Delegates to**: `aisa-evolve-postmortem` skill for root cause → skill gap analysis.
+**Requires**: A project with `.claude/` configured (run `/aisa:setup-ai` first if not).
+**Delegates to**: `aisa:aisa-evolve-postmortem` skill for root cause → skill gap analysis.
 
 ### Skills
 
-#### `/aisa-init` — Build from scratch
+#### `aisa:aisa-init` — Build from scratch
 
 Full 6-phase pipeline: discover project → design skills/agents → critique → generate → critique → wire.
 
 ```text
-/aisa-init specs/
-/aisa-init openspec/
-/aisa-init          # auto-detects specs location
+aisa:aisa-init specs/
+aisa:aisa-init openspec/
+aisa:aisa-init          # auto-detects specs location
 ```
 
 **When**: New project setup, full `.claude/` rebuild, starting fresh.
@@ -110,13 +114,13 @@ Full 6-phase pipeline: discover project → design skills/agents → critique �
 
 ---
 
-#### `/aisa-evolve` — Full evolution cycle
+#### `aisa:aisa-evolve` — Full evolution cycle
 
 7-phase pipeline: snapshot → drift audit → harvest learnings → expansion analysis → change plan → critique → execute.
 
 ```text
-/aisa-evolve
-/aisa-evolve payment-integration   # emphasize a specific area
+aisa:aisa-evolve
+aisa:aisa-evolve payment-integration   # emphasize a specific area
 ```
 
 **When**: Every 2-4 weeks, after major features, when setup feels stale.
@@ -125,12 +129,12 @@ Full 6-phase pipeline: discover project → design skills/agents → critique �
 
 ---
 
-#### `/aisa-evolve-health` — Quick health check
+#### `aisa:aisa-evolve-health` — Quick health check
 
 Read-only drift scan. Reports status of every skill/agent/CLAUDE.md. Only fixes critical issues.
 
 ```text
-/aisa-evolve-health
+aisa:aisa-evolve-health
 ```
 
 **When**: Weekly, before sprints, quick sanity check.
@@ -139,12 +143,12 @@ Read-only drift scan. Reports status of every skill/agent/CLAUDE.md. Only fixes 
 
 ---
 
-#### `/aisa-evolve-harvest` — Promote learnings
+#### `aisa:aisa-evolve-harvest` — Promote learnings
 
 Processes ACTIVE entries in `.claude/learnings/log.md` into skills, docs, and specs.
 
 ```text
-/aisa-evolve-harvest
+aisa:aisa-evolve-harvest
 ```
 
 **When**: 10+ ACTIVE learning entries, or oldest entry >2 weeks old.
@@ -153,14 +157,14 @@ Processes ACTIVE entries in `.claude/learnings/log.md` into skills, docs, and sp
 
 ---
 
-#### `/aisa-evolve-target` — Targeted update
+#### `aisa:aisa-evolve-target` — Targeted update
 
 Scoped update after a specific change. Fast, focused, no full evolution.
 
 ```text
-/aisa-evolve-target added Stripe webhook handler for subscription cancellation
-/aisa-evolve-target refactored auth module from sessions to JWT
-/aisa-evolve-target new PIX payment integration
+aisa:aisa-evolve-target added Stripe webhook handler for subscription cancellation
+aisa:aisa-evolve-target refactored auth module from sessions to JWT
+aisa:aisa-evolve-target new PIX payment integration
 ```
 
 **When**: After shipping a feature, completing a refactor, adding an integration.
@@ -169,14 +173,14 @@ Scoped update after a specific change. Fast, focused, no full evolution.
 
 ---
 
-#### `/aisa-evolve-postmortem` — Learn from incidents
+#### `aisa:aisa-evolve-postmortem` — Learn from incidents
 
 Creates learning entries, identifies skill gaps that allowed the incident, proposes prevention.
 
 ```text
-/aisa-evolve-postmortem webhook retry loop caused duplicate payments
-/aisa-evolve-postmortem OIDC token refresh race condition in concurrent requests
-/aisa-evolve-postmortem test suite passed but feature broke in production due to mocked repo
+aisa:aisa-evolve-postmortem webhook retry loop caused duplicate payments
+aisa:aisa-evolve-postmortem OIDC token refresh race condition in concurrent requests
+aisa:aisa-evolve-postmortem test suite passed but feature broke in production due to mocked repo
 ```
 
 **When**: After incidents, painful bugs, production issues, long debugging sessions.
@@ -185,31 +189,31 @@ Creates learning entries, identifies skill gaps that allowed the incident, propo
 
 ---
 
-#### `/aisa-evolve-validate` — Principle compliance check
+#### `aisa:aisa-evolve-validate` — Principle compliance check
 
 Validates all skills and agents against architectural principles (self-learning, Plan→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
 
 ```text
-/aisa-evolve-validate
-/aisa-evolve-validate .claude/skills/my-new-skill.md     # validate specific file
-/aisa-evolve-validate .claude/agents/                      # validate all agents
+aisa:aisa-evolve-validate
+aisa:aisa-evolve-validate .claude/skills/my-new-skill.md     # validate specific file
+aisa:aisa-evolve-validate .claude/agents/                     # validate all agents
 ```
 
 **When**: After introducing new skills/agents independently, before committing skill changes, after manual edits.
 **Model**: sonnet
 **Checks**: Self-learning directives, Quality Gates sections, agent frontmatter, tool validity, self-review workflow, capability-tool consistency.
-**Does NOT**: Check codebase accuracy, file paths, symbol signatures, or content quality — that's `/aisa-evolve-health`.
+**Does NOT**: Check codebase accuracy, file paths, symbol signatures, or content quality — that's `aisa:aisa-evolve-health`.
 
 ---
 
-#### `/aisa-evolve-cache` — Manage snapshot cache
+#### `aisa:aisa-evolve-cache` — Manage snapshot cache
 
 Maintains `.claude/cache/` for incremental scanning. Reduces token consumption by 60-80% on repeat evolution runs.
 
 ```text
-/aisa-evolve-cache              # rebuild cache from current state
-/aisa-evolve-cache status       # report cache freshness
-/aisa-evolve-cache invalidate   # force full scan on next run
+aisa:aisa-evolve-cache              # rebuild cache from current state
+aisa:aisa-evolve-cache status       # report cache freshness
+aisa:aisa-evolve-cache invalidate   # force full scan on next run
 ```
 
 **When**: After any aisa-evolve cycle (auto-rebuilt), or manually when cache seems stale.
@@ -218,43 +222,43 @@ Maintains `.claude/cache/` for incremental scanning. Reduces token consumption b
 
 ---
 
-> **`aisa-evolve-principles`** — Shared principles, tool registry, and behavioral rules for all `aisa-*` skills. Dependency only — never invoked directly.
+> **`aisa:aisa-evolve-principles`** — Shared principles, tool registry, and behavioral rules for all `aisa-*` skills. Dependency only — never invoked directly.
 
 ### Recommended Cadence
 
 | When | Skill to run |
 | --- | --- |
-| New project or full rebuild | `aisa-init` |
-| After shipping a feature or refactor | `aisa-evolve-target` |
-| Weekly or before a sprint | `aisa-evolve-health` |
-| Every 2–4 weeks | `aisa-evolve` |
-| When 10+ learning log entries accumulate | `aisa-evolve-harvest` |
-| After an incident or painful bug | `aisa-evolve-postmortem` |
-| After writing new skills or agents | `aisa-evolve-validate` |
+| New project or full rebuild | `aisa:aisa-init` |
+| After shipping a feature or refactor | `aisa:aisa-evolve-target` |
+| Weekly or before a sprint | `aisa:aisa-evolve-health` |
+| Every 2–4 weeks | `aisa:aisa-evolve` |
+| When 10+ learning log entries accumulate | `aisa:aisa-evolve-harvest` |
+| After an incident or painful bug | `aisa:aisa-evolve-postmortem` |
+| After writing new skills or agents | `aisa:aisa-evolve-validate` |
 
 ### File Structure
 
 ```text
 .claude/skills/
 ├── aisa-init/
-│   ├── SKILL.md          # /aisa-init command — build from scratch
+│   ├── SKILL.md          # aisa:aisa-init — build from scratch
 │   └── REFERENCE.md      # Full pipeline specification
 ├── aisa-evolve/
-│   ├── SKILL.md          # /aisa-evolve command — full evolution cycle
+│   ├── SKILL.md          # aisa:aisa-evolve — full evolution cycle
 │   └── REFERENCE.md      # Full Evolver pipeline specification
 ├── aisa-evolve-health/
-│   └── SKILL.md          # /aisa-evolve-health — quick health check
+│   └── SKILL.md          # aisa:aisa-evolve-health — quick health check
 ├── aisa-evolve-harvest/
-│   └── SKILL.md          # /aisa-evolve-harvest — promote learnings
+│   └── SKILL.md          # aisa:aisa-evolve-harvest — promote learnings
 ├── aisa-evolve-target/
-│   └── SKILL.md          # /aisa-evolve-target — scoped update
+│   └── SKILL.md          # aisa:aisa-evolve-target — scoped update
 ├── aisa-evolve-validate/
-│   ├── SKILL.md          # /aisa-evolve-validate — principle compliance
+│   ├── SKILL.md          # aisa:aisa-evolve-validate — principle compliance
 │   └── REFERENCE.md      # Validation checks specification
 ├── aisa-evolve-cache/
-│   └── SKILL.md          # /aisa-evolve-cache — snapshot cache management
+│   └── SKILL.md          # aisa:aisa-evolve-cache — snapshot cache management
 ├── aisa-evolve-postmortem/
-│   └── SKILL.md          # /aisa-evolve-postmortem — incident learning
+│   └── SKILL.md          # aisa:aisa-evolve-postmortem — incident learning
 └── aisa-evolve-principles/
     └── SKILL.md          # Shared principles and rules (dependency only)
 ```
@@ -318,18 +322,18 @@ Enforced across all commands:
 
 | Command | Description |
 | --- | --- |
-| `/pr` | Create a pull request with an auto-generated description from commits and diffs |
-| `/pr --draft` | Create a draft PR |
-| `/pr --base <branch>` | Create a PR targeting a specific base branch |
+| `/sdlc:pr` | Create a pull request with an auto-generated description from commits and diffs |
+| `/sdlc:pr --draft` | Create a draft PR |
+| `/sdlc:pr --base <branch>` | Create a PR targeting a specific base branch |
 
-### `/pr` — Smart pull request creation
+### `/sdlc:pr` — Smart pull request creation
 
 Analyzes all commits and the diff on your branch, then generates a Conventional PR description
 (What / Why / How / Testing) and creates the PR via the GitHub CLI. Presents the generated
 description for your review before creating.
 
 ```text
-/pr
+/sdlc:pr
 ```
 
 Generates a title and structured description, then prompts:
@@ -366,19 +370,19 @@ Create this PR? (yes / edit / cancel)
 With flags:
 
 ```text
-/pr --draft                    # create as a draft PR
-/pr --base develop             # target the develop branch instead of main
-/pr --draft --base release/2   # combine flags
+/sdlc:pr --draft                    # create as a draft PR
+/sdlc:pr --base develop             # target the develop branch instead of main
+/sdlc:pr --draft --base release/2   # combine flags
 ```
 
 **When**: Ready to open a PR and want a structured, consistent description without writing it by hand.
 **Requires**: `gh` CLI installed and authenticated (`gh auth login`). Falls back to showing the description for manual use if `gh` is unavailable.
-**Delegates to**: `creating-pull-requests` skill for description generation.
+**Delegates to**: `sdlc:creating-pull-requests` skill for description generation.
 
-### `creating-pull-requests` skill
+### `sdlc:creating-pull-requests` skill
 
 Reusable knowledge skill that analyzes commits and diffs to generate PR descriptions in the
-Conventional PR format. Loaded by the `/pr` command and available to any other command or
+Conventional PR format. Loaded by the `/sdlc:pr` command and available to any other command or
 skill that needs to produce PR content.
 
 **Template:**

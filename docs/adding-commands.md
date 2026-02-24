@@ -13,10 +13,10 @@ Claude Code. Each command is a single `.md` file with YAML frontmatter.
 touch plugins/ai-setup-automation/commands/<command-name>.md
 ```
 
-The filename (without `.md`) becomes the slash command name:
-- `setup-ai.md` → `/setup-ai`
-- `audit.md` → `/audit`
-- `add-skill.md` → `/add-skill`
+The filename (without `.md`) becomes the slash command name, prefixed with the plugin name:
+- `setup-ai.md` in the `ai-setup-automation` plugin → `/aisa:setup-ai`
+- `pr.md` in the `sdlc-utilities` plugin → `/sdlc:pr`
+- `audit.md` in a plugin named `my-plugin` → `/my-plugin:audit`
 
 ### Step 2: Write the Command File
 

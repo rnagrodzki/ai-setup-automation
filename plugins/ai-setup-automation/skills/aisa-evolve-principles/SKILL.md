@@ -59,13 +59,15 @@ Apply to every agent:
 - `name` — present, lowercase-hyphens
 - `description` — present, describes when to invoke
 - `model` — present, valid alias: `sonnet`, `opus`, `haiku`, or `inherit`
-- `tools` — present, comma-separated list from valid tools above
+- `tools` — **optional**; comma-separated list from valid tools above when present — restricts agent to listed tools; omit to inherit all available tools (including MCP)
 
 **A2 · Tool Validity:**
+- If `tools:` is omitted, A2 is automatically satisfied (all tools available)
 - Every tool in `tools:` must appear in the Valid Tools list above
 - Invalid/invented tool → OUTDATED, propose fix as P1
 
 **A3 · Capability-Tool Consistency:**
+- If `tools:` is omitted, A3 is automatically satisfied (all tools available)
 - "run", "execute", "lint", "test" → requires `Bash`
 - "read", "examine", "inspect" → requires `Read`
 - "write", "create file" → requires `Write`

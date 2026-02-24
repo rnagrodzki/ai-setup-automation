@@ -102,9 +102,9 @@ function evaluateSkillCompliance(name, content) {
 
 function checkFrontmatterValid(content) {
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!fmMatch) return { pass: false, missing_fields: ['name', 'description', 'model', 'tools'] };
+  if (!fmMatch) return { pass: false, missing_fields: ['name', 'description', 'model'] };
   const fm = fmMatch[1];
-  const required = ['name', 'description', 'model', 'tools'];
+  const required = ['name', 'description', 'model'];
   const missing = required.filter(field => !new RegExp(`^${field}\\s*:`, 'm').test(fm));
   return { pass: missing.length === 0, missing_fields: missing };
 }
@@ -114,7 +114,7 @@ function checkToolsValid(content) {
   if (!fmMatch) return { pass: false, invalid_tools: [] };
   const fm = fmMatch[1];
   const toolsMatch = fm.match(/^tools\s*:\s*(.+)/m);
-  if (!toolsMatch) return { pass: false, invalid_tools: [] };
+  if (!toolsMatch) return { pass: true, invalid_tools: [], omitted: true };
   const tools = toolsMatch[1].split(',').map(t => t.trim()).filter(Boolean);
   const invalid = tools.filter(tool => {
     const base = tool.replace(/\s*\(.*\)/, '').trim();
@@ -137,10 +137,12 @@ function checkCapabilityToolConsistency(content) {
   const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
   const fm = fmMatch ? fmMatch[1] : '';
   const toolsMatch = fm.match(/^tools\s*:\s*(.+)/m);
+
+  // If tools: is omitted, all tools are available — no capability mismatch possible
+  if (!toolsMatch) return { pass: true, warnings: [], all_tools: true };
+
   const declaredTools = new Set(
-    toolsMatch
-      ? toolsMatch[1].split(',').map(t => t.replace(/\s*\(.*\)/, '').trim())
-      : []
+    toolsMatch[1].split(',').map(t => t.replace(/\s*\(.*\)/, '').trim())
   );
 
   const body = stripFrontmatter(content);

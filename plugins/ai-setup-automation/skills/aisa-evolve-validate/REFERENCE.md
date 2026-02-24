@@ -67,13 +67,16 @@ Read the YAML frontmatter between `---` markers. Required fields:
 | `name` | YES | Present and non-empty |
 | `description` | YES | Present, non-empty, describes when to invoke |
 | `model` | YES | Present, valid alias: `sonnet`, `opus`, `haiku`, or `inherit` |
-| `tools` | YES | Present, non-empty comma-separated list |
+| `tools` | NO (optional) | If present: non-empty comma-separated list. If omitted: all tools available (including MCP) |
 
-Missing any → ❌ FAIL with specific field listed.
+Missing `name`, `description`, or `model` → ❌ FAIL with specific field listed.
+Missing `tools` → ✅ PASS (optional field).
 
 ### 3b. Tool Validity
 
-Parse the `tools:` field and check each tool against the valid tools list from
+If `tools:` is omitted → skip this check (all tools are inherited).
+
+If `tools:` is present: parse the field and check each tool against the valid tools list from
 `.claude/skills/aisa-evolve-principles/SKILL.md`.
 
 Any tool NOT in the valid list → ❌ FAIL.
@@ -84,7 +87,9 @@ Notes:
 
 ### 3c. Capability-Tool Consistency
 
-Scan the agent body for claimed capabilities. For each, verify the required tool exists:
+If `tools:` is omitted → skip this check (all tools are available, no mismatch possible).
+
+If `tools:` is present: scan the agent body for claimed capabilities. For each, verify the required tool exists:
 
 | Capability pattern in body | Required tool |
 |---------------------------|---------------|

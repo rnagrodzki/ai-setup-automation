@@ -2,7 +2,7 @@
 
 ## Overview
 
-Commands define slash commands (e.g., `/setup-ai`) that users invoke directly in
+Commands define slash commands (e.g., `/setup`) that users invoke directly in
 Claude Code. Each command is a single `.md` file with YAML frontmatter.
 
 ## Creating a New Command
@@ -14,7 +14,7 @@ touch plugins/ai-setup-automation/commands/<command-name>.md
 ```
 
 The filename (without `.md`) becomes the slash command name, prefixed with the plugin name:
-- `setup-ai.md` in the `ai-setup-automation` plugin → `/aisa:setup-ai`
+- `setup.md` in the `ai-setup-automation` plugin → `/aisa:setup`
 - `pr.md` in the `sdlc-utilities` plugin → `/sdlc:pr`
 - `audit.md` in a plugin named `my-plugin` → `/my-plugin:audit`
 

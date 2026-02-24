@@ -27,12 +27,12 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin for creat
 Start a new Claude Code session to verify:
 
 ```text
-[ai-setup-automation] Plugin loaded. Use /aisa:setup-ai to initialize AI configuration for your project.
+[ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
 [sdlc-utilities] Plugin loaded. Use /sdlc:pr to create or update a pull request with an auto-generated description.
 ```
 
-> **Note:** Commands and skills are namespaced with the plugin name (e.g., `/aisa:setup-ai`,
-> not `/setup-ai`). See [docs/architecture.md](docs/architecture.md#name-resolution) for details.
+> **Note:** Commands and skills are namespaced with the plugin name (e.g., `/aisa:setup`,
+> not `/setup`). See [docs/architecture.md](docs/architecture.md#name-resolution) for details.
 
 See [docs/getting-started.md](docs/getting-started.md) for a full first-use walkthrough.
 
@@ -40,7 +40,7 @@ See [docs/getting-started.md](docs/getting-started.md) for a full first-use walk
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:setup-ai`
+3. Run `/aisa:setup`
 4. Follow the interactive prompts
 
 The command detects your tech stack, presents a setup plan for your approval, and scaffolds the full `.claude/` directory.
@@ -48,7 +48,7 @@ The command detects your tech stack, presents a setup plan for your approval, an
 To audit an existing setup:
 
 ```text
-/aisa:setup-ai audit
+/aisa:audit
 ```
 
 ---
@@ -69,8 +69,8 @@ This marketplace ships two plugins:
 
 | Command | Description |
 | --- | --- |
-| `/aisa:setup-ai` | Full setup: detect tech stack, create `CLAUDE.md`, scaffold `.claude/` |
-| `/aisa:setup-ai audit` | Audit existing setup and suggest improvements |
+| `/aisa:setup` | Full setup: detect tech stack, create `CLAUDE.md`, scaffold `.claude/` |
+| `/aisa:audit` | Audit existing setup and suggest improvements |
 | `/aisa:postmortem` | Interactive guided post-mortem: gather incident context, then run `aisa-evolve-postmortem` |
 | `/aisa:postmortem <description>` | Fast post-mortem: skip Q&A, jump straight to the skill with a pre-written description |
 
@@ -252,7 +252,7 @@ Or skip the Q&A by providing a description upfront:
 ```
 
 **When**: After incidents, painful bugs, production issues, long debugging sessions.
-**Requires**: A project with `.claude/` configured (run `/aisa:setup-ai` first if not).
+**Requires**: A project with `.claude/` configured (run `/aisa:setup` first if not).
 **Delegates to**: `aisa:aisa-evolve-postmortem` skill for root cause → skill gap analysis.
 
 ### Recommended Cadence

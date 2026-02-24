@@ -73,6 +73,8 @@ This marketplace ships two plugins:
 | `/aisa:audit` | Audit existing setup and suggest improvements |
 | `/aisa:postmortem` | Interactive guided post-mortem: gather incident context, then run `aisa-evolve-postmortem` |
 | `/aisa:postmortem <description>` | Fast post-mortem: skip Q&A, jump straight to the skill with a pre-written description |
+| `/aisa:validate` | Validate all skills and agents against architectural principles |
+| `/aisa:validate <path>` | Validate only the specified file or directory |
 
 ### sdlc (sdlc-utilities)
 
@@ -255,6 +257,25 @@ Or skip the Q&A by providing a description upfront:
 **Requires**: A project with `.claude/` configured (run `/aisa:setup` first if not).
 **Delegates to**: `aisa:aisa-evolve-postmortem` skill for root cause → skill gap analysis.
 
+### `/aisa:validate` — Principle compliance check
+
+Thin wrapper around the `aisa-evolve-validate` skill. Validates all `.claude/` skills and agents
+against architectural principles — structural completeness, self-learning directives, and
+Plan→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
+
+```text
+/aisa:validate
+/aisa:validate .claude/skills/my-new-skill/SKILL.md   # validate specific file
+/aisa:validate .claude/agents/                         # validate all agents
+```
+
+**When**: After adding or editing skills/agents, before committing `.claude/` changes, as a
+pre-flight check in any workflow that creates or modifies skills.
+**Requires**: A project with `.claude/` configured (run `/aisa:setup` first if not).
+**Delegates to**: `aisa:aisa-evolve-validate` skill for all checks and optional fix application.
+
+---
+
 ### Recommended Cadence
 
 | When | Skill to run |
@@ -265,7 +286,7 @@ Or skip the Q&A by providing a description upfront:
 | Every 2–4 weeks | `aisa:aisa-evolve` |
 | When 10+ learning log entries accumulate | `aisa:aisa-evolve-harvest` |
 | After an incident or painful bug | `aisa:aisa-evolve-postmortem` |
-| After writing new skills or agents | `aisa:aisa-evolve-validate` |
+| After writing new skills or agents | `/aisa:validate` → `aisa:aisa-evolve-validate` |
 
 ### File Structure
 

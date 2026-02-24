@@ -26,7 +26,7 @@ grep -c "learnings/log.md\|Learning Capture\|capture.*learnings\|learnings.*capt
 ### 2b. Quality Gates (Critique-Improve Cycle) — REQUIRED (except `openspec-*`)
 
 ```bash
-grep -c "Quality Gates\|quality gate\|pass criteria\|fail action\|self-review\|critique.*before\|review.*before.*deliver" "{skill_path}"
+grep -c "Quality Gate[s]\?\|quality gate[s]\?\|pass criteria\|fail action\|self-review\|critique.*before\|review.*before.*deliver" "{skill_path}"
 ```
 
 - Count > 0 → ✅ PASS

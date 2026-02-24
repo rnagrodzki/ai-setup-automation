@@ -1,28 +1,19 @@
 ---
-description: Initialize or audit AI configuration for the current project
+description: Initialize AI configuration for the current project
 allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
-argument-hint: "[audit]"
 ---
 
-# /setup-ai Command
+# /setup Command
 
-Initialize or audit the AI configuration for the current project. This command
+Initialize the AI configuration for the current project. This command
 creates CLAUDE.md, .claude/ directory structure, and recommends skills, commands,
 and hooks based on the detected tech stack.
 
 ## Usage
 
-- `/setup-ai` — Full setup: detect tech stack, create CLAUDE.md, scaffold .claude/
-- `/setup-ai audit` — Audit existing setup and suggest improvements
+- `/setup` — Full setup: detect tech stack, create CLAUDE.md, scaffold .claude/
 
 ## Workflow
-
-### Step 0: Route by Arguments
-
-Check `$ARGUMENTS`:
-
-- If empty or not provided → run full setup (Steps 1–5 below)
-- If `audit` → run Steps 1–2 only, then present a report of what exists and what is missing, with recommended improvements and priority (high/medium/low). Do not create any files.
 
 ### Step 1: Detect Tech Stack
 

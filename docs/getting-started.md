@@ -18,12 +18,12 @@ its skills, commands, and hooks.
 After installation, start a new Claude Code session. You should see messages from both plugins:
 
 ```
-[ai-setup-automation] Plugin loaded. Use /aisa:setup-ai to initialize AI configuration for your project.
+[ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
 [sdlc-utilities] Plugin loaded. Use /sdlc:pr to create or update a pull request with an auto-generated description.
 ```
 
-> **Note:** Commands and skills are namespaced with the plugin name. The `/setup-ai` command
-> becomes `/aisa:setup-ai`, and `/pr` becomes `/sdlc:pr`. See
+> **Note:** Commands and skills are namespaced with the plugin name. The `/setup` command
+> becomes `/aisa:setup`, and `/pr` becomes `/sdlc:pr`. See
 > [Architecture](architecture.md#name-resolution) for details.
 
 ## First Use
@@ -32,7 +32,7 @@ After installation, start a new Claude Code session. You should see messages fro
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:setup-ai`
+3. Run `/aisa:setup`
 4. Follow the interactive prompts
 
 The command will:
@@ -47,7 +47,7 @@ The command will:
 If your project already has some AI configuration:
 
 ```
-/aisa:setup-ai audit
+/aisa:audit
 ```
 
 This will review what exists and suggest improvements.

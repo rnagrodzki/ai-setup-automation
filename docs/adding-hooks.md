@@ -114,7 +114,7 @@ Edit `plugins/<plugin>/hooks/hooks.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Plugin loaded. Use /setup-ai to get started.'"
+            "command": "echo 'Plugin loaded. Use /aisa:setup to get started.'"
           }
         ]
       }

@@ -24,31 +24,37 @@ Read the detailed check procedures in `REFERENCE.md` (in this skill's directory)
 grep patterns and validation logic. The principle definitions are in
 `.claude/skills/aisa-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
 
-### Step 1 — Inventory (Cache-Aware)
+### Step 1 — Run the Validation Script
 
-Check `.claude/cache/snapshot.json` for cached principle compliance flags:
-- If cache exists: compare hashes, skip files UNCHANGED with all principle flags `true`
-- Only re-validate: MODIFIED, NEW, and previously FAILED files
-- Report: `"Cache hit: {N} already compliant (skipped), {N} require validation"`
+Locate the script with `Glob` for `**/verify-setup.js`, then run:
 
-If no cache or `$ARGUMENTS` targets specific files, validate everything in scope.
+```bash
+node <plugin-path>/scripts/verify-setup.js validate --project-root . --json
+```
 
-### Step 2 — Skill Principle Validation
+If validating a specific file or directory, add `--target <path>`.
 
-For each skill (except `openspec-*`), run checks 2a-2c from REFERENCE.md:
-- **2a** Self-Learning Directive (grep for `learnings/log.md` / `Learning Capture`)
-- **2b** Quality Gates / Critique-Improve Cycle (grep for `Quality Gates` / `pass criteria`)
-- **2c** Plan → Do → Critique → Improve pattern in workflow
+The script outputs JSON with:
+- Skill checks 2a (learning capture), 2b (quality gates), 2c (PDCI pattern)
+- Agent checks 3a (frontmatter), 3b (tools), 3c (capability-tool warnings), 3d (self-review), 3e (learning), 3f (skill refs)
+- `issues` array with proposed fixes for every failure
+- `overall`: COMPLIANT / HAS_ISSUES / NON-COMPLIANT
 
-### Step 3 — Agent Principle Validation
+Cache-aware: UNCHANGED files with all flags passing are skipped automatically.
 
-For each agent, run checks 3a-3f from REFERENCE.md:
-- **3a** Frontmatter completeness (name, description, model, tools)
-- **3b** Tool validity (against valid tools list in principles file)
-- **3c** Capability-tool consistency
-- **3d** Workflow self-review step
-- **3e** Learning Capture section
-- **3f** Skill references valid (files exist on disk)
+### Step 2 — Review and Supplement
+
+Use the script's JSON output as ground truth for all mechanical checks.
+Focus your effort on items the script cannot evaluate mechanically:
+
+- **2c deep check** — For any skill with `check_2c_pdci: false`: read the workflow section and determine whether it genuinely lacks a review step or expresses the PDCI pattern in an unconventional way.
+- **3c warnings** — Review each capability-tool warning in context. These are flags for review, not hard failures — verify whether the agent actually performs the claimed capability.
+
+### Step 3 — Agent Principle Validation (supplementary)
+
+The script covers 3a-3f mechanically. If `$ARGUMENTS` targets a specific agent and you need
+deeper analysis, cross-reference with the Agent Principle Checklist in
+`.claude/skills/aisa-evolve-principles/SKILL.md` (A1-A6).
 
 ### Step 4 — Report
 

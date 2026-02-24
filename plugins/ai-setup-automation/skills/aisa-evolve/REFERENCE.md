@@ -267,43 +267,44 @@ The Mechanical Verification Protocol below is mandatory regardless of execution 
 
 **2.0 · Mechanical Verification Protocol**
 
-Before the conceptual drift analysis, run these concrete verification passes on EVERY existing skill. These produce objective PASS/FAIL results — no subjective assessment.
+Before the conceptual drift analysis, run the audit script to collect objective PASS/FAIL data.
+Locate the script with `Glob` for `**/verify-setup.js`, then run:
 
-**Pass A — File path verification:**
-For every file path referenced in a skill, run `ls -la {path}`. FAIL = path doesn't exist. Common catches: renamed directories, moved modules, deleted files.
+```bash
+node <plugin-path>/scripts/verify-setup.js audit --project-root . --json
+```
 
-**Pass B — Symbol verification:**
-For every function, type, constructor, or constant referenced, run `grep -rn "{symbol}" {src-dir}`. Verify the symbol exists and its signature (parameters, return type) matches what the skill states. FAIL = symbol not found or signature mismatch.
+The script executes Passes A-G mechanically across all skills and agents:
 
-**Pass C — Error code verification:**
-For every error code or named constant, classify as:
-- `IN_SOURCE` — found in source code (PASS)
-- `SPEC_ONLY` — found in specs but not implemented (PASS with note)
-- `NONEXISTENT` — not found anywhere (FAIL)
+- **Pass A** — File path verification: every path referenced in a skill checked with `fs.existsSync`
+- **Pass B** — Symbol verification: symbols extracted from code blocks, grepped in `src/` (or auto-detected source dir)
+- **Pass C** — Error code verification: ALL_CAPS_SNAKE / ErrXxx patterns classified as IN_SOURCE / SPEC_ONLY / NONEXISTENT
+- **Pass D** — Route verification: HTTP method+path patterns grepped in source
+- **Pass E** — Version info: go.mod / package.json versions extracted (semantic comparison flagged for LLM review)
+- **Pass F** — Code block extraction: fenced code blocks extracted for LLM semantic comparison
+- **Pass G** — Workflow maturity: P1-P3 / A1-A6 principle checks (same as `/aisa-evolve-validate`)
 
-**Pass D — Route/endpoint verification:**
-For every API endpoint (path + method), compare against actual router registration. FAIL = route doesn't exist or method/path mismatch.
+Parse the `per_skill_summary` field for a quick overview. Drill into individual pass arrays for failure details.
 
-**Pass E — Language/runtime version compatibility:**
-Check project's declared version against any version-specific behavior in skills. FAIL = deprecated API or changed behavior.
+**LLM responsibilities after script run:**
 
-**Pass F — Code example accuracy:**
-For the 2 most critical code examples per skill, extract the actual current code and compare against what the skill states. FAIL = example doesn't match reality.
+- **Pass B failures** — verify whether the symbol was renamed (grep the new name) vs. deleted; update the skill accordingly
+- **Pass C SPEC_ONLY** — decide if unimplemented error codes should be flagged for implementation or removed from the skill
+- **Pass D failures** — check if the route moved to a different router file before marking as FAIL
+- **Pass F blocks** — semantically compare each extracted code block against the current source; confirm or refute accuracy
+- **Pass E** — review version-specific behavior concerns (e.g., deprecated APIs in the declared Go/Node version)
+- **All passes** — synthesize per-skill results into CURRENT / OUTDATED / STALE / CRITICAL drift classifications
 
-**Pass G — Workflow maturity:**
-- G.1: Self-learning directives — grep for `learnings/log.md|Learning Capture|capture.*learnings`. Count = 0 → FAIL.
-- G.2: Critique-improve cycle — grep for `critique|quality gate|review.*before|pass/fail|Quality Gates|self-review`. Count = 0 → FAIL (except `openspec-*` skills).
-
-**Protocol output per skill:**
+**Protocol output per skill** (from `per_skill_summary`):
 
 ```
 Skill: {name}
   Pass A (paths):    {N} checked, {N} PASS, {N} FAIL [{list of failures}]
   Pass B (symbols):  {N} checked, {N} PASS, {N} FAIL [{list of failures}]
-  Pass C (errors):   {N} checked, {N} IN_SOURCE, {N} SPEC_ONLY, {N} NONEXISTENT
+  Pass C (errors):   {N} IN_SOURCE, {N} SPEC_ONLY, {N} NONEXISTENT
   Pass D (routes):   {N} checked, {N} PASS, {N} FAIL [{list of failures}]
-  Pass E (version):  PASS / FAIL [{details}]
-  Pass F (examples): {N} checked, {N} PASS, {N} FAIL [{list of failures}]
+  Pass E (version):  {go/node version or N/A}
+  Pass F (examples): {N} code blocks extracted
   Pass G (maturity): G.1 {PASS/FAIL} G.2 {PASS/FAIL/EXEMPT}
 ```
 

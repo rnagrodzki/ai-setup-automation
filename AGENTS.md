@@ -38,7 +38,8 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 
 | Command | Purpose |
 | --- | --- |
-| `/aisa:setup-ai` | Detect tech stack and scaffold full `CLAUDE.md` + `.claude/` configuration |
+| `/aisa:setup` | Detect tech stack and scaffold full `CLAUDE.md` + `.claude/` configuration |
+| `/aisa:audit` | Audit existing AI configuration and suggest improvements |
 | `/aisa:postmortem` | Guided incident analysis; encodes lessons into skills |
 
 ### Plugin 1 Skills

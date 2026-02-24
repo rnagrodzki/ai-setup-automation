@@ -14,31 +14,33 @@ defined in `.claude/skills/aisa-evolve/REFERENCE.md`.
 
 **Do NOT execute** Phases 3-7. This is a diagnostic, not an update cycle.
 
-### Step 1 — Snapshot (Cache-First)
+### Step 1 — Run the Health Script
 
-Check `.claude/cache/snapshot.json` first:
-- If exists and fresh (<2 weeks) → incremental scan: hash current files, compare, only deep-read MODIFIED/NEW files
-- If missing or stale → full scan: inventory all files in `.claude/skills/`, `.claude/agents/`, `CLAUDE.md`, `.claude/learnings/log.md`
+Locate the script with `Glob` for `**/verify-setup.js`, then run:
 
-Report scan mode: `"Cache hit: {N} unchanged, {N} modified, {N} new — deep-reading {N} files"` or `"No cache — full scan"`
+```bash
+node <plugin-path>/scripts/verify-setup.js health --project-root . --json
+```
 
-Scan the current project for changes since the setup was last touched.
+The script handles in a single invocation:
+- **Cache comparison** — hashes current files against `snapshot.json`, categorizes UNCHANGED/MODIFIED/NEW/DELETED
+- **Fast Pass A** — extracts all file paths referenced in each skill/agent, batch-verifies they exist on disk
+- **Fast Pass G** — runs P1-P3 / A1-A6 principle checks (grep-based) across all files
+- **CLAUDE.md table diff** — compares skills/agents tables against actual files on disk
+- **Learnings inbox stats** — counts ACTIVE/PROMOTED/STALE entries
 
-### Step 2 — Lightweight Drift Audit
+Report the scan mode from the `cache` field: snapshot age, files changed vs unchanged.
 
-This is a FAST health check, not a full audit. Run these quick passes only:
+### Step 2 — Interpret Results and Supplement
 
-**Fast Pass A — File path verification (per skill):**
-For every file path referenced in a skill, run `ls {path}`. FAIL = path doesn't exist.
-This is the highest-signal, lowest-cost check.
+Use the script's `classifications` object as a starting point. The script assigns
+CURRENT / OUTDATED / STALE / CRITICAL based on objective pass results.
 
-**Fast Pass G — Workflow maturity (per skill/agent):**
-Apply Skill Principles P1-P3 and Agent Principles A1-A6 from
-`.claude/skills/aisa-evolve-principles/SKILL.md`. These are grep-based, fast checks.
-
-**Fast Pass F — Code example spot-check (1 per skill, not all):**
-For the single most critical code example per skill, compare against actual code.
-Skip this for skills with no code examples (pure rule/convention skills).
+**Fast Pass F — Code example spot-check (manual, 1 per skill):**
+The script extracts code blocks but cannot compare them semantically. For skills
+classified as MODIFIED or OUTDATED, pick the single most critical code example
+from the skill and compare against the actual source file. Skip pure rule/convention
+skills with no code examples.
 
 **Checks NOT run in health mode** (save for full `/aisa-evolve`):
 - Symbol verification (Pass B) — expensive grep across src
@@ -47,8 +49,11 @@ Skip this for skills with no code examples (pure rule/convention skills).
 - Version compatibility (Pass E) — rare drift, check monthly
 
 **CLAUDE.md quick check:**
-- Skills/agents tables match actual files? (compare list vs `ls .claude/skills/ .claude/agents/`)
-- Test commands still work? (run one: e.g., `go test ./... 2>&1 | head -5` or equivalent)
+Use the script's `claude_md` field for table diff. Additionally run one test command
+(e.g., `go test ./... 2>&1 | head -5` or equivalent) to confirm test infrastructure works.
+
+Review and upgrade/downgrade classifications as needed — the script catches mechanical drift;
+you catch semantic drift.
 
 Classify each file: **CURRENT** / **OUTDATED** / **STALE** / **CRITICAL**
 

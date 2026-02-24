@@ -59,7 +59,7 @@ with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<
 
 | File | Plugin name | Resolved command |
 |---|---|---|
-| `commands/setup-ai.md` | `ai-setup-automation` | `/aisa:setup-ai` |
+| `commands/setup.md` | `ai-setup-automation` | `/aisa:setup` |
 | `commands/pr.md` | `sdlc-utilities` | `/sdlc:pr` |
 
 **Skills** — referenced as `<plugin-name>:<skill-name>`:
@@ -102,7 +102,7 @@ allowed-tools: [Read, Write, Edit, Glob, Grep, Bash]
 ---
 ```
 
-For example, `commands/setup-ai.md` creates the `/setup-ai` command.
+For example, `commands/setup.md` creates the `/setup` command.
 
 ### Hooks
 

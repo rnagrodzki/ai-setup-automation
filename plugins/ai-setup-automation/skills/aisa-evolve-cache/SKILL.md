@@ -96,31 +96,22 @@ skip unchanged files and focus tokens only on what actually changed since the la
 
 Full rebuild of snapshot.json. Use after a complete aisa-evolve cycle or when cache is suspected stale.
 
+Locate the script with `Glob` for `**/cache-snapshot.js`, then run from the project root:
+
 ```bash
-# 1. Generate file hashes for all skills
-for f in $(find .claude/skills -name "*.md" -not -path "*/aisa-*/REFERENCE.md" | sort); do
-  sha256sum "$f"
-done
-
-# 2. Generate file hashes for all agents
-for f in $(find .claude/agents -name "*.md" 2>/dev/null | sort); do
-  sha256sum "$f"
-done
-
-# 3. Hash CLAUDE.md and learnings
-sha256sum CLAUDE.md .claude/learnings/log.md 2>/dev/null
-
-# 4. Hash project indicators (dependency files, spec dirs, source dirs)
-sha256sum go.mod package.json 2>/dev/null
-ls specs/ openspec/ 2>/dev/null | sort | sha256sum
-find src/ -maxdepth 2 -type f 2>/dev/null | sort | sha256sum
+node <plugin-path>/scripts/cache-snapshot.js rebuild --project-root .
 ```
 
-Build the snapshot.json from these hashes.
+The script discovers all skill and agent `.md` files, hashes each with SHA-256, evaluates
+principle compliance flags via content pattern matching, counts learnings log entries, hashes
+project indicators, and writes the complete `snapshot.json` in a single invocation.
 
-**Principle compliance flags** — populate during full rebuild and `/aisa-evolve-validate` runs:
-- For each skill: check quality gates, learning capture, PDCI workflow → store as boolean flags
-- For each agent: validate frontmatter, tool validity → store validity flags
+The script lives at `plugins/ai-setup-automation/scripts/cache-snapshot.js` relative to the
+marketplace root, or can be located with `Glob` pattern `**/cache-snapshot.js`.
+
+**Principle compliance flags** — populated automatically by the script:
+- For each skill: detects Quality Gates, Learning Capture, and PDCI workflow via regex patterns
+- For each agent: validates frontmatter fields, tool list, self-review, and learning capture
 - During incremental scans: trust cached flags for hash-matching files (don't re-read to verify)
 - Flags are only re-evaluated when the file hash changes or when `/aisa-evolve-validate` runs explicitly
 
@@ -129,6 +120,13 @@ Write to `.claude/cache/snapshot.json`.
 ### `$ARGUMENTS` = `status`
 
 Report cache freshness without rebuilding:
+
+```bash
+node <plugin-path>/scripts/cache-snapshot.js status --project-root .
+```
+
+The script compares current file hashes against the cached snapshot and prints a markdown
+report to stdout:
 
 ```markdown
 ## Cache Status
@@ -148,8 +146,7 @@ Report cache freshness without rebuilding:
 Delete the cache files, forcing a full scan on the next aisa-evolve run:
 
 ```bash
-rm -f .claude/cache/snapshot.json .claude/cache/drift-report.json
-echo "Cache invalidated. Next aisa-evolve run will do a full scan."
+node <plugin-path>/scripts/cache-snapshot.js invalidate --project-root .
 ```
 
 ## How Other Skills Use the Cache

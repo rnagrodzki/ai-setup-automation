@@ -1,8 +1,8 @@
 ---
-name: ai-evolve
+name: aisa-evolve
 description: Full evolution cycle for an existing .claude/ setup. Verifies skills/agents against current codebase, detects drift, harvests learnings, identifies expansion needs, and applies prioritized updates. Run every 2-4 weeks or after major features.
 model: opus
-skills: ai-evolve-principles
+skills: aisa-evolve-principles
 argument-hint: "[focus-area]"
 ---
 
@@ -22,7 +22,7 @@ Useful for previewing what an evolution cycle would change without modifying any
 Read the full pipeline specification in `REFERENCE.md` (in this skill's directory) and execute all 7 phases.
 
 **Before Phase 1**: Check `.claude/cache/snapshot.json` — if present, use incremental scanning
-(only deep-audit files whose hashes changed). See `ai-evolve-cache` skill for protocol.
+(only deep-audit files whose hashes changed). See `aisa-evolve-cache` skill for protocol.
 
 **Execution mode** — always parallel:
 - `≤ 15` items → subagent parallel via `Task` tool (workstreams)
@@ -59,7 +59,7 @@ Phase 7 — Execute            → apply approved changes + REBUILD CACHE
 ## Principle Enforcement (Phase 2 + Phase 6)
 
 During Drift Audit and Critique, validate every skill and agent against the principle checklists
-in `.claude/skills/ai-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
+in `.claude/skills/aisa-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
 Violations are classified as OUTDATED minimum (P2 DRIFT UPDATE). See principles file for
 the valid tools list, section templates, and behavioral rules.
 

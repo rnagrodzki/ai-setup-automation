@@ -1,6 +1,6 @@
 # Principle Validation — Detailed Check Procedures
 
-Reference specification for `/ai-evolve-validate`. The SKILL.md defines the workflow;
+Reference specification for `/aisa-evolve-validate`. The SKILL.md defines the workflow;
 this file defines the exact checks to run.
 
 ---
@@ -74,7 +74,7 @@ Missing any → ❌ FAIL with specific field listed.
 ### 3b. Tool Validity
 
 Parse the `tools:` field and check each tool against the valid tools list from
-`.claude/skills/ai-evolve-principles/SKILL.md`.
+`.claude/skills/aisa-evolve-principles/SKILL.md`.
 
 Any tool NOT in the valid list → ❌ FAIL.
 
@@ -175,8 +175,8 @@ ls -la ".claude/skills/X.md"
 This skill answers ONE question: **Do the skills and agents follow the required architectural patterns?**
 
 It does NOT:
-- Verify code examples against the actual codebase (use `/ai-evolve-health`)
-- Check if file paths in skills resolve to real files (use `/ai-evolve-health`)
-- Check symbol signatures or API routes (use `/ai-evolve` full cycle)
-- Evaluate skill content quality or specificity (use `/ai-evolve` critique phase)
-- Process learnings or propose new skills (use `/ai-evolve-harvest`)
+- Verify code examples against the actual codebase (use `/aisa-evolve-health`)
+- Check if file paths in skills resolve to real files (use `/aisa-evolve-health`)
+- Check symbol signatures or API routes (use `/aisa-evolve` full cycle)
+- Evaluate skill content quality or specificity (use `/aisa-evolve` critique phase)
+- Process learnings or propose new skills (use `/aisa-evolve-harvest`)

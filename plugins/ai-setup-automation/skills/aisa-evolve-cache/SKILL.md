@@ -1,14 +1,14 @@
 ---
-name: ai-evolve-cache
-description: Manage the .claude/cache/ snapshot for incremental skill/agent audits. Generates file hashes and drift baselines so subsequent ai-evolve runs skip unchanged content, reducing token consumption by 60-80% on large setups. Run after any ai-evolve cycle or manually to refresh the cache.
+name: aisa-evolve-cache
+description: Manage the .claude/cache/ snapshot for incremental skill/agent audits. Generates file hashes and drift baselines so subsequent aisa-evolve runs skip unchanged content, reducing token consumption by 60-80% on large setups. Run after any aisa-evolve cycle or manually to refresh the cache.
 model: sonnet
-skills: ai-evolve-principles
+skills: aisa-evolve-principles
 argument-hint: "[rebuild|status|invalidate]"
 ---
 
 # Cache Management for Incremental Evolution
 
-Maintain `.claude/cache/` so that `ai-evolve`, `ai-evolve-health`, and `ai-evolve-validate` can
+Maintain `.claude/cache/` so that `aisa-evolve`, `aisa-evolve-health`, and `aisa-evolve-validate` can
 skip unchanged files and focus tokens only on what actually changed since the last audit.
 
 ## Cache Structure
@@ -24,7 +24,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 ```json
 {
   "generated_at": "2025-02-23T14:30:00Z",
-  "generated_by": "ai-evolve v8.0",
+  "generated_by": "aisa-evolve v8.0",
   "project_root_hash": "<sha256 of sorted ls -la on project root>",
   "skills": {
     "identity-coding-standards": {
@@ -75,7 +75,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 ```json
 {
   "generated_at": "2025-02-23T14:35:00Z",
-  "generated_by": "ai-evolve-health",
+  "generated_by": "aisa-evolve-health",
   "overall_status": "NEEDS_ATTENTION",
   "results": {
     "identity-coding-standards": {
@@ -96,11 +96,11 @@ skip unchanged files and focus tokens only on what actually changed since the la
 
 ### `$ARGUMENTS` = `rebuild` (or empty)
 
-Full rebuild of snapshot.json. Use after a complete ai-evolve cycle or when cache is suspected stale.
+Full rebuild of snapshot.json. Use after a complete aisa-evolve cycle or when cache is suspected stale.
 
 ```bash
 # 1. Generate file hashes for all skills
-for f in $(find .claude/skills -name "*.md" -not -path "*/ai-*/REFERENCE.md" | sort); do
+for f in $(find .claude/skills -name "*.md" -not -path "*/aisa-*/REFERENCE.md" | sort); do
   sha256sum "$f"
 done
 
@@ -120,11 +120,11 @@ find src/ -maxdepth 2 -type f 2>/dev/null | sort | sha256sum
 
 Build the snapshot.json from these hashes.
 
-**Principle compliance flags** — populate during full rebuild and `/ai-evolve-validate` runs:
+**Principle compliance flags** — populate during full rebuild and `/aisa-evolve-validate` runs:
 - For each skill: check quality gates, learning capture, PDCI workflow → store as boolean flags
 - For each agent: validate frontmatter, tool validity → store validity flags
 - During incremental scans: trust cached flags for hash-matching files (don't re-read to verify)
-- Flags are only re-evaluated when the file hash changes or when `/ai-evolve-validate` runs explicitly
+- Flags are only re-evaluated when the file hash changes or when `/aisa-evolve-validate` runs explicitly
 
 Write to `.claude/cache/snapshot.json`.
 
@@ -147,18 +147,18 @@ Report cache freshness without rebuilding:
 
 ### `$ARGUMENTS` = `invalidate`
 
-Delete the cache files, forcing a full scan on the next ai-evolve run:
+Delete the cache files, forcing a full scan on the next aisa-evolve run:
 
 ```bash
 rm -f .claude/cache/snapshot.json .claude/cache/drift-report.json
-echo "Cache invalidated. Next ai-evolve run will do a full scan."
+echo "Cache invalidated. Next aisa-evolve run will do a full scan."
 ```
 
 ## How Other Skills Use the Cache
 
 ### Incremental Scan Protocol
 
-When any `ai-evolve-*` skill starts, it should:
+When any `aisa-evolve-*` skill starts, it should:
 
 1. **Check** if `.claude/cache/snapshot.json` exists
 2. If YES → **compare** current file hashes against cached hashes
@@ -181,18 +181,18 @@ When any `ai-evolve-*` skill starts, it should:
 ### Cache Invalidation Triggers
 
 The cache should be fully rebuilt when:
-- `ai-evolve` completes a full cycle (it rebuilds automatically)
-- `ai-architect` generates a new setup
-- User runs `/ai-evolve-cache rebuild`
+- `aisa-evolve` completes a full cycle (it rebuilds automatically)
+- `aisa-architect` generates a new setup
+- User runs `/aisa-evolve-cache rebuild`
 
 The cache should be partially invalidated when:
-- `ai-evolve-target` updates specific skills (update only those entries)
-- `ai-evolve-harvest` promotes learnings to skills (update promoted targets)
-- `ai-evolve-postmortem` modifies skills (update modified entries)
+- `aisa-evolve-target` updates specific skills (update only those entries)
+- `aisa-evolve-harvest` promotes learnings to skills (update promoted targets)
+- `aisa-evolve-postmortem` modifies skills (update modified entries)
 
 ## Auto-Rebuild After Evolution
 
-Every `ai-evolve` full cycle should, as its final step, rebuild the cache:
+Every `aisa-evolve` full cycle should, as its final step, rebuild the cache:
 
 ```
 Phase 7 — Execute → apply approved changes

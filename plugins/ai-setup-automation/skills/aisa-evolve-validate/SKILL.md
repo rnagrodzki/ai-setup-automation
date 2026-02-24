@@ -1,8 +1,8 @@
 ---
-name: ai-evolve-validate
+name: aisa-evolve-validate
 description: Validate all skills and agents against architectural principles — self-learning, Plan→Do→Critique→Improve, structural completeness. Does NOT check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing.
 model: sonnet
-skills: ai-evolve-principles
+skills: aisa-evolve-principles
 argument-hint: "[path-to-specific-file-or-directory]"
 ---
 
@@ -10,7 +10,7 @@ argument-hint: "[path-to-specific-file-or-directory]"
 
 Validate `.claude/` skills and agents against architectural principles and workflow patterns.
 Checks structural correctness and required patterns — does NOT verify content accuracy
-against the codebase (that's `/ai-evolve-health`'s job).
+against the codebase (that's `/aisa-evolve-health`'s job).
 
 Use this when: new skills/agents are introduced, before committing skill changes, after manual edits,
 or as a pre-flight gate in any workflow that creates/modifies `.claude/` files.
@@ -24,7 +24,7 @@ If not provided, validate ALL skills and agents in `.claude/`.
 
 Read the detailed check procedures in `REFERENCE.md` (in this skill's directory) for exact
 grep patterns and validation logic. The principle definitions are in
-`.claude/skills/ai-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
+`.claude/skills/aisa-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
 
 ### Step 1 — Inventory (Cache-Aware)
 
@@ -65,7 +65,7 @@ If issues found:
 1. Present report and proposed fixes
 2. Ask: "Apply all fixes? / Select which to apply? / Report only?"
 3. If approved: apply surgically — insert missing pieces only. Use templates from
-   `.claude/skills/ai-evolve-principles/SKILL.md` for missing sections.
+   `.claude/skills/aisa-evolve-principles/SKILL.md` for missing sections.
 4. Commit: `chore: fix principle compliance in {N} skills/agents`
 
 ## Quality Gate

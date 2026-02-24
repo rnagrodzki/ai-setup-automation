@@ -1,6 +1,6 @@
 ---
-name: ai-evolve-principles
-description: Shared architectural principles, tool registry, and behavioral rules for all ai-* skills. Not invoked directly — loaded as a dependency by other skills via the skills: frontmatter field.
+name: aisa-evolve-principles
+description: Shared architectural principles, tool registry, and behavioral rules for all aisa-* skills. Not invoked directly — loaded as a dependency by other skills via the skills: frontmatter field.
 model: inherit
 ---
 
@@ -8,7 +8,7 @@ model: inherit
 
 > **Version:** 8.0 · **Last updated:** 2026-02-24
 
-This file is the single source of truth for architectural principles enforced across all `ai-*` skills.
+This file is the single source of truth for architectural principles enforced across all `aisa-*` skills.
 Do not duplicate these definitions — reference this file.
 
 ---
@@ -94,7 +94,7 @@ Apply to every agent:
 
 ## Behavioral Rules
 
-These rules apply to ALL `ai-*` skills. Rules 1-19 are foundational (from architect),
+These rules apply to ALL `aisa-*` skills. Rules 1-19 are foundational (from architect),
 rules 20-28 are evolution-specific (from evolver).
 
 ### Foundation Rules

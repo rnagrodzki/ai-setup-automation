@@ -1,8 +1,8 @@
 ---
-name: ai-evolve-health
+name: aisa-evolve-health
 description: Quick health check of the .claude/ setup. Runs snapshot and drift audit only — no expansion, no changes unless critical issues found. Use weekly or before sprints.
 model: sonnet
-skills: ai-evolve, ai-evolve-principles
+skills: aisa-evolve, aisa-evolve-principles
 ---
 
 # Skills & Agents Health Check
@@ -12,7 +12,7 @@ Lightweight verification — read-only unless critical drift is found.
 ## Instructions
 
 Execute only Phase 1 (Snapshot) and Phase 2 (Drift Audit) from the Evolver pipeline
-defined in `.claude/skills/ai-evolve/REFERENCE.md`.
+defined in `.claude/skills/aisa-evolve/REFERENCE.md`.
 
 **Do NOT execute** Phases 3-7. This is a diagnostic, not an update cycle.
 
@@ -36,13 +36,13 @@ This is the highest-signal, lowest-cost check.
 
 **Fast Pass G — Workflow maturity (per skill/agent):**
 Apply Skill Principles P1-P3 and Agent Principles A1-A6 from
-`.claude/skills/ai-evolve-principles/SKILL.md`. These are grep-based, fast checks.
+`.claude/skills/aisa-evolve-principles/SKILL.md`. These are grep-based, fast checks.
 
 **Fast Pass F — Code example spot-check (1 per skill, not all):**
 For the single most critical code example per skill, compare against actual code.
 Skip this for skills with no code examples (pure rule/convention skills).
 
-**Checks NOT run in health mode** (save for full `/ai-evolve`):
+**Checks NOT run in health mode** (save for full `/aisa-evolve`):
 - Symbol verification (Pass B) — expensive grep across src
 - Error code verification (Pass C) — expensive cross-reference
 - Route/endpoint verification (Pass D) — needs router analysis
@@ -89,7 +89,7 @@ Present a concise health report:
 
 ### Learnings Inbox
 - ACTIVE entries: {N} (oldest: {date})
-- Recommended: {run /ai-evolve-harvest if >10 ACTIVE entries or oldest >2 weeks}
+- Recommended: {run /aisa-evolve-harvest if >10 ACTIVE entries or oldest >2 weeks}
 
 ### Recommended Actions
 1. {highest priority action}
@@ -103,7 +103,7 @@ If CRITICAL drift is found (a skill states something actively wrong):
 
 - Present the issue and ask for permission to apply a targeted fix
 - If approved: fix only the CRITICAL items, commit with message `fix: correct critical skill drift in {file}`
-- Do NOT fix OUTDATED or STALE items — those require the full `/ai-evolve` cycle
+- Do NOT fix OUTDATED or STALE items — those require the full `/aisa-evolve` cycle
 
 ## Quality Gate
 
@@ -125,10 +125,10 @@ with their hashes and principle compliance flags.
 
 ## See Also
 
-- If CRITICAL drift found → apply fix, then run `/ai-evolve-validate` to verify principle compliance
-- If >10 ACTIVE learning entries → run `/ai-evolve-harvest`
-- If significant drift across many skills → run full `/ai-evolve`
-- If OUTDATED skills need updating → run `/ai-evolve-target <area>` for scoped fixes
+- If CRITICAL drift found → apply fix, then run `/aisa-evolve-validate` to verify principle compliance
+- If >10 ACTIVE learning entries → run `/aisa-evolve-harvest`
+- If significant drift across many skills → run full `/aisa-evolve`
+- If OUTDATED skills need updating → run `/aisa-evolve-target <area>` for scoped fixes
 
 ## Learning Capture
 

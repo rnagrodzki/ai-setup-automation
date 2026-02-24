@@ -1,8 +1,8 @@
 ---
-name: ai-evolve-target
-description: Targeted evolution after a specific change (new feature, refactor, new integration). Scans only the affected area, updates relevant skills/agents, proposes new ones if needed. Faster than full /ai-evolve — use after shipping a feature or completing a refactor.
+name: aisa-evolve-target
+description: Targeted evolution after a specific change (new feature, refactor, new integration). Scans only the affected area, updates relevant skills/agents, proposes new ones if needed. Faster than full /aisa-evolve — use after shipping a feature or completing a refactor.
 model: sonnet
-skills: ai-evolve-principles
+skills: aisa-evolve-principles
 argument-hint: "<description of what changed>"
 ---
 
@@ -56,11 +56,11 @@ For ONLY the affected agents:
 - Do they still load the right skills?
 - Do their workflows still make sense after the change?
 
-Validate against Agent Principles A1-A6 from `.claude/skills/ai-evolve-principles/SKILL.md`.
+Validate against Agent Principles A1-A6 from `.claude/skills/aisa-evolve-principles/SKILL.md`.
 
 Workflow maturity checks on affected skills:
 
-Validate against Skill Principles P1-P3 from `.claude/skills/ai-evolve-principles/SKILL.md`.
+Validate against Skill Principles P1-P3 from `.claude/skills/aisa-evolve-principles/SKILL.md`.
 If the change removed required sections, restore them.
 
 For CLAUDE.md:
@@ -125,9 +125,9 @@ chore: update skills/agents for {change description}
 
 - **DO**: Update everything affected by the described change
 - **DO**: Flag drift found outside the scope (in "Also Noticed")
-- **DO NOT**: Fix drift outside the described scope (save for `/ai-evolve`)
+- **DO NOT**: Fix drift outside the described scope (save for `/aisa-evolve`)
 - **DO NOT**: Create new skills for areas unrelated to the change
-- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/ai-evolve` territory
+- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa-evolve` territory
 - **NOTE**: `openspec-*` are external framework skills — do not check/enforce workflow maturity patterns on them
 
 ## Quality Gate
@@ -148,9 +148,9 @@ After changes are committed, partially update `.claude/cache/snapshot.json`:
 
 ## See Also
 
-- After applying targeted fixes → run `/ai-evolve-validate` on modified files
-- If "Also Noticed" section has many items → schedule full `/ai-evolve`
-- If the change caused an incident → use `/ai-evolve-postmortem` instead
+- After applying targeted fixes → run `/aisa-evolve-validate` on modified files
+- If "Also Noticed" section has many items → schedule full `/aisa-evolve`
+- If the change caused an incident → use `/aisa-evolve-postmortem` instead
 
 ## Learning Capture
 

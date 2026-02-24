@@ -1,8 +1,8 @@
 ---
-name: ai-evolve-harvest
+name: aisa-evolve-harvest
 description: Process accumulated learnings from .claude/learnings/log.md into skills and docs. Promotes recurring patterns into skill gotchas, creates new skills for uncovered domains, fills documentation gaps. Run when learning log has 10+ ACTIVE entries.
 model: sonnet
-skills: ai-evolve, ai-evolve-principles
+skills: aisa-evolve, aisa-evolve-principles
 ---
 
 # Learnings Harvest
@@ -11,7 +11,7 @@ Promote accumulated development knowledge into permanent architecture.
 
 ## Instructions
 
-Execute Phase 3 (Learnings Harvest) from the Evolver pipeline in `.claude/skills/ai-evolve/REFERENCE.md`.
+Execute Phase 3 (Learnings Harvest) from the Evolver pipeline in `.claude/skills/aisa-evolve/REFERENCE.md`.
 
 ### Step 1 — Read the Learning Log
 
@@ -73,7 +73,7 @@ For each action, present:
 After approval:
 
 1. Add promoted content to skill files (Learned Gotchas, Anti-Patterns, or Rules sections)
-2. Create new skills following the template from `.claude/skills/ai-architect/REFERENCE.md` Phase 4.1
+2. Create new skills following the template from `.claude/skills/aisa-architect/REFERENCE.md` Phase 4.1
 3. Update docs/ files as proposed
 4. Mark entries in log.md: change `- **Status**: ACTIVE` to `- **Status**: PROMOTED:{target}` or `STALE`
 5. Update CLAUDE.md skills/agents tables if new skills were created
@@ -99,7 +99,7 @@ Before presenting the harvest proposal, verify:
 
 **Principle compliance** — apply to every promotion target and new skill/agent:
 
-Validate against Skill P1-P3 and Agent A1-A6 from `.claude/skills/ai-evolve-principles/SKILL.md`.
+Validate against Skill P1-P3 and Agent A1-A6 from `.claude/skills/aisa-evolve-principles/SKILL.md`.
 Use templates from the same file when adding missing sections. New skills include both
 Quality Gates and Learning Capture from creation — no "add later" deferrals.
 
@@ -114,9 +114,9 @@ This partial update keeps the cache fresh without requiring a full rebuild.
 
 ## See Also
 
-- After promoting learnings → run `/ai-evolve-validate` to verify new/updated skills
-- If promotions reveal deep drift → run `/ai-evolve-health` or full `/ai-evolve`
-- For incident-driven learnings → use `/ai-evolve-postmortem` instead
+- After promoting learnings → run `/aisa-evolve-validate` to verify new/updated skills
+- If promotions reveal deep drift → run `/aisa-evolve-health` or full `/aisa-evolve`
+- For incident-driven learnings → use `/aisa-evolve-postmortem` instead
 
 ## Learning Capture
 

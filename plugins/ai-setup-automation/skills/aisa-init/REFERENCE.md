@@ -335,7 +335,7 @@ Agent: test-writer
 
 **2.4 · Execution Mode Recommendation**
 
-Based on the planned topology size, recommend the default execution mode for `ai-evolve` and other lifecycle skills:
+Based on the planned topology size, recommend the default execution mode for `aisa-evolve` and other lifecycle skills:
 
 ```
 Planned items (skills + agents)     Recommended default
@@ -355,7 +355,7 @@ If recommending subagent parallel, include in CLAUDE.md:
 - Workstream assignment table
 - Priority ordering across workstreams
 
-Record the recommendation in the Architecture Plan so `ai-evolve` inherits it.
+Record the recommendation in the Architecture Plan so `aisa-evolve` inherits it.
 
 **2.5 · Validate Against Principles**
 
@@ -849,13 +849,13 @@ NOT acceptable to mock:
 - `/plan` — Enter plan mode, load relevant specs, design approach
 - `/learn-review` — Review accumulated learnings, promote to skills/docs
 - `/learn-stats` — Show learning entry counts by category and status
-- `/ai-evolve` — Full evolution cycle (every 2-4 weeks or after major features)
-- `/ai-evolve-health` — Quick health check (weekly or before sprints)
-- `/ai-evolve-target <change>` — Targeted update after a feature/refactor
-- `/ai-evolve-harvest` — Promote accumulated learnings to skills
-- `/ai-evolve-postmortem <incident>` — Learn from incidents
-- `/ai-evolve-validate` — Principle compliance check
-- `/ai-evolve-cache [rebuild|status|invalidate]` — Manage incremental scan cache
+- `/aisa-evolve` — Full evolution cycle (every 2-4 weeks or after major features)
+- `/aisa-evolve-health` — Quick health check (weekly or before sprints)
+- `/aisa-evolve-target <change>` — Targeted update after a feature/refactor
+- `/aisa-evolve-harvest` — Promote accumulated learnings to skills
+- `/aisa-evolve-postmortem <incident>` — Learn from incidents
+- `/aisa-evolve-validate` — Principle compliance check
+- `/aisa-evolve-cache [rebuild|status|invalidate]` — Manage incremental scan cache
 {Add project-specific commands based on generated agents}
 
 ## Execution Mode
@@ -1108,7 +1108,7 @@ git commit -m "feat: generate project-specific skills & agents architecture
 
 **6.4 · Initialize Cache**
 
-Build the initial cache so the first `ai-evolve` run can start incrementally:
+Build the initial cache so the first `aisa-evolve` run can start incrementally:
 
 ```bash
 mkdir -p .claude/cache
@@ -1118,13 +1118,13 @@ Generate `snapshot.json` with sha256 hashes of all created skills, agents, CLAUD
 learnings log, and project indicators (dependency files, spec dirs, src dirs).
 Include principle compliance flags for each file.
 
-This allows `ai-evolve-health` to run incrementally from day one.
+This allows `aisa-evolve-health` to run incrementally from day one.
 
 ---
 
 ## Behavioral Rules
 
-> **Canonical source:** `.claude/skills/ai-evolve-principles/SKILL.md` (rules 1-29, compact form).
+> **Canonical source:** `.claude/skills/aisa-evolve-principles/SKILL.md` (rules 1-29, compact form).
 > Below are the detailed explanations for rules 1-19 (foundation rules). Rules 20-29 (evolution rules)
 > are in the principles file and the evolver REFERENCE.
 
@@ -1172,10 +1172,10 @@ This allows `ai-evolve-health` to run incrementally from day one.
 
 After initial setup, use the evolution lifecycle to maintain the architecture:
 
-- `/ai-evolve` — Full evolution cycle (every 2-4 weeks)
-- `/ai-evolve-health` — Quick health check (weekly)
-- `/ai-evolve-validate` — Principle compliance check (after manual edits)
-- `/ai-evolve-harvest` — Promote accumulated learnings
-- `/ai-evolve-target <change>` — Scoped update after a feature/refactor
-- `/ai-evolve-postmortem <incident>` — Learn from incidents
-- `/ai-evolve-cache` — Manage incremental scan cache
+- `/aisa-evolve` — Full evolution cycle (every 2-4 weeks)
+- `/aisa-evolve-health` — Quick health check (weekly)
+- `/aisa-evolve-validate` — Principle compliance check (after manual edits)
+- `/aisa-evolve-harvest` — Promote accumulated learnings
+- `/aisa-evolve-target <change>` — Scoped update after a feature/refactor
+- `/aisa-evolve-postmortem <incident>` — Learn from incidents
+- `/aisa-evolve-cache` — Manage incremental scan cache

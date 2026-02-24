@@ -50,7 +50,7 @@ gets a fresh context window, preventing audit fatigue and token bloat in the orc
 - Use when: workstreams are independent and don't need to coordinate
 - Cost: ~2× tokens vs hypothetical single-threaded run, but faster and context-cleaner
 
-**To use Agent Teams for ai-evolve:**
+**To use Agent Teams for aisa-evolve:**
 ```
 Create an agent team for the evolution audit.
 Spawn teammates for each workstream:
@@ -93,7 +93,7 @@ Before performing any full scan, check for a cached snapshot:
 if [ -f .claude/cache/snapshot.json ]; then
   echo "Cache found — checking freshness..."
   # Compare current file hashes against cached hashes
-  # See .claude/skills/ai-evolve-cache/SKILL.md for protocol
+  # See .claude/skills/aisa-evolve-cache/SKILL.md for protocol
 else
   echo "No cache — full scan required"
 fi
@@ -253,7 +253,7 @@ When the setup has many items, divide the audit into parallel workstreams to avo
 |------------|-------|
 | Technical coding skills | All skills focused on code conventions, language patterns, concurrency, logging |
 | Domain & business skills | All skills focused on business rules, domain knowledge, error handling, standards |
-| AI, workflow & review skills | All `ai-*` skills, review/checklist skills, external framework skills |
+| AI, workflow & review skills | All `aisa-*` skills, review/checklist skills, external framework skills |
 | Agents + CLAUDE.md | All agents, CLAUDE.md, any checklist artifacts |
 
 **Execution mode for workstreams** (determined in Execution Mode Selector above):
@@ -860,7 +860,7 @@ Generate new `snapshot.json` with:
 - Fresh sha256 hashes for all skills, agents, CLAUDE.md, learnings log
 - Updated principle compliance flags (quality gates, learning capture, PDCI)
 - Updated project indicator hashes (go.mod, package.json, spec dirs, src dirs)
-- `generated_at` timestamp and `generated_by: "ai-evolve v8.0"`
+- `generated_at` timestamp and `generated_by: "aisa-evolve v8.0"`
 
 Also write `drift-report.json` with the final status of every audited file (CURRENT/OUTDATED/STALE/CRITICAL).
 
@@ -872,7 +872,7 @@ or to `.gitignore` if the team prefers ephemeral cache (ask user on first run).
 ## Behavioral Rules
 
 All foundational rules (1-19) and evolution rules (20-29) are defined in
-`.claude/skills/ai-evolve-principles/SKILL.md`. That file is auto-loaded via `skills:` frontmatter.
+`.claude/skills/aisa-evolve-principles/SKILL.md`. That file is auto-loaded via `skills:` frontmatter.
 
 Key reminders for the evolution pipeline:
 
@@ -887,9 +887,9 @@ Key reminders for the evolution pipeline:
 
 These satellite commands extract specific phases from this pipeline:
 
-- `/ai-evolve-health` — Phase 1 + 2 only (read-only health check)
-- `/ai-evolve-harvest` — Phase 3 only (promote learnings)
-- `/ai-evolve-target <change>` — Scoped Phase 1-2 + targeted updates
-- `/ai-evolve-postmortem <incident>` — Incident → learning entries → skill fixes
-- `/ai-evolve-validate` — Principle compliance only (no codebase accuracy)
-- `/ai-evolve-cache [rebuild|status|invalidate]` — Manage incremental scan cache
+- `/aisa-evolve-health` — Phase 1 + 2 only (read-only health check)
+- `/aisa-evolve-harvest` — Phase 3 only (promote learnings)
+- `/aisa-evolve-target <change>` — Scoped Phase 1-2 + targeted updates
+- `/aisa-evolve-postmortem <incident>` — Incident → learning entries → skill fixes
+- `/aisa-evolve-validate` — Principle compliance only (no codebase accuracy)
+- `/aisa-evolve-cache [rebuild|status|invalidate]` — Manage incremental scan cache

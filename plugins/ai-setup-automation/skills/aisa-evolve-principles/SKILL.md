@@ -1,6 +1,6 @@
 ---
 name: aisa-evolve-principles
-description: Shared architectural principles, tool registry, and behavioral rules for all aisa-* skills. Not invoked directly — loaded as a dependency by other skills via the skills: frontmatter field.
+description: "Shared architectural principles, tool registry, and behavioral rules for all aisa-* skills. Not invoked directly — loaded as a dependency by other skills via the skills: frontmatter field."
 model: inherit
 ---
 

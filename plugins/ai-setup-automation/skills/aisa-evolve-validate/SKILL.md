@@ -1,6 +1,6 @@
 ---
 name: aisa-evolve-validate
-description: Validate all skills and agents against architectural principles — self-learning, Plan→Do→Critique→Improve, structural completeness. Does NOT check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing.
+description: "Validate all skills and agents against architectural principles — self-learning, Plan→Do→Critique→Improve, structural completeness. Does NOT check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing."
 model: sonnet
 skills: aisa-evolve-principles
 argument-hint: "[path-to-specific-file-or-directory]"

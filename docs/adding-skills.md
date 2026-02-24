@@ -23,9 +23,7 @@ Use a gerund (verb + -ing) form for the directory name:
 ```markdown
 ---
 name: <skill-name>
-description: >-
-  Use this skill when [specific trigger conditions]. Covers [what it does].
-  Triggers on [keywords or phrases that should activate this skill].
+description: "Use this skill when [specific trigger conditions]. Covers [what it does]. Triggers on [keywords or phrases that should activate this skill]."
 ---
 
 # Skill Title
@@ -88,10 +86,7 @@ as a trigger specification, not a summary.
 
 **Good:**
 ```yaml
-description: >-
-  Use this skill when setting up AI tooling configuration for a new or existing
-  project. Triggers on "set up AI config", "initialize Claude configuration",
-  "create CLAUDE.md", "add AI setup", or "scaffold .claude directory".
+description: "Use this skill when setting up AI tooling configuration for a new or existing project. Triggers on 'set up AI config', 'initialize Claude configuration', 'create CLAUDE.md', 'add AI setup', or 'scaffold .claude directory'."
 ```
 
 **Bad:**
@@ -117,10 +112,7 @@ plugins/ai-setup-automation/skills/reviewing-ai-config/
 ```markdown
 ---
 name: reviewing-ai-config
-description: >-
-  Use when reviewing or auditing an existing AI configuration. Triggers on
-  "review AI setup", "audit .claude directory", "check AI config", or when
-  asked to evaluate the quality of CLAUDE.md or skills.
+description: "Use when reviewing or auditing an existing AI configuration. Triggers on 'review AI setup', 'audit .claude directory', 'check AI config', or when asked to evaluate the quality of CLAUDE.md or skills."
 ---
 
 # Reviewing AI Configuration

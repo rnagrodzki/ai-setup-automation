@@ -831,6 +831,59 @@ function renderHealthMarkdown(result) {
   return lines.join('\n');
 }
 
+function renderAuditMarkdown(result) {
+  const lines = [`# Audit Report — ${result.timestamp.slice(0, 10)}`, ''];
+  lines.push(`**Overall:** ${result.overall}`);
+  lines.push(`**Source dir:** ${result.src_dir || 'not detected'}  |  **Specs dir:** ${result.specs_dir || 'not detected'}`);
+  lines.push('');
+
+  // Per-skill summary table
+  if (Object.keys(result.per_skill_summary).length > 0) {
+    lines.push('## Per-Skill Verification');
+    lines.push('| Skill | Pass A (paths) | Pass B (symbols) | Pass C (errors) | Pass D (routes) | Pass G (principles) |');
+    lines.push('|-------|:--------------:|:----------------:|:---------------:|:---------------:|:-------------------:|');
+    for (const [name, s] of Object.entries(result.per_skill_summary)) {
+      lines.push(`| ${name} | ${s.pass_a} | ${s.pass_b} | ${s.pass_c} | ${s.pass_d} | ${s.pass_g} |`);
+    }
+    lines.push('');
+  }
+
+  // Classifications (reuse health logic)
+  const statuses = { CURRENT: [], OUTDATED: [], STALE: [], CRITICAL: [] };
+  for (const [name, info] of Object.entries(result.classifications)) {
+    (statuses[info.status] || statuses.OUTDATED).push({ name, ...info });
+  }
+  lines.push('## Classifications');
+  if (statuses.CURRENT.length) lines.push(`✅ **CURRENT** (${statuses.CURRENT.length}): ${statuses.CURRENT.map(s => s.name).join(', ')}`);
+  if (statuses.OUTDATED.length) {
+    lines.push(`⚠️  **OUTDATED** (${statuses.OUTDATED.length}):`);
+    for (const s of statuses.OUTDATED) lines.push(`  - ${s.name}: ${s.reasons.join('; ')}`);
+  }
+  if (statuses.STALE.length) {
+    lines.push(`🗑️  **STALE** (${statuses.STALE.length}):`);
+    for (const s of statuses.STALE) lines.push(`  - ${s.name}: ${s.reasons.join('; ')}`);
+  }
+  if (statuses.CRITICAL.length) {
+    lines.push(`❌ **CRITICAL** (${statuses.CRITICAL.length}):`);
+    for (const s of statuses.CRITICAL) lines.push(`  - ${s.name}: ${s.reasons.join('; ')}`);
+  }
+
+  if (result.claude_md) {
+    lines.push('');
+    lines.push('## CLAUDE.md');
+    if (result.claude_md.missingFromTable.length) lines.push(`- Missing from table: ${result.claude_md.missingFromTable.map(x => x.name).join(', ')}`);
+    if (result.claude_md.missingFromDisk.length) lines.push(`- In table but missing on disk: ${result.claude_md.missingFromDisk.map(x => x.name).join(', ')}`);
+    if (!result.claude_md.missingFromTable.length && !result.claude_md.missingFromDisk.length) lines.push('- Tables match disk ✅');
+  }
+
+  const log = result.learnings;
+  lines.push('');
+  lines.push(`## Learnings Inbox: ${log.active} ACTIVE, ${log.promoted} PROMOTED, ${log.stale} STALE`);
+  if (log.active >= 10) lines.push('> ⚠️  Recommend running `/aisa-evolve-harvest`');
+
+  return lines.join('\n');
+}
+
 // ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
@@ -859,7 +912,7 @@ function main() {
   if (opts.outputFormat === 'markdown') {
     if (opts.mode === 'validate') process.stdout.write(renderValidateMarkdown(result) + '\n');
     else if (opts.mode === 'health') process.stdout.write(renderHealthMarkdown(result) + '\n');
-    else process.stdout.write(JSON.stringify(result, null, 2) + '\n'); // audit: JSON only for now
+    else if (opts.mode === 'audit') process.stdout.write(renderAuditMarkdown(result) + '\n');
   } else {
     process.stdout.write(JSON.stringify(result, null, 2) + '\n');
   }

@@ -2,7 +2,7 @@
 
 ## Installation
 
-### From GitHub
+### Full marketplace (both plugins)
 
 Add the marketplace to your Claude Code installation:
 
@@ -13,11 +13,20 @@ Add the marketplace to your Claude Code installation:
 This registers the marketplace and installs both plugins (`ai-setup-automation` and
 `sdlc-utilities`) with all their skills, commands, and hooks.
 
+### Individual plugins
+
+If you only need one plugin, install it directly:
+
+```text
+/plugin install ai-setup-automation
+/plugin install sdlc-utilities
+```
+
 ### Verifying Installation
 
 After installation, start a new Claude Code session. You should see messages from both plugins:
 
-```
+```text
 [ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
 [sdlc-utilities] Plugin loaded. Use /sdlc:pr to create or update a pull request with an auto-generated description.
 ```

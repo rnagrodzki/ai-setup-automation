@@ -30,20 +30,22 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 
 ## Installation
 
-### Full marketplace (both plugins)
+### Step 1 — Add the marketplace
 
 ```text
 /plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
-### Individual plugins
+This registers the marketplace catalog. No plugins are installed yet.
 
-If you only need one plugin, install it directly:
+### Step 2 — Install the plugins
 
 ```text
-/plugin install ai-setup-automation
-/plugin install sdlc-utilities
+/plugin install ai-setup-automation@ai-setup-automation
+/plugin install sdlc-utilities@ai-setup-automation
 ```
+
+Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugins to install.
 
 Verify by starting a new Claude Code session — both plugins announce themselves:
 

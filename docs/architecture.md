@@ -52,10 +52,12 @@ The root `marketplace.json` tells Claude Code: "This repository contains plugins
 is where to find them." It lists each plugin with a name and a relative source path.
 
 When a user runs `/plugin marketplace add rnagrodzki/ai-setup-automation` in Claude Code:
+
 1. Clones or references this repository
 2. Reads `.claude-plugin/marketplace.json`
-3. Discovers the listed plugins
-4. Loads each plugin from its `source` path
+3. Discovers the listed plugins and makes them available to browse
+
+No plugins are installed yet at this point. The user must then run `/plugin install <name>@ai-setup-automation` (or use the interactive **Discover** tab in `/plugin`) to install each plugin.
 
 ### Plugin Layer
 

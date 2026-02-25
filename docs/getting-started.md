@@ -2,25 +2,22 @@
 
 ## Installation
 
-### Full marketplace (both plugins)
-
-Add the marketplace to your Claude Code installation:
+### Step 1 — Add the marketplace
 
 ```text
 /plugin marketplace add rnagrodzki/ai-setup-automation
 ```
 
-This registers the marketplace and installs both plugins (`ai-setup-automation` and
-`sdlc-utilities`) with all their skills, commands, and hooks.
+This registers the marketplace catalog with Claude Code. No plugins are installed yet.
 
-### Individual plugins
-
-If you only need one plugin, install it directly:
+### Step 2 — Install the plugins
 
 ```text
-/plugin install ai-setup-automation
-/plugin install sdlc-utilities
+/plugin install ai-setup-automation@ai-setup-automation
+/plugin install sdlc-utilities@ai-setup-automation
 ```
+
+Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugins to install.
 
 ### Verifying Installation
 

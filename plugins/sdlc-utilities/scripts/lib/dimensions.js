@@ -1,3 +1,13 @@
+/**
+ * dimensions.js
+ * Shared utilities for reading and validating review dimension files.
+ * Zero external dependencies — Node.js built-ins only.
+ *
+ * Exports: extractFrontmatter, extractBody, parseSimpleYaml,
+ *          isValidGlob, KNOWN_FIELDS, VALID_SEVERITIES,
+ *          validateDimensionFile, validateAll
+ */
+
 'use strict';
 
 const fs = require('node:fs');
@@ -255,7 +265,8 @@ function validateAll(projectRoot) {
 
   for (const filePath of files) {
     const fileName = path.basename(filePath);
-    const { errors, warnings, parsed } = validateDimensionFile(filePath);
+    const { errors: fileErrors, warnings, parsed } = validateDimensionFile(filePath);
+    const errors = [...fileErrors]; // copy to avoid mutating the returned array
     const name = parsed ? parsed.name || null : null;
 
     // D10 — name uniqueness (cross-file check)

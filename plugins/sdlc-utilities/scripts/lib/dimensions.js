@@ -60,7 +60,7 @@ function parseSimpleYaml(yamlStr) {
       const arr = [];
       i++;
       while (i < lines.length && lines[i].match(/^\s+-\s+/)) {
-        arr.push(lines[i].replace(/^\s+-\s+/, '').trim());
+        arr.push(lines[i].replace(/^\s+-\s+/, '').trim().replace(/^["']|["']$/g, ''));
         i++;
       }
       result[key] = arr;

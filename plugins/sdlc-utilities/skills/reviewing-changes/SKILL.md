@@ -22,16 +22,19 @@ Locate the script:
 Build the command from the arguments passed to this skill:
 
 ```bash
+# Write to temp file — large manifests (100KB+) break shell pipes
+MANIFEST_FILE=$(mktemp /tmp/review-manifest-XXXXXX.json)
 node <script-path>/review-prepare.js \
   --project-root . \
   [--base <branch>]        # include if --base was provided
   [--dimensions <names>]   # include if --dimensions was provided
-  --json
+  --json > "$MANIFEST_FILE"
+EXIT_CODE=$?
 ```
 
-Run the command and capture stdout as `MANIFEST_JSON`.
+Read and parse `MANIFEST_FILE` as `MANIFEST_JSON`. The manifest also contains `diff_dir` — a temp directory with per-dimension `.diff` files written by the script. Clean both up in Step 4.
 
-**On non-zero exit:**
+**On non-zero `EXIT_CODE`:**
 
 - Exit code 1: show the stderr message to the user and stop.
 - Exit code 2: show `Script error — see output above` and stop.
@@ -113,6 +116,13 @@ rm -rf {manifest.diff_dir}
 ```
 
 ---
+
+## Gotchas
+
+- **Large manifest output**: `review-prepare.js` can produce a large JSON manifest on repos with
+  many changed files. Always write to a temp file (`mktemp`) as prescribed in Step 1 — piping
+  directly to a parser truncates the JSON silently (failure manifests as "Unterminated string in
+  JSON at position N"). Clean up both `MANIFEST_FILE` and `manifest.diff_dir` in Step 4.
 
 ## See Also
 

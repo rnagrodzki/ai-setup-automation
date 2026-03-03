@@ -228,6 +228,15 @@ Title: <title>
 - Skip the plan-critique-improve-do-critique-improve cycle before presenting to the user
 - Run git or gh bash commands to gather data — all context comes from `PR_CONTEXT_JSON`
 
+## Gotchas
+
+- **Large diff output**: `pr-prepare.js` embeds full `diffContent` inline in its JSON. For repos
+  with many changed files this easily exceeds 100KB — too large to pipe through a shell command
+  without truncation (failure manifests as "Unterminated string in JSON at position N"). The
+  `pr.md` command already prescribes writing to a temp file (`mktemp`). If you ever need to
+  re-run the script manually, always use `node pr-prepare.js > /tmp/pr-context-$$.json` and
+  read from the file rather than piping output to a parser.
+
 ## Learning Capture
 
 When creating pull requests, capture discoveries by appending to `.claude/learnings/log.md`.

@@ -32,12 +32,19 @@ Locate the script:
 Build the command from the arguments passed to this command:
 
 ```bash
-node <script-path>/pr-prepare.js $ARGUMENTS
+# Write to temp file — large diffs (100KB+) break shell pipes
+PR_CONTEXT_FILE=$(mktemp /tmp/pr-context-XXXXXX.json)
+node <script-path>/pr-prepare.js $ARGUMENTS > "$PR_CONTEXT_FILE"
+EXIT_CODE=$?
 ```
 
-Capture stdout as `PR_CONTEXT_JSON` and parse it.
+Read and parse `PR_CONTEXT_FILE` as `PR_CONTEXT_JSON`. Clean up the file after the PR is created or cancelled:
 
-**On non-zero exit:**
+```bash
+rm -f "$PR_CONTEXT_FILE"
+```
+
+**On non-zero `EXIT_CODE`:**
 
 - Exit code 1: The JSON still contains an `errors` array. Show each error to the user and stop.
 - Exit code 2: Show `Script error — see output above` and stop.

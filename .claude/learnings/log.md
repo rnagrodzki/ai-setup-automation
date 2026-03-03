@@ -32,6 +32,15 @@ Entries flow from incidents, debugging sessions, and evolution cycles.
 - **Action**: Add `scripts/` to all structural documentation (AGENTS.md, README.md, docs/architecture.md). Consider adding `docs/adding-scripts.md` if scripts are expected to grow.
 - **Status**: ACTIVE
 
+### [GOTCHA] Large script JSON output (>65KB) breaks shell pipes — use temp file pattern
+
+- **Date**: 2026-03-03
+- **Session**: post-mortem
+- **Discovery**: `pr-prepare.js` embeds full `diffContent` in its JSON output, inflating it to ~150KB for a 16-file PR. When an agent runs `node pr-prepare.js | node -e "..."` to parse the output, the pipe silently truncates at ~65KB, producing "Unterminated string in JSON at position 65342". The `pr.md` command says "capture stdout as `PR_CONTEXT_JSON`" with no guidance for large outputs, so the natural interpretation (shell pipe) fails. Workaround: write to a temp file first (`node pr-prepare.js > /tmp/pr-context-$$.json`), then read from it. Same risk applies to `review-prepare.js`.
+- **Impact**: HIGH — `/sdlc:pr` fails silently on repos with large diffs; requires 3+ extra recovery steps.
+- **Action**: (1) Update `pr.md` command to prescribe temp-file write pattern. (2) Add GOTCHA section to `creating-pull-requests` SKILL.md. (3) Apply same fix to `review.md` / `reviewing-changes` SKILL.md. (4) Consider adding `--output-file` flag to both scripts.
+- **Status**: ACTIVE
+
 ### [GOTCHA] Hardcoded branch names in AGENTS.md become stale immediately
 
 - **Date**: 2026-02-24

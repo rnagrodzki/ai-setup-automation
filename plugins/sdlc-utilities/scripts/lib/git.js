@@ -14,7 +14,7 @@
 
 'use strict';
 
-const { execSync } = require('node:child_process');
+const { execSync, spawnSync } = require('node:child_process');
 
 // ---------------------------------------------------------------------------
 // Core exec helper
@@ -24,12 +24,15 @@ const { execSync } = require('node:child_process');
  * Run a shell command and return trimmed stdout, or null on failure.
  * @param {string} cmd
  * @param {object} [opts]  Passed to execSync (cwd, shell, etc.)
+ * @param {boolean} [opts.throwOnError]  If true, rethrows on failure instead of returning null.
  * @returns {string|null}
  */
 function exec(cmd, opts = {}) {
+  const { throwOnError, ...execOpts } = opts;
   try {
-    return execSync(cmd, { encoding: 'utf8', ...opts }).trim();
-  } catch (_) {
+    return execSync(cmd, { encoding: 'utf8', ...execOpts }).trim();
+  } catch (err) {
+    if (throwOnError) throw err;
     return null;
   }
 }
@@ -115,11 +118,13 @@ function getCommitCount(base, projectRoot) {
  * @returns {{ exists: boolean, number?: number, title?: string, url?: string, state?: string, owner?: string, repo?: string }}
  */
 function fetchPrMetadata() {
+  const prJson = exec('gh pr view --json number,title,url,state');
+  if (!prJson) return { exists: false };
+  const repoJson = exec('gh repo view --json owner,name');
+  if (!repoJson) return { exists: false };
   try {
-    const prJson   = execSync('gh pr view --json number,title,url,state 2>/dev/null', { encoding: 'utf8' }).trim();
-    const pr       = JSON.parse(prJson);
-    const repoJson = execSync('gh repo view --json owner,name', { encoding: 'utf8' }).trim();
-    const repo     = JSON.parse(repoJson);
+    const pr   = JSON.parse(prJson);
+    const repo = JSON.parse(repoJson);
     return { exists: true, number: pr.number, title: pr.title, url: pr.url, state: pr.state, owner: repo.owner.login, repo: repo.name };
   } catch (_) {
     return { exists: false };
@@ -158,11 +163,12 @@ function getRemoteState(projectRoot) {
 function pushToRemote(projectRoot, hasUpstream) {
   if (!hasUpstream) {
     const branch = exec('git branch --show-current', { cwd: projectRoot });
-    const result = exec(`git push -u origin ${branch}`, { cwd: projectRoot });
-    return result !== null ? 'pushed-new' : 'error';
+    if (!branch) return 'error';
+    const result = spawnSync('git', ['push', '-u', 'origin', branch], { cwd: projectRoot, encoding: 'utf8' });
+    return result.status === 0 ? 'pushed-new' : 'error';
   }
-  const result = exec('git push', { cwd: projectRoot });
-  return result !== null ? 'pushed' : 'error';
+  const result = spawnSync('git', ['push'], { cwd: projectRoot, encoding: 'utf8' });
+  return result.status === 0 ? 'pushed' : 'error';
 }
 
 /**
@@ -176,7 +182,7 @@ function getCommitsStructured(base, projectRoot) {
   // Use a unique separator to split commits reliably
   const SEP = '---COMMIT---';
   const raw = exec(
-    `git log --format="${SEP}%n%H%n%s%n%b%n%(trailers:key=Co-authored-by,valueonly)" ${base}..HEAD`,
+    `git log --format="${SEP}%n%H%n%s%n%b%n%(trailers:key=Co-authored-by)" ${base}..HEAD`,
     { cwd: projectRoot }
   );
   if (!raw) return [];
@@ -193,8 +199,8 @@ function getCommitsStructured(base, projectRoot) {
     const rest    = lines.slice(2);
 
     // Co-authored-by trailers are at the end; body is everything in between
-    const coAuthors = rest.filter(l => l.trim().length > 0 && /@/.test(l)).map(l => l.trim());
-    const bodyLines = rest.filter(l => !coAuthors.includes(l.trim()) || !/@/.test(l.trim()));
+    const coAuthors = rest.filter(l => /^Co-authored-by:/i.test(l.trim())).map(l => l.trim());
+    const bodyLines = rest.filter(l => !/^Co-authored-by:/i.test(l.trim()));
     const body = bodyLines.join('\n').trim();
 
     if (hash && subject) {

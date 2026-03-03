@@ -72,8 +72,10 @@ If no tests added, explain why.]
 
 ### Step 1: Consume the Pre-computed Context
 
-The `/pr` command has already run `pr-prepare.js` and passed the JSON result
-as `PR_CONTEXT_JSON`. Read it now — no bash commands needed for data gathering.
+The `/pr` command has already run `pr-prepare.js`, written the JSON output to a
+temp file, read and parsed it, and passed the parsed object to this skill as
+`PR_CONTEXT_JSON`. It is an in-memory JavaScript/JSON object — no file path, no
+bash commands needed to retrieve it. Read it now.
 
 Key fields available:
 

@@ -124,6 +124,14 @@ rm -rf {manifest.diff_dir}
   directly to a parser truncates the JSON silently (failure manifests as "Unterminated string in
   JSON at position N"). Clean up both `MANIFEST_FILE` and `manifest.diff_dir` in Step 4.
 
+## Learning Capture
+
+After completing a review, append discoveries to `.claude/learnings/log.md`. Record
+entries for: dimension patterns that matched unintended files, file types not covered
+by any dimension, subagent findings that were systematically miscalibrated, base
+branch detection failures, or dimension trigger globs that needed adjustment for
+this project's directory layout.
+
 ## See Also
 
 - `agents/review-orchestrator.md` — full orchestration logic

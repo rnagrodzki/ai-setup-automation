@@ -120,6 +120,10 @@ No PR found. Options:
   3. Keep in terminal only (already shown)
 ```
 
+For option 1: invoke the `creating-pull-requests` skill (`sdlc:creating-pull-requests`)
+in draft mode, wait for the PR to be created, then post the consolidated review
+comment to the new PR using the `gh api` command above.
+
 ## Step 6 — Return Summary
 
 Output this summary for the main context to display:
@@ -142,3 +146,4 @@ Before returning:
 - Consolidated comment has all 4 sections: header, summary table, verdict, per-dimension details
 - All findings reference a specific `file:line`
 - Verdict computed from actual severity counts (not hardcoded)
+- Temp diff directory (`manifest.diff_dir`) has been removed

@@ -142,8 +142,10 @@ function matchFiles(dimension, changedFiles) {
 // Git helpers
 // ---------------------------------------------------------------------------
 
+const MAX_COMMITS_PER_FILE = 5;
+
 /**
- * Returns Map<filePath, [{hash, subject}]> capped at 5 commits per file.
+ * Returns Map<filePath, [{hash, subject}]> capped at MAX_COMMITS_PER_FILE commits per file.
  */
 function getCommitFileMap(base, projectRoot) {
   const raw = exec(
@@ -166,7 +168,7 @@ function getCommitFileMap(base, projectRoot) {
       const file = line.trim();
       if (!fileCommits.has(file)) fileCommits.set(file, []);
       const commits = fileCommits.get(file);
-      if (commits.length < 5) commits.push(current);
+      if (commits.length < MAX_COMMITS_PER_FILE) commits.push(current);
     }
   }
 
@@ -206,6 +208,11 @@ function writeDimensionDiffs(activeDimensions, fileDiffs, projectRoot) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-review-'));
 
   for (const dim of activeDimensions) {
+    const filesWithNoDiff = dim.matched_files.filter(f => !fileDiffs.has(f));
+    if (filesWithNoDiff.length > 0) {
+      process.stderr.write(`Warning: ${dim.name}: ${filesWithNoDiff.length} matched file(s) have no diff content (renamed, mode-only, or binary): ${filesWithNoDiff.join(', ')}\n`);
+      dim.warnings.push(`No diff content for: ${filesWithNoDiff.join(', ')}`);
+    }
     const parts = dim.matched_files
       .map(f => fileDiffs.get(f))
       .filter(Boolean);
@@ -334,10 +341,15 @@ function main() {
     process.exit(2);
   }
 
-  const base = baseBranch || (() => {
-    try { return detectBaseBranch(projectRoot); }
-    catch (err) { process.stderr.write(`Error: ${err.message}\n`); process.exit(2); }
-  })();
+  let base = baseBranch;
+  if (!base) {
+    try {
+      base = detectBaseBranch(projectRoot);
+    } catch (err) {
+      process.stderr.write(`Error: ${err.message}\n`);
+      process.exit(2);
+    }
+  }
 
   const changedFiles = getChangedFiles(base, projectRoot);
   if (changedFiles.length === 0) {

@@ -7,6 +7,74 @@ See `EXAMPLES.md` (in this directory) for 5 copy-paste-ready example dimension f
 
 ---
 
+## 0. JSON Manifest Schema
+
+`review-prepare.js` outputs this JSON to stdout. The orchestrator agent reads it.
+
+```json
+{
+  "version": 1,
+  "timestamp": "ISO-8601",
+  "base_branch": "main",
+  "current_branch": "feat/xyz",
+  "uncommitted_changes": false,
+  "dirty_files": [],
+  "git": {
+    "commit_count": 5,
+    "commit_log": "abc1234 feat: add widget\n...",
+    "changed_files": ["src/a.ts", "src/b.ts"]
+  },
+  "pr": {
+    "exists": true,
+    "number": 42,
+    "url": "https://github.com/owner/repo/pull/42",
+    "owner": "owner",
+    "repo": "repo"
+  },
+  "dimensions": [
+    {
+      "name": "security-review",
+      "description": "...",
+      "severity": "high",
+      "requires_full_diff": false,
+      "status": "ACTIVE",
+      "matched_files": ["src/auth/login.ts"],
+      "matched_count": 1,
+      "truncated": false,
+      "diff_file": "/tmp/sdlc-review-XXXXX/security-review.diff",
+      "body": "# Security Review\n...",
+      "file_context": [
+        {
+          "file": "src/auth/login.ts",
+          "commits": [{ "hash": "abc1234", "subject": "feat: add OAuth2 flow" }]
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "plan_critique": {
+    "uncovered_files": ["README.md"],
+    "over_broad_dimensions": [],
+    "overlapping_pairs": [],
+    "dimension_cap_applied": false,
+    "queued_dimensions": []
+  },
+  "summary": {
+    "total_dimensions": 5,
+    "active_dimensions": 3,
+    "skipped_dimensions": 2,
+    "queued_dimensions": 0,
+    "total_changed_files": 12,
+    "uncovered_file_count": 1
+  },
+  "diff_dir": "/tmp/sdlc-review-XXXXX"
+}
+```
+
+`status` values: `ACTIVE`, `SKIPPED`, `TRUNCATED`, `QUEUED`
+
+---
+
 ## 1. Dimension File Format
 
 Each project defines review dimensions as `.md` files in `<project>/.claude/review-dimensions/`.
@@ -72,8 +140,16 @@ You are a code reviewer focused exclusively on: {dimension.description}
 ## Changed Files in Your Scope
 {list of matched files, one per line}
 
+## Commit Context
+
+Use these to understand the author's intent:
+
+{for each entry in file_context where entry.commits.length > 0}
+- `{entry.file}` — {entry.commits.map(c => `${c.hash}: ${c.subject}`).join('; ')}
+{end for}
+
 ## Diff to Review
-{filtered diff — only hunks from matched files}
+{content of dimension.diff_file — pre-computed by review-prepare.js}
 
 ## Default Severity
 Unless the review instructions specify otherwise, classify findings as: {dimension.severity}

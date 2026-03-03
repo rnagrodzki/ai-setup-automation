@@ -21,53 +21,41 @@ creates a new one.
 
 ## Workflow
 
-### Step 0: Parse Arguments
+### Step 1: Run the Pre-processing Script
 
-Check `$ARGUMENTS` for flags:
-
-- `--draft` present → set draft mode on
-- `--update` present → set update mode on (force update; error if no PR exists)
-- `--base <branch>` present → use that as the base branch
-- No arguments → auto-detect base branch, auto-detect create/update mode
-
-### Step 1: Validate Git State
-
-Confirm the working directory is in a valid state:
-
-```bash
-# Confirm inside a git repo
-git rev-parse --is-inside-work-tree
-
-# Get current branch
-git branch --show-current
-```
-
-If on `main` or `master`, stop immediately and tell the user:
+Locate the script:
 
 ```text
-You are on the main/master branch. Switch to a feature branch before creating a PR.
+**/sdlc-utilities/scripts/pr-prepare.js
 ```
 
-Check for uncommitted changes:
+Build the command from the arguments passed to this command:
 
 ```bash
-git status --porcelain
+# Write to temp file — large diffs (100KB+) break shell pipes
+PR_CONTEXT_FILE=$(mktemp /tmp/pr-context-XXXXXX.json)
+node <script-path>/pr-prepare.js $ARGUMENTS > "$PR_CONTEXT_FILE"
+EXIT_CODE=$?
 ```
 
-If there are uncommitted changes, warn the user before continuing:
+Read and parse `PR_CONTEXT_FILE` as `PR_CONTEXT_JSON`. Clean up the file after the PR is created or cancelled:
 
-```text
-Warning: you have uncommitted changes. They will NOT be included in the PR.
-Commit or stash them first if you want them included. Continue anyway? (yes/no)
+```bash
+rm -f "$PR_CONTEXT_FILE"
 ```
+
+**On non-zero `EXIT_CODE`:**
+
+- Exit code 1: The JSON still contains an `errors` array. Show each error to the user and stop.
+- Exit code 2: Show `Script error — see output above` and stop.
+
+**If `PR_CONTEXT_JSON.errors` is non-empty**, show each error message and stop.
+
+**If `PR_CONTEXT_JSON.warnings` is non-empty**, show the warnings to the user before continuing.
+Ask them to confirm if they want to proceed (particularly for uncommitted changes).
 
 ### Step 2: Delegate to Skill
 
-Invoke the `creating-pull-requests` skill, passing:
-
-- The `--draft` flag if set
-- The `--update` flag if set
-- The `--base <branch>` value if provided
-
-The skill handles everything from here: base branch detection, remote state,
-PR mode detection, description generation, user review, and PR creation or update.
+Invoke the `creating-pull-requests` skill, passing `PR_CONTEXT_JSON` as the
+pre-computed context. The skill handles everything from here: description
+generation, self-critique, user review, and PR creation or update.

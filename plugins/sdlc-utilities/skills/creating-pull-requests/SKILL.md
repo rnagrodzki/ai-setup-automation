@@ -1,12 +1,12 @@
 ---
 name: creating-pull-requests
-description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: base branch detection, remote sync, auto-detect create-or-update mode, description generation with plan-critique-improve-do-critique-improve, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
+description: "Use this skill when creating or updating a pull request, updating a PR description, or generating PR content from commits and diffs. Handles the full PR workflow: consumes pre-computed context from pr-prepare.js, generates description with plan-critique-improve-do-critique-improve, user review, and gh CLI execution. Triggers on: create PR, open pull request, update PR, write PR description, PR summary, or when asked to describe changes for a pull request."
 ---
 
 # Creating Pull Requests
 
-Full PR create-or-update workflow — from git state to merged description — using
-an 8-section template readable by both technical and non-technical stakeholders.
+Consume pre-computed git context from `pr-prepare.js` and generate an 8-section
+PR description readable by both technical and non-technical stakeholders.
 
 ## When to Use This Skill
 
@@ -14,7 +14,7 @@ an 8-section template readable by both technical and non-technical stakeholders.
 - Updating an existing PR title or description
 - Writing or rewriting a PR description
 - Summarizing branch changes for review
-- When the `/pr` command delegates here after basic validation
+- When the `/pr` command delegates here after running `pr-prepare.js`
 
 ## PR Template
 
@@ -70,107 +70,39 @@ If no tests added, explain why.]
 
 ## Workflow
 
-### Step 1: Determine Base Branch
+### Step 1: Consume the Pre-computed Context
 
-Accept a `--base <branch>` override if passed. Otherwise auto-detect:
+The `/pr` command has already run `pr-prepare.js`, written the JSON output to a
+temp file, read and parsed it, and passed the parsed object to this skill as
+`PR_CONTEXT_JSON`. It is an in-memory JavaScript/JSON object — no file path, no
+bash commands needed to retrieve it. Read it now.
 
-```bash
-git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'
-```
+Key fields available:
 
-Fall back to `main` if detection returns nothing. Verify the branch exists:
+| Field | Description |
+| ----- | ----------- |
+| `mode` | `"create"` or `"update"` |
+| `baseBranch` | The target base branch |
+| `currentBranch` | The branch being PR'd |
+| `isDraft` | Whether to create a draft PR |
+| `existingPr` | `{ number, title, url, state }` or `null` |
+| `jiraTicket` | Detected ticket reference or `null` |
+| `commits` | `[{ hash, subject, body, coAuthors }]` — all commits on this branch |
+| `diffStat` | `{ filesChanged, insertions, deletions, summary }` |
+| `diffContent` | Full unified diff text |
+| `remoteState` | `{ pushed, remoteBranch, action }` |
+| `warnings` | Non-fatal notes already surfaced to the user by the command |
 
-```bash
-git rev-parse --verify origin/<base-branch> 2>/dev/null && echo "ok" || echo "not found"
-```
+### Step 2 (PLAN): Draft PR Description
 
-If the base branch doesn't exist on the remote, ask the user which branch to target.
-
-### Step 2: Check Remote State
-
-Check if the current branch is pushed and up to date:
-
-```bash
-git rev-parse --abbrev-ref --symbolic-full-name @{upstream} 2>/dev/null
-git status -sb
-```
-
-If no upstream tracking branch exists, push:
-
-```bash
-git push -u origin $(git branch --show-current)
-```
-
-If the local branch is ahead of remote, push:
-
-```bash
-git push
-```
-
-### Step 3: Detect PR Mode
-
-```bash
-gh pr view --json number,title,url,state 2>/dev/null
-```
-
-Determine the operating mode silently — no user prompt at this step:
-
-1. **`--update` flag set + PR exists** → mode = `update`, record PR `#number` and URL
-2. **`--update` flag set + no PR exists** → stop with error:
-   ```text
-   No existing PR found for this branch. Remove --update to create a new PR.
-   ```
-3. **No `--update` flag + PR exists** → mode = `update`, record PR `#number` and URL
-4. **No `--update` flag + no PR exists** → mode = `create`
-
-Carry the mode variable forward through the remaining steps.
-
-### Step 4: Gather Commit History
-
-```bash
-git log --oneline <base-branch>..HEAD
-```
-
-Read every commit message. Look for:
-
-- Conventional commit prefixes (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`)
-- Issue/ticket references (`PROJ-123`, `#123`, `[PROJ-123]`)
-- Co-author trailers
-
-### Step 5: Gather the Diff
-
-```bash
-git diff --stat <base-branch>..HEAD
-git diff <base-branch>..HEAD
-```
-
-For large diffs (>500 lines), focus on the stat summary and read key files
-selectively rather than processing the entire diff.
-
-### Step 6: Auto-detect JIRA Ticket
-
-Scan in order:
-
-1. **Branch name** — match `[A-Z]{2,10}-\d+` in the branch name
-   (e.g., `feat/PROJ-123-description`, `PROJ-123-whatever`)
-2. **Commit messages** — scan all commit messages for `[A-Z]{2,10}-\d+`,
-   `[PROJ-123]`, `(PROJ-123)` patterns
-3. If found → record the ticket reference(s)
-4. If not found → mark as "Not detected"
-
-### Step 7 (PLAN): Draft PR Description
-
-Using data from Steps 4-6, draft all 8 sections of the PR template.
+Using data from `PR_CONTEXT_JSON`, draft all 8 sections of the PR template.
 
 For each section, apply the fill rules:
 
 - **Summary**: Plain-language, no jargon, 1-3 sentences
-- **JIRA Ticket**: Use detected value or "Not detected"
-- **Business Context / Benefits**: Infer from commit messages, branch name, and
-  code context. If insufficient evidence, **ask the user** before writing.
-  Don't guess. Acceptable question: *"What business problem does this PR solve?
-  Who benefits and how?"*
-- **Technical Design**: Infer from diff — architecture, patterns, key decisions
+- **JIRA Ticket**: Use `context.jiraTicket` or "Not detected"
+- **Business Context / Benefits**: Infer from `context.commits` and `context.diffContent`. If insufficient evidence, **ask the user** before writing. Don't guess. Acceptable question: *"What business problem does this PR solve? Who benefits and how?"*
+- **Technical Design**: Infer from `context.diffContent` — architecture, patterns, key decisions
 - **Technical Impact**: Identify affected systems/APIs/services from the diff
 - **Changes Overview**: Group by logical concern, no file paths
 - **Testing**: Summarize test coverage from diff; if none, say so explicitly
@@ -178,7 +110,7 @@ For each section, apply the fill rules:
 Also draft the PR title: under 72 characters, conventional commit style
 (`feat:`, `fix:`, `refactor:`, etc.).
 
-### Step 8 (CRITIQUE): Self-review the Draft
+### Step 3 (CRITIQUE): Self-review the Draft
 
 Before presenting to the user, review the draft against every quality gate:
 
@@ -196,9 +128,9 @@ Before presenting to the user, review the draft against every quality gate:
 
 Note every failing gate.
 
-### Step 9 (IMPROVE): Revise Based on Critique
+### Step 4 (IMPROVE): Revise Based on Critique
 
-Fix each issue found in Step 8:
+Fix each issue found in Step 3:
 
 - Rewrite vague sections with specifics from the diff
 - Replace invented content with "N/A" or "Not detected" plus a note
@@ -208,7 +140,7 @@ Fix each issue found in Step 8:
 
 Continue until all gates pass (max 2 iterations per gate).
 
-### Step 10 (DO): Present for Review
+### Step 5 (DO): Present for Review
 
 Show the complete title and description. **Do not execute any `gh` command
 before receiving explicit user approval.**
@@ -237,9 +169,9 @@ Update PR #<number>? (yes / edit / cancel)
 If the user chooses `edit`, ask what to change, revise, and present again.
 Loop until explicit `yes` or `cancel`.
 
-### Step 11: Create or Update PR
+### Step 6: Create or Update PR
 
-**Only execute after explicit `yes` from Step 10.**
+**Only execute after explicit `yes` from Step 5.**
 
 **Create mode:**
 
@@ -296,6 +228,16 @@ Title: <title>
 - Include file paths in the Changes Overview section
 - Execute `gh pr create` or `gh pr edit` without explicit user approval
 - Skip the plan-critique-improve-do-critique-improve cycle before presenting to the user
+- Run git or gh bash commands to gather data — all context comes from `PR_CONTEXT_JSON`
+
+## Gotchas
+
+- **Large diff output**: `pr-prepare.js` embeds full `diffContent` inline in its JSON. For repos
+  with many changed files this easily exceeds 100KB — too large to pipe through a shell command
+  without truncation (failure manifests as "Unterminated string in JSON at position N"). The
+  `pr.md` command already prescribes writing to a temp file (`mktemp`). If you ever need to
+  re-run the script manually, always use `node pr-prepare.js > /tmp/pr-context-$$.json` and
+  read from the file rather than piping output to a parser.
 
 ## Learning Capture
 

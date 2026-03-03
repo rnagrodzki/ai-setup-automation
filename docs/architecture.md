@@ -8,7 +8,7 @@ This repository serves two roles:
    as a Claude Code marketplace
 2. **Plugins** — Two plugins live under `plugins/`: `ai-setup-automation` (AI config scaffolding
    and evolution) and `sdlc-utilities` (PR automation), each with their own skills, commands, hooks,
-   and optionally scripts
+   scripts, and optionally agents
 
 ## Directory Structure
 
@@ -35,6 +35,7 @@ ai-setup-automation/
 │   └── sdlc-utilities/           # Plugin 2: SDLC automation
 │       ├── .claude-plugin/
 │       │   └── plugin.json       # Plugin manifest (name: "sdlc")
+│       ├── agents/               # Agent definitions (orchestrators spawned by skills)
 │       ├── skills/               # Skill definitions
 │       ├── commands/             # Slash command definitions
 │       ├── hooks/

@@ -28,9 +28,17 @@
 const fs   = require('node:fs');
 const path = require('node:path');
 const os   = require('node:os');
-const { execSync } = require('node:child_process');
 
 const { validateAll, extractFrontmatter, extractBody, parseSimpleYaml } = require('./lib/dimensions');
+const {
+  exec,
+  checkGitState,
+  detectBaseBranch,
+  getChangedFiles,
+  getCommitLog,
+  getCommitCount,
+  fetchPrMetadata,
+} = require('./lib/git');
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -133,54 +141,6 @@ function matchFiles(dimension, changedFiles) {
 // ---------------------------------------------------------------------------
 // Git helpers
 // ---------------------------------------------------------------------------
-
-function exec(cmd, opts = {}) {
-  try {
-    return execSync(cmd, { encoding: 'utf8', ...opts }).trim();
-  } catch (_) {
-    return null;
-  }
-}
-
-function checkGitState(projectRoot) {
-  const inside = exec('git rev-parse --is-inside-work-tree', { cwd: projectRoot });
-  if (inside !== 'true') throw new Error('Not inside a git repository');
-
-  const currentBranch = exec('git branch --show-current', { cwd: projectRoot }) || 'HEAD';
-  const statusLines   = exec('git status --porcelain', { cwd: projectRoot }) || '';
-  const dirtyFiles    = statusLines.split('\n').filter(Boolean).map(l => l.slice(3));
-
-  return { currentBranch, uncommittedChanges: dirtyFiles.length > 0, dirtyFiles };
-}
-
-function detectBaseBranch(projectRoot) {
-  const fromRemote = exec(
-    "git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'",
-    { cwd: projectRoot, shell: true }
-  );
-  if (fromRemote) return fromRemote;
-
-  for (const candidate of ['main', 'master']) {
-    const exists = exec(`git rev-parse --verify ${candidate} 2>/dev/null`, { cwd: projectRoot, shell: true });
-    if (exists) return candidate;
-  }
-
-  throw new Error('Cannot auto-detect base branch. Use --base <branch>.');
-}
-
-function getChangedFiles(base, projectRoot) {
-  const out = exec(`git diff --name-only ${base}..HEAD`, { cwd: projectRoot });
-  return out ? out.split('\n').filter(Boolean) : [];
-}
-
-function getCommitLog(base, projectRoot) {
-  return exec(`git log --oneline ${base}..HEAD`, { cwd: projectRoot }) || '';
-}
-
-function getCommitCount(base, projectRoot) {
-  const count = exec(`git rev-list --count ${base}..HEAD`, { cwd: projectRoot });
-  return count ? parseInt(count, 10) : 0;
-}
 
 /**
  * Returns Map<filePath, [{hash, subject}]> capped at 5 commits per file.
@@ -316,22 +276,6 @@ function refinePlan(dimensions) {
   }
 
   return queued;
-}
-
-// ---------------------------------------------------------------------------
-// PR metadata
-// ---------------------------------------------------------------------------
-
-function fetchPrMetadata() {
-  try {
-    const prJson   = execSync('gh pr view --json number,url 2>/dev/null', { encoding: 'utf8' }).trim();
-    const pr       = JSON.parse(prJson);
-    const repoJson = execSync('gh repo view --json owner,name', { encoding: 'utf8' }).trim();
-    const repo     = JSON.parse(repoJson);
-    return { exists: true, number: pr.number, url: pr.url, owner: repo.owner.login, repo: repo.name };
-  } catch (_) {
-    return { exists: false };
-  }
 }
 
 // ---------------------------------------------------------------------------

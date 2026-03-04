@@ -5,6 +5,24 @@ this file defines the exact checks to run.
 
 ---
 
+## Skill Structural Checks (Step 1b)
+
+Mechanical checks run automatically by `verify-setup.js validate`. The script reports these as S1-S5 checks in the issues array. Review them in the JSON output — no manual grep needed.
+
+| Check | ID | Rule | FAIL condition |
+|-------|----|------|----------------|
+| Directory layout | S1 | Skill must be `{name}/SKILL.md` directory | Flat file `{name}.md` found |
+| Frontmatter present | S2 | YAML block between `---` markers required | No frontmatter block |
+| `name` field | S3 | Present, lowercase-hyphens only (`/^[a-z0-9-]+$/`), max 64 chars | Missing, invalid chars, or too long |
+| `description` field | S4 | Present, max 1024 chars | Missing or too long |
+| Line count | S5 | SKILL.md max 500 lines | Exceeds 500 lines |
+
+**Proposed fixes** are included in each issue's `proposed_fix` field. For S1 (flat layout), the fix is: move the file into a directory and rename to SKILL.md.
+
+**Note:** S1 (flat layout) causes `CRITICAL` classification in health mode. S2 (missing frontmatter) causes `OUTDATED`.
+
+---
+
 ## Skill Validation Checks (Step 2)
 
 For EACH skill file (except `openspec-*` which are exempt from Quality Gates):
@@ -155,9 +173,9 @@ ls -la ".claude/skills/X.md"
 ### Skill Compliance Table
 
 ```markdown
-| Skill | Self-Learning | Quality Gates | Plan→Critique→Improve→Do→Critique→Improve | Status |
-|-------|--------------|---------------|--------------------------|--------|
-| {name} | ✅/❌ | ✅/❌/EXEMPT | ✅/❌ | PASS/FAIL |
+| Skill | Layout | FM | Name | Desc | Lines | Self-Learning | Quality Gates | PCIDCI | Status |
+|-------|:------:|:--:|:----:|:----:|:-----:|:------------:|:-------------:|:------:|--------|
+| {name} | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌ | ✅/❌/EXEMPT | ✅/❌ | PASS/FAIL |
 ```
 
 ### Agent Compliance Table

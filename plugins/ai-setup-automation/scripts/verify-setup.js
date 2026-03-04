@@ -42,6 +42,8 @@ const {
   anyMatch,
   AGENT_SELF_REVIEW_PATTERNS,
   AGENT_LEARNING_PATTERNS,
+  checkSkillStructure,
+  detectSkillOverlap,
 } = require('./lib/compliance');
 const { countLearningEntries } = require('./lib/learnings');
 const { hashProjectIndicators } = require('./lib/project');
@@ -185,6 +187,7 @@ function validateMode(projectRoot, opts) {
 
   // Skill validation
   const skillResults = [];
+  const skillsForOverlap = [];
   for (const skill of comparison.skills) {
     // Use cached compliance if unchanged and cache is fresh
     if (skill.cacheStatus === 'UNCHANGED' && skill.cachedCompliance) {
@@ -215,7 +218,9 @@ function validateMode(projectRoot, opts) {
     }
 
     const compliance = evaluateSkillCompliance(skill.name, content);
-    const issues = [];
+    const structureCheck = checkSkillStructure(skill.name, content, skill.layout);
+
+    const issues = [...structureCheck.issues];
 
     if (!compliance.has_learning_capture) {
       issues.push({
@@ -239,10 +244,17 @@ function validateMode(projectRoot, opts) {
       });
     }
 
+    skillsForOverlap.push({ name: skill.name, content });
+
     skillResults.push({
       name: skill.name,
       path: skill.relativePath,
       source: 'scan',
+      check_s1_layout: structureCheck.checks.s1_layout_valid,
+      check_s2_frontmatter: structureCheck.checks.s2_frontmatter_present,
+      check_s3_name: structureCheck.checks.s3_name_valid,
+      check_s4_description: structureCheck.checks.s4_description_valid,
+      check_s5_line_count: structureCheck.checks.s5_line_count_valid,
       check_2a_learning: compliance.has_learning_capture,
       check_2b_quality_gates: compliance.has_quality_gates,
       check_2c_pcidci: compliance.has_pcidci_workflow,
@@ -251,6 +263,9 @@ function validateMode(projectRoot, opts) {
       issues,
     });
   }
+
+  // Skill competency overlap detection
+  const overlapResult = detectSkillOverlap(skillsForOverlap);
 
   // Agent validation
   const agentResults = [];
@@ -337,6 +352,17 @@ function validateMode(projectRoot, opts) {
     ...agentResults.flatMap(a => a.issues.map(i => ({ file: a.path, ...i }))),
   ];
 
+  // Add overlap warnings to issues
+  for (const pair of overlapResult.pairs) {
+    allIssues.push({
+      file: `${pair.skill_a} \u2194 ${pair.skill_b}`,
+      check: 'S6',
+      severity: 'WARNING',
+      message: `Competency overlap detected (score: ${pair.overlap_score}). Shared keywords: ${pair.shared_keywords.join(', ')}`,
+      proposed_fix: 'Review both skills: if they duplicate functionality, consolidate into one dedicated skill and have the other delegate to it',
+    });
+  }
+
   const skillsFail = skillResults.filter(s => s.status === 'FAIL').length;
   const agentsFail = agentResults.filter(a => a.status === 'FAIL').length;
   const hardIssues = allIssues.filter(i => i.severity !== 'WARNING');
@@ -348,6 +374,7 @@ function validateMode(projectRoot, opts) {
     cache_hits: cacheHits,
     skills: skillResults,
     agents: agentResults,
+    skill_overlap: overlapResult,
     issues: allIssues,
     summary: {
       skills_total: skillResults.length,
@@ -392,8 +419,21 @@ function runPassA(content, projectRoot) {
 /**
  * Classify a file based on pass A and pass G results.
  */
-function classifyFile(passA, passG, isAgent) {
+function classifyFile(passA, passG, isAgent, structureIssues) {
   const reasons = [];
+
+  // Structural issues (flat layout, missing frontmatter) — always CRITICAL for skills
+  if (!isAgent && structureIssues && structureIssues.length > 0) {
+    const s1Issue = structureIssues.find(i => i.check === 'S1');
+    const s2Issue = structureIssues.find(i => i.check === 'S2');
+    if (s1Issue) {
+      reasons.push(`Structure S1: flat file layout (must be dir/SKILL.md)`);
+      return { status: 'CRITICAL', reasons };
+    }
+    if (s2Issue) {
+      reasons.push(`Structure S2: missing frontmatter`);
+    }
+  }
 
   if (passA && passA.fail > 2) {
     reasons.push(`Pass A: ${passA.fail} broken file paths`);
@@ -447,11 +487,12 @@ function healthMode(projectRoot, opts) {
 
     passAResults[skill.name] = runPassA(content, projectRoot);
     passGResults[skill.name] = evaluateSkillCompliance(skill.name, content);
+    const structCheck = checkSkillStructure(skill.name, content, skill.layout);
     classifications[skill.name] = {
       type: 'skill',
       path: skill.relativePath,
       cacheStatus: skill.cacheStatus,
-      ...classifyFile(passAResults[skill.name], passGResults[skill.name], false),
+      ...classifyFile(passAResults[skill.name], passGResults[skill.name], false, structCheck.issues),
     };
   }
 
@@ -756,11 +797,16 @@ function renderValidateMarkdown(result) {
   lines.push('');
 
   lines.push('## Skills');
-  lines.push('| Skill | Self-Learning | Quality Gates | PCIDCI | Status |');
-  lines.push('|-------|:------------:|:-------------:|:----:|--------|');
+  lines.push('| Skill | Layout | Frontmatter | Name | Desc | Lines | Self-Learning | Quality Gates | PCIDCI | Status |');
+  lines.push('|-------|:------:|:-----------:|:----:|:----:|:-----:|:------------:|:-------------:|:----:|--------|');
   for (const s of result.skills) {
     const exempt = s.exempt_from_gates ? ' (exempt)' : '';
-    lines.push(`| ${s.name} | ${s.check_2a_learning ? '✅' : '❌'} | ${s.check_2b_quality_gates ? '✅' : '❌'}${exempt} | ${s.check_2c_pcidci ? '✅' : '❌'} | ${s.status} |`);
+    const layout = s.check_s1_layout !== undefined ? (s.check_s1_layout ? '✅' : '❌') : '—';
+    const fm = s.check_s2_frontmatter !== undefined ? (s.check_s2_frontmatter ? '✅' : '❌') : '—';
+    const name_ = s.check_s3_name !== undefined ? (s.check_s3_name ? '✅' : '❌') : '—';
+    const desc = s.check_s4_description !== undefined ? (s.check_s4_description ? '✅' : '❌') : '—';
+    const lines_ = s.check_s5_line_count !== undefined ? (s.check_s5_line_count ? '✅' : '❌') : '—';
+    lines.push(`| ${s.name} | ${layout} | ${fm} | ${name_} | ${desc} | ${lines_} | ${s.check_2a_learning ? '✅' : '❌'} | ${s.check_2b_quality_gates ? '✅' : '❌'}${exempt} | ${s.check_2c_pcidci ? '✅' : '❌'} | ${s.status} |`);
   }
 
   lines.push('');
@@ -779,6 +825,16 @@ function renderValidateMarkdown(result) {
     result.issues.forEach((issue, i) => {
       lines.push(`| ${i + 1} | ${issue.file} | ${issue.check}${issue.severity ? ` (${issue.severity})` : ''} | ${issue.message} | ${issue.proposed_fix} |`);
     });
+  }
+
+  if (result.skill_overlap && result.skill_overlap.pairs.length > 0) {
+    lines.push('');
+    lines.push('## Skill Competency Overlap (Review Required)');
+    lines.push('| Skill A | Skill B | Overlap Score | Shared Keywords |');
+    lines.push('|---------|---------|:-------------:|-----------------|');
+    for (const pair of result.skill_overlap.pairs) {
+      lines.push(`| ${pair.skill_a} | ${pair.skill_b} | ${pair.overlap_score} | ${pair.shared_keywords.join(', ')} |`);
+    }
   }
 
   return lines.join('\n');

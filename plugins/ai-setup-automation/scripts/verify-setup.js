@@ -194,16 +194,34 @@ function validateMode(projectRoot, opts) {
       const c = skill.cachedCompliance;
       if (c.has_learning_capture !== false && (c.exempt_from_gates || c.has_quality_gates !== false)) {
         cacheHits++;
+        // Still check S1 layout even on cache hits — layout field is available without re-reading the file
+        const cacheIssues = [];
+        const cacheS1Valid = skill.layout !== undefined ? skill.layout === 'nested' : true;
+        if (skill.layout !== undefined && !cacheS1Valid) {
+          cacheIssues.push({
+            check: 'S1',
+            message: `Skill uses flat file layout (${skill.name}.md) instead of required directory layout (${skill.name}/SKILL.md)`,
+            proposed_fix: `Move ${skill.name}.md into a directory: mkdir .claude/skills/${skill.name} && mv .claude/skills/${skill.name}.md .claude/skills/${skill.name}/SKILL.md`,
+          });
+        }
+        // Read file for overlap detection (no other structure checks needed from cache)
+        try {
+          const cachedContent = fs.readFileSync(skill.absolutePath, 'utf-8');
+          skillsForOverlap.push({ name: skill.name, content: cachedContent });
+        } catch (e) {
+          // If file unreadable, skip overlap for this skill
+        }
         skillResults.push({
           name: skill.name,
           path: skill.relativePath,
           source: 'cache',
+          check_s1_layout: cacheS1Valid,
           check_2a_learning: c.has_learning_capture,
           check_2b_quality_gates: c.has_quality_gates,
           check_2c_pcidci: c.has_pcidci_workflow,
           exempt_from_gates: c.exempt_from_gates,
-          status: 'PASS',
-          issues: [],
+          status: cacheIssues.length === 0 ? 'PASS' : 'FAIL',
+          issues: cacheIssues,
         });
         continue;
       }
@@ -814,7 +832,7 @@ function renderValidateMarkdown(result) {
   lines.push('| Agent | Frontmatter | Tools | Cap-Tool | Self-Review | Learning | Skill Refs | Status |');
   lines.push('|-------|:-----------:|:-----:|:--------:|:-----------:|:--------:|:----------:|--------|');
   for (const a of result.agents) {
-    lines.push(`| ${a.name} | ${a.check_3a_frontmatter.pass ? '✅' : '❌'} | ${a.check_3b_tools.pass ? '✅' : '❌'} | ${a.check_3c_capability_tool.warnings.length === 0 ? '✅' : '⚠️'} | ${a.check_3d_self_review ? '✅' : '❌'} | ${a.check_3e_learning ? '✅' : '❌'} | ${a.check_3f_skill_refs.pass ? '✅' : '❌'} | ${a.status} |`);
+    lines.push(`| ${a.name} | ${a.check_3a_frontmatter?.pass ? '✅' : '❌'} | ${a.check_3b_tools?.pass ? '✅' : '❌'} | ${(a.check_3c_capability_tool?.warnings?.length ?? 1) === 0 ? '✅' : '⚠️'} | ${a.check_3d_self_review ? '✅' : '❌'} | ${a.check_3e_learning ? '✅' : '❌'} | ${a.check_3f_skill_refs?.pass ? '✅' : '❌'} | ${a.status} |`);
   }
 
   if (result.issues.length > 0) {

@@ -224,9 +224,10 @@ function evaluateAgentCompliance(content) {
 function checkSkillStructure(name, content, layout) {
   const issues = [];
 
-  // S1: Directory layout — nested (dir/SKILL.md) required
-  const s1_layout_valid = layout === 'nested';
-  if (!s1_layout_valid) {
+  // Guard: if layout is undefined (caller didn't originate from discoverSkillFiles),
+  // skip S1 check rather than produce a spurious failure
+  const s1_layout_valid = layout !== undefined ? layout === 'nested' : true;
+  if (layout !== undefined && !s1_layout_valid) {
     issues.push({
       check: 'S1',
       message: `Skill uses flat file layout (${name}.md) instead of required directory layout (${name}/SKILL.md)`,

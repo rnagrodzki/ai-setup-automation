@@ -1,6 +1,6 @@
 # ai-setup-automation
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that ships two plugins: `ai-setup-automation` for creating and maintaining AI-ready project configurations, and `sdlc-utilities` for SDLC automation (pull requests, etc.).
+A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketplace that ships the `ai-setup-automation` plugin for creating and maintaining AI-ready project configurations.
 
 ## What It Does
 
@@ -26,7 +26,6 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | — | This is a Claude Code plugin marketplace |
 | Node.js | >= 16 | For `cache-snapshot.js` and `verify-setup.js` scripts. Uses built-in modules, no `npm install` needed |
 | git | — | Assumed for most features |
-| gh (GitHub CLI) | — | Required for `/sdlc:pr`. Falls back to showing the description if unavailable |
 
 ## Installation
 
@@ -38,20 +37,18 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 
 This registers the marketplace catalog. No plugins are installed yet.
 
-### Step 2 — Install the plugins
+### Step 2 — Install the plugin
 
 ```text
 /plugin install aisa@ai-setup-automation
-/plugin install sdlc@ai-setup-automation
 ```
 
-Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugins to install.
+Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugin to install.
 
-Verify by starting a new Claude Code session — both plugins announce themselves:
+Verify by starting a new Claude Code session — the plugin announces itself:
 
 ```text
 [ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
-[sdlc-utilities] Plugin loaded. Use /sdlc:pr to create or update a pull request with an auto-generated description.
 ```
 
 See [docs/getting-started.md](docs/getting-started.md) for a full first-use walkthrough.
@@ -64,11 +61,10 @@ See [docs/getting-started.md](docs/getting-started.md) for a full first-use walk
 /plugin marketplace update ai-setup-automation
 ```
 
-### Step 2 — Update individual plugins
+### Step 2 — Update the plugin
 
 ```text
 /plugin update aisa@ai-setup-automation
-/plugin update sdlc@ai-setup-automation
 ```
 
 ### Enable auto-update
@@ -77,13 +73,11 @@ Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-s
 
 ### Migrating from older installs
 
-If you installed the plugins before this naming fix, uninstall the old entries and reinstall:
+If you installed the plugin before this naming fix, uninstall the old entry and reinstall:
 
 ```text
 /plugin uninstall ai-setup-automation@ai-setup-automation
-/plugin uninstall sdlc-utilities@ai-setup-automation
 /plugin install aisa@ai-setup-automation
-/plugin install sdlc@ai-setup-automation
 ```
 
 ## Quick Start
@@ -97,9 +91,7 @@ The command detects your tech stack, presents a setup plan for your approval, an
 
 ---
 
-## Plugins
-
-### `aisa` — ai-setup-automation
+## Plugin — `aisa` (ai-setup-automation)
 
 Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `.claude/` directory).
 
@@ -119,22 +111,6 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 
 > **[Full reference →](docs/plugin-ai-setup-automation.md)** Skills, recommended cadence, lifecycle diagram, execution modes, core principles
 
-### sdlc-utilities
-
-Automates SDLC tasks: generates structured PR descriptions from commits and diffs, and runs
-project-customizable multi-dimension code reviews matched to your changed files.
-
-| Command | Description |
-| --- | --- |
-| `/sdlc:pr` | Create a PR with an auto-generated structured description |
-| `/sdlc:review` | Run multi-dimension code review on the current branch |
-| `/sdlc:review-init` | Scan the project and create tailored review dimension files |
-
-`/sdlc:pr` supports `--draft`, `--update`, and `--base <branch>` flags.
-`/sdlc:review` supports `--base`, `--dimensions`, and `--dry-run` flags.
-
-> **[Full reference →](docs/plugin-sdlc-utilities.md)** Usage examples, flag reference, example PR output, code review workflow, dimension format
-
 ---
 
 ## Documentation
@@ -144,7 +120,6 @@ project-customizable multi-dimension code reviews matched to your changed files.
 | [Getting Started](docs/getting-started.md) | Installation, first use, what gets created |
 | [Architecture](docs/architecture.md) | Repository structure, plugin system, name resolution |
 | [Plugin: ai-setup-automation](docs/plugin-ai-setup-automation.md) | Skills reference, cadence, lifecycle, execution modes, principles |
-| [Plugin: sdlc-utilities](docs/plugin-sdlc-utilities.md) | PR command usage, flags, example output, skill template |
 | [Adding Skills](docs/adding-skills.md) | Create custom skills for your project |
 | [Adding Commands](docs/adding-commands.md) | Create custom slash commands |
 | [Adding Hooks](docs/adding-hooks.md) | Set up automated actions on session events |
@@ -175,7 +150,6 @@ Then restart Claude Code and run:
 
 ```text
 /plugin install aisa@ai-setup-automation
-/plugin install sdlc@ai-setup-automation
 ```
 
 ### Plugin not updating after marketplace refresh

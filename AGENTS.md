@@ -1,11 +1,10 @@
 # AI Setup Automation — Claude Code Plugin Marketplace
 
-This repository is a **Claude Code plugin marketplace** that ships two plugins for AI-driven project configuration and software development lifecycle (SDLC) automation. Installation requires two steps:
+This repository is a **Claude Code plugin marketplace** that ships the `ai-setup-automation` plugin for AI-driven project configuration. Installation requires two steps:
 
 ```text
 /plugin marketplace add rnagrodzki/ai-setup-automation
 /plugin install aisa@ai-setup-automation
-/plugin install sdlc@ai-setup-automation
 ```
 
 ---
@@ -16,12 +15,11 @@ This repository is a **Claude Code plugin marketplace** that ships two plugins f
 .claude-plugin/marketplace.json   # Marketplace manifest (entry point)
 plugins/
   ai-setup-automation/            # Plugin: AI project config scaffolding & evolution
-  sdlc-utilities/                 # Plugin: SDLC automation (PRs, etc.)
 docs/                             # Architecture, getting-started, skill/command/hook guides
 README.md
 ```
 
-Each plugin lives under `plugins/<name>/` and follows the structure:
+The plugin lives under `plugins/ai-setup-automation/` and follows the structure:
 
 ```text
 .claude-plugin/plugin.json   # Plugin manifest
@@ -33,11 +31,11 @@ scripts/                     # Node.js helper scripts (optional; invoked via Bas
 
 ---
 
-## Plugin 1 — `ai-setup-automation`
+## Plugin — `ai-setup-automation`
 
 Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `.claude/` directory).
 
-### Plugin 1 Commands
+### Commands
 
 | Command | Purpose |
 | --- | --- |
@@ -46,7 +44,7 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 | `/aisa:postmortem` | Guided incident analysis; encodes lessons into skills |
 | `/aisa:validate` | Validate all skills and agents against architectural principles |
 
-### Plugin 1 Skills
+### Skills
 
 | Skill | When to invoke |
 | --- | --- |
@@ -59,28 +57,6 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 | `aisa:aisa-evolve-cache` | Manage `.claude/cache/` snapshot hashes (60–80 % token reduction) |
 | `aisa:aisa-evolve-postmortem` | Create learning entries and skill gaps from an incident |
 | `aisa:aisa-evolve-principles` | Shared principles / tool registry — dependency only, never invoked directly |
-
----
-
-## Plugin 2 — `sdlc-utilities`
-
-Automates common SDLC tasks.
-
-### Plugin 2 Commands
-
-| Command | Purpose |
-| --- | --- |
-| `/sdlc:pr [--draft] [--update] [--base <branch>]` | Open or update a pull request with an auto-generated PR description |
-| `/sdlc:review [--base <branch>] [--dimensions <name,...>] [--dry-run]` | Run multi-dimension code review on the current branch |
-| `/sdlc:review-init [--add]` | Initialize or expand project review dimensions by scanning the tech stack |
-
-### Plugin 2 Skills
-
-| Skill | Purpose |
-| --- | --- |
-| `sdlc:creating-pull-requests` | Analyse commits and diffs; generate structured 8-section PR descriptions (Summary / JIRA Ticket / Business Context / Business Benefits / Technical Design / Technical Impact / Changes Overview / Testing) |
-| `sdlc:reviewing-changes` | Load project dimensions from `.claude/review-dimensions/`, match to changed files, dispatch parallel review subagents, deduplicate findings, post consolidated PR comment |
-| `sdlc:initializing-review-dimensions` | Scan project tech stack and propose tailored review dimension files with project-specific evidence; create and validate selected files |
 
 ---
 
@@ -97,7 +73,7 @@ Automates common SDLC tasks.
 
 ## Working in This Repository
 
-- **Adding a skill:** Follow `docs/adding-skills.md`. Place the skill under `plugins/<plugin>/skills/<skill-name>/SKILL.md`.
-- **Adding a command:** Follow `docs/adding-commands.md`. Place it under `plugins/<plugin>/commands/<command>.md`.
-- **Adding a hook:** Follow `docs/adding-hooks.md`. Edit `plugins/<plugin>/hooks/hooks.json`.
+- **Adding a skill:** Follow `docs/adding-skills.md`. Place the skill under `plugins/ai-setup-automation/skills/<skill-name>/SKILL.md`.
+- **Adding a command:** Follow `docs/adding-commands.md`. Place it under `plugins/ai-setup-automation/commands/<command>.md`.
+- **Adding a hook:** Follow `docs/adding-hooks.md`. Edit `plugins/ai-setup-automation/hooks/hooks.json`.
 - **Plugin manifest fields:** See `docs/architecture.md` for required fields in `plugin.json`.

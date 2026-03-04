@@ -9,10 +9,6 @@
     {
       "name": "aisa",
       "source": "./plugins/ai-setup-automation"
-    },
-    {
-      "name": "sdlc",
-      "source": "./plugins/sdlc-utilities"
     }
   ]
 }

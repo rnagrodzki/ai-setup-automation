@@ -4,18 +4,10 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 
 ## What It Does
 
-- Detects your tech stack and scaffolds a `.claude/` directory with `CLAUDE.md`, skills, commands, and settings
+- Detects your tech stack and scaffolds a `.claude/` directory with `CLAUDE.md`, skills, agents, and settings
 - Provides 9 commands covering the full lifecycle: setup, auditing, evolution, health checks, and post-incident learning
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
-
-## Key Benefits
-
-**Self-Learning Configuration** — Your `.claude/` setup grows smarter with every session. Post-mortems encode lessons into skills; harvest cycles promote recurring patterns into permanent rules.
-
-**Cache-First Audits** — Snapshot hashing skips unchanged files entirely, cutting token consumption by 60–80% on typical runs. Weekly health checks become fast enough to actually run weekly.
-
-**Enforced Dual Critique Gates** — Every workflow critiques the plan before executing and reviews output before delivery. `/aisa:validate` flags any skill that skips either gate.
 
 ---
 
@@ -29,47 +21,33 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 
 ## Installation
 
-### Step 1 — Add the marketplace
+### Via Claude Code UI (recommended)
+
+1. Open Claude Code and run `/plugin`
+2. Go to **Marketplaces** → **Add marketplace** → enter `rnagrodzki/ai-setup-automation`
+3. Go to **Discover** → select `aisa` → **Install**
+
+### Via CLI
 
 ```text
 /plugin marketplace add rnagrodzki/ai-setup-automation
-```
-
-This registers the marketplace catalog. No plugins are installed yet.
-
-### Step 2 — Install the plugin
-
-```text
 /plugin install aisa@ai-setup-automation
-```
-
-Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugin to install.
-
-Verify by starting a new Claude Code session — the plugin announces itself:
-
-```text
-[ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
 ```
 
 See [docs/getting-started.md](docs/getting-started.md) for a full first-use walkthrough.
 
 ## Updating
 
-### Step 1 — Refresh the marketplace catalog
+### Update via Claude Code UI (recommended)
+
+Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`.
+
+### Update via CLI
 
 ```text
 /plugin marketplace update ai-setup-automation
-```
-
-### Step 2 — Update the plugin
-
-```text
 /plugin update aisa@ai-setup-automation
 ```
-
-### Enable auto-update
-
-Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`. When enabled, Claude Code checks for new versions on startup.
 
 ### Migrating from older installs
 
@@ -91,30 +69,19 @@ The command detects your tech stack, presents a setup plan for your approval, an
 
 ---
 
-## Plugin — `aisa` (ai-setup-automation)
-
-Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `.claude/` directory).
-
-**Highlights:**
-
-- **9 commands** covering the full lifecycle: initial setup, health checks, targeted updates, full evolution cycles, incident post-mortems, and learning harvest
-- **Cache-first scanning** reduces token consumption by 60–80% on repeat runs
-- **Self-learning loop** — incidents get encoded into skills so the same mistake cannot recur
-- **Dual critique gates** enforced on every workflow: critique the plan, then critique the output
+## Commands
 
 | Command | Description |
 | --- | --- |
-| `/aisa:setup` | Detect tech stack and scaffold full `.claude/` configuration |
-| `/aisa:audit` | Audit existing setup and suggest improvements |
-| `/aisa:validate` | Validate skills and agents against architectural principles |
-| `/aisa:postmortem` | Guided incident analysis; encode lessons into skills |
-| `/aisa:evolve` | Full evolution cycle — verify, update, and expand `.claude/` |
-| `/aisa:health` | Quick read-only health check; reports drift status per file |
-| `/aisa:target` | Targeted update after a specific feature, refactor, or integration |
-| `/aisa:harvest` | Promote accumulated learnings into skills and docs |
-| `/aisa:cache` | Manage the snapshot cache for incremental scanning |
-
-> **[Full reference →](docs/plugin-ai-setup-automation.md)** Skills, recommended cadence, lifecycle diagram, execution modes, core principles
+| [`/aisa:setup`](docs/commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa:audit`](docs/commands/audit.md) | Audit existing setup and suggest improvements |
+| [`/aisa:validate`](docs/commands/validate.md) | Validate skills and agents against architectural principles |
+| [`/aisa:postmortem`](docs/commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
+| [`/aisa:evolve`](docs/commands/evolve.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa:health`](docs/commands/health.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa:target`](docs/commands/target.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa:harvest`](docs/commands/harvest.md) | Promote accumulated learnings into skills and docs |
+| [`/aisa:cache`](docs/commands/cache.md) | Manage the snapshot cache for incremental scanning |
 
 ---
 
@@ -139,7 +106,7 @@ A GitHub Actions workflow runs on every pull request targeting `main` and verifi
 - Compares the `plugin.json` version against the base branch
 - Fails if a plugin's files changed but its version was not incremented
 
-To skip the check when a version bump is intentionally not needed, add the **`skip-version-check`** label to the pull request. The workflow will pass with a notice.
+To skip the check when a version bump is intentionally not needed, add the **`skip-version-check`** label to the pull request.
 
 ## Troubleshooting
 

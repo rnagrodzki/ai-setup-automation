@@ -8,154 +8,21 @@ All functionality is exposed through `/aisa:*` commands. Skills are implementati
 
 ---
 
-## Commands Reference
+## Commands
 
-### `/aisa:setup` — New Project Setup
+| Command | Description |
+| --- | --- |
+| [`/aisa:setup`](commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa:audit`](commands/audit.md) | Audit existing setup and suggest improvements |
+| [`/aisa:validate`](commands/validate.md) | Validate skills and agents against architectural principles |
+| [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
+| [`/aisa:evolve`](commands/evolve.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa:health`](commands/health.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa:target`](commands/target.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa:harvest`](commands/harvest.md) | Promote accumulated learnings into skills and docs |
+| [`/aisa:cache`](commands/cache.md) | Manage the snapshot cache for incremental scanning |
 
-Full 6-phase pipeline: discover project → design skills/agents → critique → generate → critique → wire.
-
-```text
-/aisa:setup
-```
-
-**When**: New project setup or full `.claude/` rebuild.
-
-Detects your tech stack, presents a configuration plan for approval, and scaffolds the complete `.claude/` directory structure. If an existing `.claude/` setup is detected, offers a choice between auditing the existing config or rebuilding from scratch.
-
----
-
-### `/aisa:audit` — Health + Compliance Check
-
-Read-only audit of the existing `.claude/` setup. Runs mechanical verification across two dimensions:
-
-1. **Health** — reports CURRENT / OUTDATED / STALE / CRITICAL status per file
-2. **Validate** — checks principle compliance (self-learning directives, dual critique gates, structural completeness)
-
-```text
-/aisa:audit
-```
-
-**When**: Quick status check; no changes are made.
-
----
-
-### `/aisa:evolve` — Full Evolution Cycle
-
-7-phase pipeline: snapshot → drift audit → harvest learnings → expansion analysis → change plan → critique → execute.
-
-```text
-/aisa:evolve
-/aisa:evolve payment-integration   # emphasize a specific area
-```
-
-**When**: Every 2–4 weeks, after major features, when the setup feels stale.
-
-Pause points after the drift audit, change plan, and critique phases — user approval required before proceeding.
-
----
-
-### `/aisa:health` — Quick Health Check
-
-Read-only drift scan. Reports status of every skill, agent, and CLAUDE.md file. Only fixes critical issues (with permission).
-
-```text
-/aisa:health
-```
-
-**When**: Weekly or before sprints. Fast enough to run regularly — uses cache to skip unchanged files.
-
----
-
-### `/aisa:target` — Targeted Update
-
-Scoped evolution after a specific change. Scans only the affected area and updates relevant skills/agents without a full evolution cycle.
-
-```text
-/aisa:target added Stripe webhook handler for subscription cancellation
-/aisa:target refactored auth module from sessions to JWT
-/aisa:target new PIX payment integration
-```
-
-**When**: After shipping a feature, completing a refactor, or adding an integration.
-
----
-
-### `/aisa:validate` — Principle Compliance Check
-
-Validates all skills and agents against architectural principles — self-learning directives, Plan→Critique→Improve→Do→Critique→Improve patterns, and structural completeness. Does NOT check codebase accuracy.
-
-```text
-/aisa:validate
-/aisa:validate .claude/skills/my-new-skill/SKILL.md   # validate specific file
-/aisa:validate .claude/agents/                         # validate all agents
-```
-
-**When**: After adding or editing skills/agents, before committing `.claude/` changes, as a pre-flight check after any workflow that creates or modifies skills.
-
----
-
-### `/aisa:postmortem` — Guided Incident Analysis
-
-Walks you through describing an incident with interactive questions, checks recent git history for evidence, then encodes lessons into skills to prevent recurrence.
-
-```text
-/aisa:postmortem
-```
-
-Answer questions one at a time:
-
-```text
-What went wrong? Describe the incident, bug, or painful situation.
-> webhook retry loop caused duplicate payments in checkout
-
-How did you find out?
-> customer support tickets, 3 duplicate charges reported
-
-How was it fixed — or is it still open?
-> added idempotency key check before processing retry
-
-How long did it take to identify the root cause?
-> ~4 hours
-
-Which part of the codebase or system was involved?
-> payments/webhook_handler.py and the Stripe retry config
-```
-
-Or skip the Q&A by providing a description upfront:
-
-```text
-/aisa:postmortem webhook retry loop caused duplicate payments in checkout
-/aisa:postmortem OIDC token refresh race condition in concurrent requests
-/aisa:postmortem test suite passed but feature broke in production due to mocked repo
-```
-
-**When**: After incidents, painful bugs, production issues, long debugging sessions.
-
----
-
-### `/aisa:harvest` — Promote Learnings
-
-Processes ACTIVE entries in `.claude/learnings/log.md` — promotes recurring patterns into skill gotchas, creates new skills for uncovered domains, fills documentation gaps.
-
-```text
-/aisa:harvest
-```
-
-**When**: 10+ ACTIVE learning log entries, or the oldest entry is more than 2 weeks old.
-
----
-
-### `/aisa:cache` — Manage Snapshot Cache
-
-Maintains `.claude/cache/` for incremental scanning. Reduces token consumption by 60–80% on repeat evolution runs by skipping files unchanged since the last audit.
-
-```text
-/aisa:cache              # rebuild cache from current state (default)
-/aisa:cache status       # report cache freshness and coverage
-/aisa:cache invalidate   # force full scan on next run
-```
-
-**When**: Cache is rebuilt automatically after every full `/aisa:evolve` cycle. Use `status` to check freshness, `invalidate` to force a clean scan.
+Each command has a dedicated doc with usage, examples, prerequisites, and what it creates or modifies.
 
 ---
 

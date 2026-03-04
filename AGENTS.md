@@ -41,22 +41,30 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 | --- | --- |
 | `/aisa:setup` | Detect tech stack and scaffold full `CLAUDE.md` + `.claude/` configuration |
 | `/aisa:audit` | Audit existing AI configuration and suggest improvements |
-| `/aisa:postmortem` | Guided incident analysis; encodes lessons into skills |
 | `/aisa:validate` | Validate all skills and agents against architectural principles |
+| `/aisa:postmortem` | Guided incident analysis; encodes lessons into skills |
+| `/aisa:evolve` | Full evolution cycle (every 2–4 weeks) — verify, update, and expand `.claude/` |
+| `/aisa:health` | Quick read-only drift scan and status report; run weekly or before sprints |
+| `/aisa:target` | Scoped update after a specific feature, refactor, or integration |
+| `/aisa:harvest` | Promote accumulated learnings from log into skills and docs |
+| `/aisa:cache` | Manage `.claude/cache/` snapshot hashes (60–80% token reduction) |
 
 ### Skills
 
-| Skill | When to invoke |
+All skills have `user-invocable: false` — they are implementation details invoked by commands, not
+directly by users. Use the commands above as the entry points.
+
+| Skill | Invoked by |
 | --- | --- |
-| `aisa:aisa-init` | New project or full rebuild — 6-phase discovery → generate pipeline |
-| `aisa:aisa-evolve` | Full evolution cycle (every 2–4 weeks) — 7-phase drift → execute pipeline |
-| `aisa:aisa-evolve-health` | Weekly read-only drift scan and status report |
-| `aisa:aisa-evolve-harvest` | Promote accumulated learnings into skills/docs |
-| `aisa:aisa-evolve-target` | Scoped update after a feature, refactor, or integration |
-| `aisa:aisa-evolve-validate` | Validate all skills against architectural principles |
-| `aisa:aisa-evolve-cache` | Manage `.claude/cache/` snapshot hashes (60–80 % token reduction) |
-| `aisa:aisa-evolve-postmortem` | Create learning entries and skill gaps from an incident |
-| `aisa:aisa-evolve-principles` | Shared principles / tool registry — dependency only, never invoked directly |
+| `aisa:aisa-init` | `/aisa:setup` |
+| `aisa:aisa-evolve` | `/aisa:evolve` |
+| `aisa:aisa-evolve-health` | `/aisa:health` |
+| `aisa:aisa-evolve-harvest` | `/aisa:harvest` |
+| `aisa:aisa-evolve-target` | `/aisa:target` |
+| `aisa:aisa-evolve-validate` | `/aisa:validate` |
+| `aisa:aisa-evolve-cache` | `/aisa:cache` |
+| `aisa:aisa-evolve-postmortem` | `/aisa:postmortem` |
+| `aisa:aisa-evolve-principles` | dependency only — loaded by other skills |
 
 ---
 

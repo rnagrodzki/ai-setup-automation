@@ -4,145 +4,99 @@
 
 `ai-setup-automation` creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `.claude/` directory) for any codebase. See the [README](../README.md) for installation and quick start.
 
+All functionality is exposed through `/aisa:*` commands. Skills are implementation details invoked by commands — they are not user-facing.
+
 ---
 
-## Skills Reference
+## Commands Reference
 
-### `aisa:aisa-init` — Build from Scratch
+### `/aisa:setup` — New Project Setup
 
 Full 6-phase pipeline: discover project → design skills/agents → critique → generate → critique → wire.
 
 ```text
-aisa:aisa-init specs/
-aisa:aisa-init openspec/
-aisa:aisa-init          # auto-detects specs location
+/aisa:setup
 ```
 
-**When**: New project setup, full `.claude/` rebuild, starting fresh.
-**Model**: opus
-**Phases**: Discovery → Design → Critique → Generate → Critique → Wire
+**When**: New project setup or full `.claude/` rebuild.
+
+Detects your tech stack, presents a configuration plan for approval, and scaffolds the complete `.claude/` directory structure. If an existing `.claude/` setup is detected, offers a choice between auditing the existing config or rebuilding from scratch.
 
 ---
 
-### `aisa:aisa-evolve` — Full Evolution Cycle
+### `/aisa:audit` — Health + Compliance Check
+
+Read-only audit of the existing `.claude/` setup. Runs mechanical verification across two dimensions:
+
+1. **Health** — reports CURRENT / OUTDATED / STALE / CRITICAL status per file
+2. **Validate** — checks principle compliance (self-learning directives, dual critique gates, structural completeness)
+
+```text
+/aisa:audit
+```
+
+**When**: Quick status check; no changes are made.
+
+---
+
+### `/aisa:evolve` — Full Evolution Cycle
 
 7-phase pipeline: snapshot → drift audit → harvest learnings → expansion analysis → change plan → critique → execute.
 
 ```text
-aisa:aisa-evolve
-aisa:aisa-evolve payment-integration   # emphasize a specific area
+/aisa:evolve
+/aisa:evolve payment-integration   # emphasize a specific area
 ```
 
-**When**: Every 2-4 weeks, after major features, when setup feels stale.
-**Model**: opus
-**Phases**: Snapshot → Drift → Harvest → Expand → Plan → Critique → Execute
+**When**: Every 2–4 weeks, after major features, when the setup feels stale.
+
+Pause points after the drift audit, change plan, and critique phases — user approval required before proceeding.
 
 ---
 
-### `aisa:aisa-evolve-health` — Quick Health Check
+### `/aisa:health` — Quick Health Check
 
-Read-only drift scan. Reports status of every skill/agent/CLAUDE.md. Only fixes critical issues.
+Read-only drift scan. Reports status of every skill, agent, and CLAUDE.md file. Only fixes critical issues (with permission).
 
 ```text
-aisa:aisa-evolve-health
+/aisa:health
 ```
 
-**When**: Weekly, before sprints, quick sanity check.
-**Model**: sonnet
-**Output**: Health report with CURRENT/OUTDATED/STALE/CRITICAL status per file.
+**When**: Weekly or before sprints. Fast enough to run regularly — uses cache to skip unchanged files.
 
 ---
 
-### `aisa:aisa-evolve-harvest` — Promote Learnings
+### `/aisa:target` — Targeted Update
 
-Processes ACTIVE entries in `.claude/learnings/log.md` into skills, docs, and specs.
+Scoped evolution after a specific change. Scans only the affected area and updates relevant skills/agents without a full evolution cycle.
 
 ```text
-aisa:aisa-evolve-harvest
+/aisa:target added Stripe webhook handler for subscription cancellation
+/aisa:target refactored auth module from sessions to JWT
+/aisa:target new PIX payment integration
 ```
 
-**When**: 10+ ACTIVE learning entries, or oldest entry >2 weeks old.
-**Model**: sonnet
-**Actions**: Promotes to skill gotchas, creates new skills, fills doc gaps, rewrites unclear rules.
+**When**: After shipping a feature, completing a refactor, or adding an integration.
 
 ---
 
-### `aisa:aisa-evolve-target` — Targeted Update
+### `/aisa:validate` — Principle Compliance Check
 
-Scoped update after a specific change. Fast, focused, no full evolution.
+Validates all skills and agents against architectural principles — self-learning directives, Plan→Critique→Improve→Do→Critique→Improve patterns, and structural completeness. Does NOT check codebase accuracy.
 
 ```text
-aisa:aisa-evolve-target added Stripe webhook handler for subscription cancellation
-aisa:aisa-evolve-target refactored auth module from sessions to JWT
-aisa:aisa-evolve-target new PIX payment integration
+/aisa:validate
+/aisa:validate .claude/skills/my-new-skill/SKILL.md   # validate specific file
+/aisa:validate .claude/agents/                         # validate all agents
 ```
 
-**When**: After shipping a feature, completing a refactor, adding an integration.
-**Model**: sonnet
-**Scope**: Only the affected skills/agents. Flags but doesn't fix unrelated drift.
+**When**: After adding or editing skills/agents, before committing `.claude/` changes, as a pre-flight check after any workflow that creates or modifies skills.
 
 ---
-
-### `aisa:aisa-evolve-postmortem` — Learn from Incidents
-
-Creates learning entries, identifies skill gaps that allowed the incident, proposes prevention.
-
-```text
-aisa:aisa-evolve-postmortem webhook retry loop caused duplicate payments
-aisa:aisa-evolve-postmortem OIDC token refresh race condition in concurrent requests
-aisa:aisa-evolve-postmortem test suite passed but feature broke in production due to mocked repo
-```
-
-**When**: After incidents, painful bugs, production issues, long debugging sessions.
-**Model**: opus
-**Actions**: Creates learning entries, updates skills with prevention rules, closes test gaps.
-
----
-
-### `aisa:aisa-evolve-validate` — Principle Compliance Check
-
-Validates all skills and agents against architectural principles (self-learning, Plan→Critique→Improve→Do→Critique→Improve, structural completeness). Does NOT check codebase accuracy — purely structural/pattern validation.
-
-```text
-aisa:aisa-evolve-validate
-aisa:aisa-evolve-validate .claude/skills/my-new-skill.md     # validate specific file
-aisa:aisa-evolve-validate .claude/agents/                     # validate all agents
-```
-
-**When**: After introducing new skills/agents independently, before committing skill changes, after manual edits.
-**Model**: sonnet
-**Checks**: Self-learning directives, Quality Gates sections, agent frontmatter, tool validity, self-review workflow, capability-tool consistency.
-**Does NOT**: Check codebase accuracy, file paths, symbol signatures, or content quality — that's `aisa:aisa-evolve-health`.
-
----
-
-### `aisa:aisa-evolve-cache` — Manage Snapshot Cache
-
-Maintains `.claude/cache/` for incremental scanning. Reduces token consumption by 60-80% on repeat evolution runs.
-
-```text
-aisa:aisa-evolve-cache              # rebuild cache from current state
-aisa:aisa-evolve-cache status       # report cache freshness
-aisa:aisa-evolve-cache invalidate   # force full scan on next run
-```
-
-**When**: After any aisa-evolve cycle (auto-rebuilt), or manually when cache seems stale.
-**Model**: sonnet
-**Output**: `.claude/cache/snapshot.json` (file hashes + principle flags) and `drift-report.json` (last audit results).
-
----
-
-### `aisa:aisa-evolve-principles` (dependency only)
-
-Shared principles, tool registry, and behavioral rules for all `aisa-*` skills. Never invoked directly — loaded as a dependency by other skills.
-
----
-
-## Commands — Extended Usage
 
 ### `/aisa:postmortem` — Guided Incident Analysis
 
-Walks you through describing an incident with interactive questions, checks recent git history for evidence, then hands off to the `aisa-evolve-postmortem` skill to encode the lessons into your skills so the same mistake can't happen again.
+Walks you through describing an incident with interactive questions, checks recent git history for evidence, then encodes lessons into skills to prevent recurrence.
 
 ```text
 /aisa:postmortem
@@ -176,51 +130,61 @@ Or skip the Q&A by providing a description upfront:
 ```
 
 **When**: After incidents, painful bugs, production issues, long debugging sessions.
-**Requires**: A project with `.claude/` configured (run `/aisa:setup` first if not).
-**Delegates to**: `aisa:aisa-evolve-postmortem` skill for root cause → skill gap analysis.
 
-### `/aisa:validate` — Principle Compliance
+---
 
-Thin wrapper around the `aisa-evolve-validate` skill. Validates all `.claude/` skills and agents against architectural principles — structural completeness, self-learning directives, and Plan→Critique→Improve→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
+### `/aisa:harvest` — Promote Learnings
+
+Processes ACTIVE entries in `.claude/learnings/log.md` — promotes recurring patterns into skill gotchas, creates new skills for uncovered domains, fills documentation gaps.
 
 ```text
-/aisa:validate
-/aisa:validate .claude/skills/my-new-skill/SKILL.md   # validate specific file
-/aisa:validate .claude/agents/                         # validate all agents
+/aisa:harvest
 ```
 
-**When**: After adding or editing skills/agents, before committing `.claude/` changes, as a pre-flight check in any workflow that creates or modifies skills.
-**Requires**: A project with `.claude/` configured (run `/aisa:setup` first if not).
-**Delegates to**: `aisa:aisa-evolve-validate` skill for all checks and optional fix application.
+**When**: 10+ ACTIVE learning log entries, or the oldest entry is more than 2 weeks old.
+
+---
+
+### `/aisa:cache` — Manage Snapshot Cache
+
+Maintains `.claude/cache/` for incremental scanning. Reduces token consumption by 60–80% on repeat evolution runs by skipping files unchanged since the last audit.
+
+```text
+/aisa:cache              # rebuild cache from current state (default)
+/aisa:cache status       # report cache freshness and coverage
+/aisa:cache invalidate   # force full scan on next run
+```
+
+**When**: Cache is rebuilt automatically after every full `/aisa:evolve` cycle. Use `status` to check freshness, `invalidate` to force a clean scan.
 
 ---
 
 ## Recommended Cadence
 
-| When | Skill to run |
+| When | Command |
 | --- | --- |
-| New project or full rebuild | `aisa:aisa-init` |
-| After shipping a feature or refactor | `aisa:aisa-evolve-target` |
-| Weekly or before a sprint | `aisa:aisa-evolve-health` |
-| Every 2–4 weeks | `aisa:aisa-evolve` |
-| When 10+ learning log entries accumulate | `aisa:aisa-evolve-harvest` |
-| After an incident or painful bug | `aisa:aisa-evolve-postmortem` |
-| After writing new skills or agents | `/aisa:validate` → `aisa:aisa-evolve-validate` |
+| New project or full rebuild | `/aisa:setup` |
+| After shipping a feature or refactor | `/aisa:target <description>` |
+| Weekly or before a sprint | `/aisa:health` |
+| Every 2–4 weeks | `/aisa:evolve` |
+| When 10+ learning log entries accumulate | `/aisa:harvest` |
+| After an incident or painful bug | `/aisa:postmortem` |
+| After writing new skills or agents | `/aisa:validate` |
 
 ---
 
 ## Lifecycle Diagram
 
 ```text
-New project ──→ /aisa:setup ──→ daily development ──→ aisa:aisa-evolve-target (after features)
+New project ──→ /aisa:setup ──→ daily development ──→ /aisa:target (after features)
                     │                  │                       │
-                    │                  ├── aisa:aisa-evolve-health (weekly)
-                    │                  ├── aisa:aisa-evolve-harvest (when log fills up)
-                    │                  ├── aisa:aisa-evolve-validate (after adding/editing skills)
-                    │                  ├── aisa:aisa-evolve (every 2-4 weeks)
-                    │                  └── aisa:aisa-evolve-postmortem (after incidents)
+                    │                  ├── /aisa:health (weekly)
+                    │                  ├── /aisa:harvest (when log fills up)
+                    │                  ├── /aisa:validate (after adding/editing skills)
+                    │                  ├── /aisa:evolve (every 2-4 weeks)
+                    │                  └── /aisa:postmortem (after incidents)
                     │
-                    └── aisa:aisa-evolve-cache (auto-rebuilt after each cycle)
+                    └── /aisa:cache (auto-rebuilt after each /aisa:evolve)
 ```
 
 ---
@@ -230,27 +194,29 @@ New project ──→ /aisa:setup ──→ daily development ──→ aisa:ais
 ```text
 .claude/skills/
 ├── aisa-init/
-│   ├── SKILL.md          # aisa:aisa-init — build from scratch
+│   ├── SKILL.md          # aisa:aisa-init — build from scratch (invoked by /aisa:setup)
 │   └── REFERENCE.md      # Full pipeline specification
 ├── aisa-evolve/
-│   ├── SKILL.md          # aisa:aisa-evolve — full evolution cycle
+│   ├── SKILL.md          # aisa:aisa-evolve — full evolution cycle (invoked by /aisa:evolve)
 │   └── REFERENCE.md      # Full Evolver pipeline specification
 ├── aisa-evolve-health/
-│   └── SKILL.md          # aisa:aisa-evolve-health — quick health check
+│   └── SKILL.md          # aisa:aisa-evolve-health (invoked by /aisa:health)
 ├── aisa-evolve-harvest/
-│   └── SKILL.md          # aisa:aisa-evolve-harvest — promote learnings
+│   └── SKILL.md          # aisa:aisa-evolve-harvest (invoked by /aisa:harvest)
 ├── aisa-evolve-target/
-│   └── SKILL.md          # aisa:aisa-evolve-target — scoped update
+│   └── SKILL.md          # aisa:aisa-evolve-target (invoked by /aisa:target)
 ├── aisa-evolve-validate/
-│   ├── SKILL.md          # aisa:aisa-evolve-validate — principle compliance
+│   ├── SKILL.md          # aisa:aisa-evolve-validate (invoked by /aisa:validate)
 │   └── REFERENCE.md      # Validation checks specification
 ├── aisa-evolve-cache/
-│   └── SKILL.md          # aisa:aisa-evolve-cache — snapshot cache management
+│   └── SKILL.md          # aisa:aisa-evolve-cache (invoked by /aisa:cache)
 ├── aisa-evolve-postmortem/
-│   └── SKILL.md          # aisa:aisa-evolve-postmortem — incident learning
+│   └── SKILL.md          # aisa:aisa-evolve-postmortem (invoked by /aisa:postmortem)
 └── aisa-evolve-principles/
-    └── SKILL.md          # Shared principles and rules (dependency only)
+    └── SKILL.md          # Shared principles and rules (dependency only, not user-facing)
 ```
+
+All skills have `user-invocable: false` — use commands as the entry points.
 
 ---
 
@@ -276,7 +242,7 @@ All `aisa-evolve-*` skills check `.claude/cache/snapshot.json` before scanning:
 - **NEW** files (not in cache) → full audit
 - **DELETED** files (in cache, not on disk) → flag for cleanup
 
-Token savings: **60-80%** on typical runs where <30% of files changed. Cache is rebuilt automatically after every full `aisa-evolve` cycle.
+Token savings: **60-80%** on typical runs where <30% of files changed. Cache is rebuilt automatically after every full `/aisa:evolve` cycle.
 
 ---
 

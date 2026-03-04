@@ -2,6 +2,7 @@
 name: aisa-init
 description: "Analyze this project and generate a complete .claude/ setup (skills, agents, CLAUDE.md) from scratch. Use when setting up a new project or doing a full rebuild of the AI-assisted development configuration. Scans code, docs, specs, and learnings across technical, business, and design domains."
 argument-hint: "[specs-path]"
+user-invocable: false
 ---
 
 # Project Skills & Agents Architect

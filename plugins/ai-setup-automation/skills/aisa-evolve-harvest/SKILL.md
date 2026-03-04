@@ -1,6 +1,7 @@
 ---
 name: aisa-evolve-harvest
 description: "Process accumulated learnings from .claude/learnings/log.md into skills and docs. Promotes recurring patterns into skill gotchas, creates new skills for uncovered domains, fills documentation gaps. Run when learning log has 10+ ACTIVE entries."
+user-invocable: false
 ---
 
 # Learnings Harvest

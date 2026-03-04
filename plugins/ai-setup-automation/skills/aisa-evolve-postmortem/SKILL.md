@@ -2,6 +2,7 @@
 name: aisa-evolve-postmortem
 description: "Post-mortem integration after incidents, difficult bugs, or production issues. Creates learning entries, identifies which skills should have prevented the issue, and proposes skill updates to prevent recurrence. Use after any painful debugging session."
 argument-hint: "<describe the incident or bug>"
+user-invocable: false
 ---
 
 # Post-Mortem Integration

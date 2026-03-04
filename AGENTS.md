@@ -31,7 +31,7 @@ scripts/                     # Node.js helper scripts (optional; invoked via Bas
 
 ---
 
-## Plugin — `ai-setup-automation`
+## Plugin — `aisa` (ai-setup-automation)
 
 Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `.claude/` directory).
 

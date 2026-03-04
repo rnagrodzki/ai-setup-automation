@@ -12,7 +12,7 @@ Entries flow from incidents, debugging sessions, and evolution cycles.
 - **Discovery**: After PRs #2, #3, #4 added the `sdlc-utilities` plugin, namespace prefixes, `scripts/`, and CI enforcement, 25 specific documentation issues accumulated across 7 files. Root cause: the PR workflow (`creating-pull-requests` skill) has no quality gate checking whether structural docs (README, AGENTS.md, docs/) were updated to match code changes. `aisa-evolve-target` was never triggered post-merge despite being designed for exactly this.
 - **Impact**: HIGH — misleading docs for contributors; wrong naming conventions documented; entire `scripts/` directory undocumented; outdated PR template description in README vs actual 8-section skill.
 - **Action**: (1) Add "Documentation Sync" quality gate to `creating-pull-requests` skill. (2) Add Best Practice note in that skill recommending `/aisa-evolve-target` after structural changes. (3) Fix all 25 doc issues in 7 files. (4) Establish `.claude/learnings/` in this repo for future capture.
-- **Status**: ACTIVE
+- **Status**: RESOLVED — sdlc-utilities plugin removed; action items referencing `creating-pull-requests` skill are no longer applicable. Doc issues addressed in subsequent PRs.
 
 ### [PATTERN_FAILED] Prescriptive docs written without reading actual code
 

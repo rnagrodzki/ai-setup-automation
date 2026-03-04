@@ -114,5 +114,5 @@ Supplementary: [N] additional findings
 Do not create any files. To address issues found, suggest:
 
 - Principle compliance failures → `/aisa:validate` (can auto-fix with approval)
-- Missing or outdated skills/agents → `/aisa-evolve-target <area>`
+- Missing or outdated skills/agents → `aisa:aisa-evolve-target <area>`
 - Full rebuild needed → `/aisa:setup`

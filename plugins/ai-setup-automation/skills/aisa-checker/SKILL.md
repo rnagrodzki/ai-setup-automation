@@ -58,6 +58,10 @@ you catch semantic drift.
 
 Classify each file: **CURRENT** / **OUTDATED** / **STALE** / **CRITICAL**
 
+The script now also checks skill structural compliance:
+- Flat-file layout (`{name}.md` instead of `{name}/SKILL.md`) → classified **CRITICAL**
+- Missing YAML frontmatter → classified **OUTDATED**
+
 Classification guidance for workflow maturity:
 - Missing self-learning directives → OUTDATED minimum
 - Missing critique-improve cycle → OUTDATED minimum

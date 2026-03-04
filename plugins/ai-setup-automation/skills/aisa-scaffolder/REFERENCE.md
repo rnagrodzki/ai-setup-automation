@@ -554,11 +554,16 @@ Generate all files. Every generated file must be project-specific — encode act
 
 **4.1 · Skill Files**
 
-Location: `.claude/skills/{skill-name}.md`
+Location: `.claude/skills/{skill-name}/SKILL.md`
 
 Skill file structure:
 
 ```markdown
+---
+name: {skill-name}
+description: "{One-line description of what this skill does and when to apply it}"
+---
+
 # {Skill Name}
 
 ## Purpose
@@ -659,8 +664,8 @@ You are a **{Role Title}** for this project.
 
 ## Skills
 Load and follow these skills:
-- `.claude/skills/{skill-1}.md`
-- `.claude/skills/{skill-2}.md`
+- `.claude/skills/{skill-1}/SKILL.md`
+- `.claude/skills/{skill-2}/SKILL.md`
 
 ## Workflow
 {Step-by-step process this agent follows. Must include at least one
@@ -976,7 +981,7 @@ For EACH generated agent file, evaluate:
 | **Workflow clarity** | A developer who never used this agent could follow the workflow in one read | Simplify or add concrete steps |
 | **Boundary precision** | MUST/MUST NOT rules are binary (no "try to" or "consider") | Rewrite as absolute rules |
 | **Escalation defined** | Clear conditions for when to stop and hand back to main agent | Add explicit escalation triggers |
-| **Skill references exist** | Every `.claude/skills/X.md` referenced actually exists in the manifest | Fix references |
+| **Skill references exist** | Every `.claude/skills/X/SKILL.md` referenced actually exists in the manifest | Fix references |
 | **Output format testable** | The output format produces structured, parseable results | Add template/example |
 | **Learning capture present** | Agent includes Learning Capture section with instructions to append to `.claude/learnings/log.md` | Add learning capture protocol from template |
 | **Critique-improve cycle present** | Workflow includes at least one self-review step with pass/fail criteria before output delivery | Add self-review step to workflow |
@@ -1033,7 +1038,7 @@ Based on findings, execute improvements immediately:
 
 | File | Specificity | Actionability | Coherence | Pass? |
 |------|------------|---------------|-----------|-------|
-| skills/{name}.md | ✅/⚠️/❌ | ✅/⚠️/❌ | ✅/⚠️/❌ | YES/REWRITE |
+| skills/{name}/SKILL.md | ✅/⚠️/❌ | ✅/⚠️/❌ | ✅/⚠️/❌ | YES/REWRITE |
 | agents/{name}.md | ✅/⚠️/❌ | ✅/⚠️/❌ | ✅/⚠️/❌ | YES/REWRITE |
 | CLAUDE.md | ✅/⚠️/❌ | ✅/⚠️/❌ | ✅/⚠️/❌ | YES/REWRITE |
 
@@ -1064,8 +1069,8 @@ Present the complete list of files to be created/modified/deleted:
 
 ```
 CREATE:
-  .claude/skills/{skill-1}.md
-  .claude/skills/{skill-2}.md
+  .claude/skills/{skill-1}/SKILL.md
+  .claude/skills/{skill-2}/SKILL.md
   ...
   .claude/agents/{agent-1}.md
   .claude/agents/{agent-2}.md
@@ -1076,7 +1081,7 @@ CREATE:
 
 DELETE (cleanup):
   .claude/agents/{old-generic-agent}.md
-  .claude/skills/{old-boilerplate-skill}.md
+  .claude/skills/{old-boilerplate-skill}/SKILL.md
   ...
 ```
 

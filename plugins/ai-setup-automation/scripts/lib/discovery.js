@@ -9,6 +9,7 @@ const path = require('node:path');
  *   - Flat:   .claude/skills/<name>.md           → key = name
  *   - Nested: .claude/skills/<name>/SKILL.md     → key = <directory name>
  *
+ * Each result object includes: { name, relativePath, absolutePath, layout: 'flat'|'nested' }
  * Supporting files inside skill subdirectories (README.md, REFERENCE.md, etc.) are skipped.
  */
 function discoverSkillFiles(projectRoot) {
@@ -28,6 +29,7 @@ function discoverSkillFiles(projectRoot) {
         name: path.basename(entry.name, '.md'),
         relativePath: path.relative(projectRoot, full).replace(/\\/g, '/'),
         absolutePath: full,
+        layout: 'flat',
       });
     } else if (entry.isDirectory()) {
       const skillMd = path.join(full, 'SKILL.md');
@@ -36,6 +38,7 @@ function discoverSkillFiles(projectRoot) {
           name: entry.name,
           relativePath: path.relative(projectRoot, skillMd).replace(/\\/g, '/'),
           absolutePath: skillMd,
+          layout: 'nested',
         });
       }
     }

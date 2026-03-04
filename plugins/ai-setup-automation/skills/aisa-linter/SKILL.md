@@ -36,8 +36,10 @@ node <plugin-path>/scripts/verify-setup.js validate --project-root . --json
 If validating a specific file or directory, add `--target <path>`.
 
 The script outputs JSON with:
-- Skill checks 2a (learning capture), 2b (quality gates), 2c (PCIDCI pattern)
+- Skill structural checks S1 (layout), S2 (frontmatter), S3 (name), S4 (description), S5 (line count)
+- Skill principle checks 2a (learning capture), 2b (quality gates), 2c (PCIDCI pattern)
 - Agent checks 3a (frontmatter), 3b (tools), 3c (capability-tool warnings), 3d (self-review), 3e (learning), 3f (skill refs)
+- Skill competency overlap pairs (S6 WARNING) in `skill_overlap` field
 - `issues` array with proposed fixes for every failure
 - `overall`: COMPLIANT / HAS_ISSUES / NON-COMPLIANT
 
@@ -64,7 +66,23 @@ agent compliance table, issues table with concrete proposed fixes.
 
 Overall status: COMPLIANT / HAS ISSUES / NON-COMPLIANT
 
-### Step 5 — Apply Fixes (optional)
+### Step 5 — Competency Overlap Review
+
+Review the `skill_overlap` section of the JSON output (or "Skill Competency Overlap" section in markdown output).
+
+For each flagged pair (overlap score ≥ 0.4):
+1. Read both skills in full
+2. Determine if the overlap is genuine duplication or legitimate decomposition
+3. Report verdict per the template in REFERENCE.md
+
+If genuine duplication is found:
+- Identify which skill should be the "owner" of the overlapping capability
+- Recommend: other skill removes the duplicated steps and delegates to the owner skill
+- Propose concrete edit (which section to remove, which reference to add)
+
+If no overlap pairs: note "No competency overlap detected ✅"
+
+### Step 6 — Apply Fixes (optional)
 
 If issues found:
 1. Present report and proposed fixes
@@ -76,6 +94,7 @@ If issues found:
 ## Quality Gate
 
 Before presenting the validation report, verify:
+- [ ] Every skill checked for structural compliance (S1-S5: layout, frontmatter, name, description, line count)
 - [ ] Every skill checked for all 3 principle requirements (2a, 2b, 2c)
 - [ ] Every agent checked for all 6 structural requirements (3a-3f)
 - [ ] Every FAIL has a concrete proposed fix (exact content to add, not just "add this section")

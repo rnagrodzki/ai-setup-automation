@@ -2,21 +2,18 @@
 
 ## Installation
 
-### Step 1 — Add the marketplace
+### Via Claude Code UI (recommended)
+
+1. Open Claude Code and run `/plugin`
+2. Go to **Marketplaces** → **Add marketplace** → enter `rnagrodzki/ai-setup-automation`
+3. Go to **Discover** → select `aisa` → **Install**
+
+### Via CLI
 
 ```text
 /plugin marketplace add rnagrodzki/ai-setup-automation
-```
-
-This registers the marketplace catalog with Claude Code. No plugins are installed yet.
-
-### Step 2 — Install the plugin
-
-```text
 /plugin install aisa@ai-setup-automation
 ```
-
-Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugin to install.
 
 ### Verifying Installation
 
@@ -29,23 +26,18 @@ After installation, start a new Claude Code session. You should see a message fr
 > **Note:** Commands and skills are namespaced with the plugin name. The `/setup` command
 > becomes `/aisa:setup`. See [Architecture](architecture.md#name-resolution) for details.
 
-## Updating Plugins
+## Updating
 
-### Refresh the marketplace catalog
+### Update via Claude Code UI (recommended)
+
+Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`.
+
+### Update via CLI
 
 ```text
 /plugin marketplace update ai-setup-automation
-```
-
-### Update the plugin
-
-```text
 /plugin update aisa@ai-setup-automation
 ```
-
-### Enable auto-update
-
-Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`.
 
 ### Migrating from older installs
 
@@ -78,27 +70,38 @@ The command will:
 
 If your project already has some AI configuration:
 
-```
+```text
 /aisa:audit
 ```
 
-This will review what exists and suggest improvements.
+This reviews what exists and suggests improvements without modifying any files.
 
-### Other `aisa` Commands
+---
 
-| Command | Purpose |
-|---|---|
-| `/aisa:postmortem` | Guided incident analysis — encodes lessons into skills to prevent recurrence |
-| `/aisa:validate` | Validate all skills and agents in `.claude/` against architectural principles |
+## Commands
+
+| Command | Description |
+| --- | --- |
+| [`/aisa:setup`](commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa:audit`](commands/audit.md) | Audit existing setup and suggest improvements |
+| [`/aisa:validate`](commands/validate.md) | Validate skills and agents against architectural principles |
+| [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
+| [`/aisa:evolve`](commands/evolve.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa:health`](commands/health.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa:target`](commands/target.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa:harvest`](commands/harvest.md) | Promote accumulated learnings into skills and docs |
+| [`/aisa:cache`](commands/cache.md) | Manage the snapshot cache for incremental scanning |
 
 ## What Gets Created
 
 | File/Directory | Purpose |
-|---|---|
+| --- | --- |
 | `CLAUDE.md` | Project context document for Claude |
 | `.claude/settings.json` | Permissions and environment config |
 | `.claude/skills/` | Directory for project-specific skills |
-| `.claude/commands/` | Directory for slash commands |
+| `.claude/agents/` | Directory for autonomous agent definitions |
+| `.claude/learnings/log.md` | Learning journal |
+| `.claude/cache/snapshot.json` | Incremental evolution cache |
 
 ## Next Steps
 

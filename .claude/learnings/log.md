@@ -12,7 +12,7 @@ Entries flow from incidents, debugging sessions, and evolution cycles.
 - **Discovery**: After PRs #2, #3, #4 added the `sdlc-utilities` plugin, namespace prefixes, `scripts/`, and CI enforcement, 25 specific documentation issues accumulated across 7 files. Root cause: the PR workflow (`creating-pull-requests` skill) has no quality gate checking whether structural docs (README, AGENTS.md, docs/) were updated to match code changes. `aisa-evolve-target` was never triggered post-merge despite being designed for exactly this.
 - **Impact**: HIGH — misleading docs for contributors; wrong naming conventions documented; entire `scripts/` directory undocumented; outdated PR template description in README vs actual 8-section skill.
 - **Action**: (1) Add "Documentation Sync" quality gate to `creating-pull-requests` skill. (2) Add Best Practice note in that skill recommending `/aisa-evolve-target` after structural changes. (3) Fix all 25 doc issues in 7 files. (4) Establish `.claude/learnings/` in this repo for future capture.
-- **Status**: ACTIVE
+- **Status**: RESOLVED — sdlc-utilities plugin removed; action items referencing `creating-pull-requests` skill are no longer applicable. Doc issues addressed in subsequent PRs.
 
 ### [PATTERN_FAILED] Prescriptive docs written without reading actual code
 
@@ -21,7 +21,7 @@ Entries flow from incidents, debugging sessions, and evolution cycles.
 - **Discovery**: `docs/adding-skills.md` recommends a gerund naming convention for skill directories (e.g., `writing-unit-tests`). 8 of 9 actual skills in the repo use a non-gerund prefix pattern (`aisa-init`, `aisa-evolve`, `aisa-evolve-*`). The doc was authored as prescriptive ideal without cross-referencing existing code — a violation of Behavioral Rule 2 ("code is ground truth").
 - **Impact**: MEDIUM — contributors following the docs would create skills with inconsistent naming.
 - **Action**: Fix `docs/adding-skills.md` to describe the actual naming pattern used. Document both the `<plugin-prefix>-<noun>` pattern (aisa skills) and the gerund pattern (sdlc skills) as context-specific conventions.
-- **Status**: ACTIVE
+- **Status**: RESOLVED — sdlc plugin removed; `docs/adding-skills.md` updated to document the prefix pattern only.
 
 ### [DOC_GAP] scripts/ directory entirely absent from all documentation
 
@@ -39,7 +39,7 @@ Entries flow from incidents, debugging sessions, and evolution cycles.
 - **Discovery**: `pr-prepare.js` embeds full `diffContent` in its JSON output, inflating it to ~150KB for a 16-file PR. When an agent runs `node pr-prepare.js | node -e "..."` to parse the output, the pipe silently truncates at ~65KB, producing "Unterminated string in JSON at position 65342". The `pr.md` command says "capture stdout as `PR_CONTEXT_JSON`" with no guidance for large outputs, so the natural interpretation (shell pipe) fails. Workaround: write to a temp file first (`node pr-prepare.js > /tmp/pr-context-$$.json`), then read from it. Same risk applies to `review-prepare.js`.
 - **Impact**: HIGH — `/sdlc:pr` fails silently on repos with large diffs; requires 3+ extra recovery steps.
 - **Action**: (1) Update `pr.md` command to prescribe temp-file write pattern. (2) Add GOTCHA section to `creating-pull-requests` SKILL.md. (3) Apply same fix to `review.md` / `reviewing-changes` SKILL.md. (4) Consider adding `--output-file` flag to both scripts.
-- **Status**: ACTIVE
+- **Status**: RESOLVED — sdlc plugin removed from repository.
 
 ### [GOTCHA] Hardcoded branch names in AGENTS.md become stale immediately
 

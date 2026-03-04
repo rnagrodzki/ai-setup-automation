@@ -70,7 +70,7 @@ Wait for explicit user choice:
 
 - **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:audit`) — locate
   `verify-setup.js` via Glob, run `health` and `validate` modes, present the structured
-  report, then suggest targeted fixes with `/aisa-evolve-target`. Do NOT proceed with setup.
+  report, then suggest targeted fixes with `aisa:aisa-evolve-target`. Do NOT proceed with setup.
 
 - **If "rebuild" (or 2)**: Confirm once more:
   `"This will permanently delete N skills and N agents. Type 'confirm' to proceed."`
@@ -161,5 +161,5 @@ Combine both outputs for the user:
 ### Next Steps
 - To add more skills: see https://github.com/rnagrodzki/ai-setup-automation/blob/main/docs/adding-skills.md
 - If issues found: run `/aisa:validate` for detailed principle compliance report
-- For scoped updates later: run `/aisa-evolve-target <area>`
+- For scoped updates later: run `aisa:aisa-evolve-target <area>`
 ```

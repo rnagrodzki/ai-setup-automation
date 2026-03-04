@@ -10,27 +10,53 @@
 
 This registers the marketplace catalog with Claude Code. No plugins are installed yet.
 
-### Step 2 — Install the plugins
+### Step 2 — Install the plugin
 
 ```text
-/plugin install ai-setup-automation@ai-setup-automation
-/plugin install sdlc-utilities@ai-setup-automation
+/plugin install aisa@ai-setup-automation
 ```
 
-Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugins to install.
+Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugin to install.
 
 ### Verifying Installation
 
-After installation, start a new Claude Code session. You should see messages from both plugins:
+After installation, start a new Claude Code session. You should see a message from the plugin:
 
 ```text
 [ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
-[sdlc-utilities] Plugin loaded. Use /sdlc:pr to create or update a pull request with an auto-generated description.
 ```
 
 > **Note:** Commands and skills are namespaced with the plugin name. The `/setup` command
-> becomes `/aisa:setup`, and `/pr` becomes `/sdlc:pr`. See
-> [Architecture](architecture.md#name-resolution) for details.
+> becomes `/aisa:setup`. See [Architecture](architecture.md#name-resolution) for details.
+
+## Updating Plugins
+
+### Refresh the marketplace catalog
+
+```text
+/plugin marketplace update ai-setup-automation
+```
+
+### Update the plugin
+
+```text
+/plugin update aisa@ai-setup-automation
+```
+
+### Enable auto-update
+
+Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`.
+
+### Migrating from older installs
+
+If you installed before the naming fix (when the plugin was `ai-setup-automation`), uninstall and reinstall:
+
+```text
+/plugin uninstall ai-setup-automation@ai-setup-automation
+/plugin install aisa@ai-setup-automation
+```
+
+See [Troubleshooting](../README.md#troubleshooting) in the README if you encounter "plugin not found" errors.
 
 ## First Use
 
@@ -65,29 +91,6 @@ This will review what exists and suggest improvements.
 | `/aisa:postmortem` | Guided incident analysis — encodes lessons into skills to prevent recurrence |
 | `/aisa:validate` | Validate all skills and agents in `.claude/` against architectural principles |
 
-### Code Review Setup
-
-The `sdlc-utilities` plugin provides a project-customizable multi-dimension code review system.
-
-**Step 1 — Create review dimensions** (one-time per project):
-
-```text
-/sdlc:review-init
-```
-
-Scans your tech stack and proposes tailored dimension files (security, API contracts,
-test coverage, etc.) in `.claude/review-dimensions/`. Run with `--add` to expand an
-existing set.
-
-**Step 2 — Run reviews** (on any feature branch):
-
-```text
-/sdlc:review
-```
-
-Matches dimensions to your changed files, dispatches parallel review subagents,
-deduplicates findings, and posts a consolidated comment to the PR.
-
 ## What Gets Created
 
 | File/Directory | Purpose |
@@ -96,7 +99,6 @@ deduplicates findings, and posts a consolidated comment to the PR.
 | `.claude/settings.json` | Permissions and environment config |
 | `.claude/skills/` | Directory for project-specific skills |
 | `.claude/commands/` | Directory for slash commands |
-| `.claude/review-dimensions/` | Per-project code review dimension files (created by `/sdlc:review-init`) |
 
 ## Next Steps
 

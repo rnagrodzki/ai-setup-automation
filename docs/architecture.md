@@ -6,9 +6,8 @@ This repository serves two roles:
 
 1. **Marketplace** — The root `.claude-plugin/marketplace.json` makes the repo installable
    as a Claude Code marketplace
-2. **Plugins** — Two plugins live under `plugins/`: `ai-setup-automation` (AI config scaffolding
-   and evolution) and `sdlc-utilities` (PR automation), each with their own skills, commands, hooks,
-   scripts, and optionally agents
+2. **Plugin** — One plugin lives under `plugins/ai-setup-automation/` (AI config scaffolding
+   and evolution) with its own skills, commands, hooks, and scripts
 
 ## Directory Structure
 
@@ -17,31 +16,21 @@ ai-setup-automation/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest (entry point)
 ├── plugins/
-│   ├── ai-setup-automation/      # Plugin 1: AI config scaffolding and evolution
-│   │   ├── .claude-plugin/
-│   │   │   └── plugin.json       # Plugin manifest (name: "aisa")
-│   │   ├── skills/               # Skill definitions
-│   │   │   └── <skill-name>/
-│   │   │       ├── SKILL.md      # Skill entry point (YAML frontmatter + instructions)
-│   │   │       └── *.md          # Optional supporting files
-│   │   ├── commands/             # Slash command definitions
-│   │   │   └── <command>.md      # Command file (YAML frontmatter + instructions)
-│   │   ├── hooks/
-│   │   │   └── hooks.json        # Hook configuration
-│   │   └── scripts/              # Node.js helper scripts invoked by skills via Bash
-│   │       ├── verify-setup.js   # Health check and principle compliance scanner
-│   │       ├── cache-snapshot.js # Snapshot hashing for cache-first scanning
-│   │       └── lib/              # Shared modules (discovery, compliance, hashing, etc.)
-│   └── sdlc-utilities/           # Plugin 2: SDLC automation
+│   └── ai-setup-automation/      # Plugin: AI config scaffolding and evolution
 │       ├── .claude-plugin/
-│       │   └── plugin.json       # Plugin manifest (name: "sdlc")
-│       ├── agents/               # Agent definitions (orchestrators spawned by skills)
+│       │   └── plugin.json       # Plugin manifest (name: "aisa")
 │       ├── skills/               # Skill definitions
+│       │   └── <skill-name>/
+│       │       ├── SKILL.md      # Skill entry point (YAML frontmatter + instructions)
+│       │       └── *.md          # Optional supporting files
 │       ├── commands/             # Slash command definitions
+│       │   └── <command>.md      # Command file (YAML frontmatter + instructions)
 │       ├── hooks/
 │       │   └── hooks.json        # Hook configuration
-│       └── scripts/
-│           └── validate-dimensions.js  # Validates .claude/review-dimensions/ files (D1–D12)
+│       └── scripts/              # Node.js helper scripts invoked by skills via Bash
+│           ├── verify-setup.js   # Health check and principle compliance scanner
+│           ├── cache-snapshot.js # Snapshot hashing for cache-first scanning
+│           └── lib/              # Shared modules (discovery, compliance, hashing, etc.)
 └── docs/                         # Documentation
 ```
 
@@ -58,7 +47,9 @@ When a user runs `/plugin marketplace add rnagrodzki/ai-setup-automation` in Cla
 2. Reads `.claude-plugin/marketplace.json`
 3. Discovers the listed plugins and makes them available to browse
 
-No plugins are installed yet at this point. The user must then run `/plugin install <name>@ai-setup-automation` (or use the interactive **Discover** tab in `/plugin`) to install each plugin.
+No plugins are installed yet at this point. The user must then run `/plugin install aisa@ai-setup-automation` (or use the interactive **Discover** tab in `/plugin`) to install each plugin.
+
+**Important:** The `name` in each `marketplace.json` plugin entry must match the `name` in the corresponding `plugin.json`. A mismatch causes "plugin not found" errors when users try to update via the `/plugin` UI, because Claude Code looks up the installed plugin identity (from `plugin.json`) in the marketplace catalog.
 
 ### Plugin Layer
 
@@ -77,14 +68,14 @@ with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<
 | File | `plugin.json` `name` | Resolved command |
 |---|---|---|
 | `commands/setup.md` | `aisa` | `/aisa:setup` |
-| `commands/pr.md` | `sdlc` | `/sdlc:pr` |
+| `commands/audit.md` | `aisa` | `/aisa:audit` |
 
 **Skills** — referenced as `<plugin-name>:<skill-name>`:
 
 | Directory | `plugin.json` `name` | Resolved name |
 |---|---|---|
 | `skills/aisa-init/` | `aisa` | `aisa:aisa-init` |
-| `skills/creating-pull-requests/` | `sdlc` | `sdlc:creating-pull-requests` |
+| `skills/aisa-evolve/` | `aisa` | `aisa:aisa-evolve` |
 
 The `name` field in `plugin.json` is the namespace prefix — **not** the directory name. Keep it
 stable — renaming it changes every command and skill name for all installed users.

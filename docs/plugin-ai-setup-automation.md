@@ -212,15 +212,15 @@ Thin wrapper around the `aisa-evolve-validate` skill. Validates all `.claude/` s
 ## Lifecycle Diagram
 
 ```text
-New project ──→ /aisa-init ──→ daily development ──→ /aisa-evolve-target (after features)
+New project ──→ /aisa:setup ──→ daily development ──→ aisa:aisa-evolve-target (after features)
                     │                  │                       │
-                    │                  ├── /aisa-evolve-health (weekly)
-                    │                  ├── /aisa-evolve-harvest (when log fills up)
-                    │                  ├── /aisa-evolve-validate (after adding/editing skills)
-                    │                  ├── /aisa-evolve (every 2-4 weeks)
-                    │                  └── /aisa-evolve-postmortem (after incidents)
+                    │                  ├── aisa:aisa-evolve-health (weekly)
+                    │                  ├── aisa:aisa-evolve-harvest (when log fills up)
+                    │                  ├── aisa:aisa-evolve-validate (after adding/editing skills)
+                    │                  ├── aisa:aisa-evolve (every 2-4 weeks)
+                    │                  └── aisa:aisa-evolve-postmortem (after incidents)
                     │
-                    └── /aisa-evolve-cache (auto-rebuilt after each cycle)
+                    └── aisa:aisa-evolve-cache (auto-rebuilt after each cycle)
 ```
 
 ---

@@ -32,7 +32,7 @@ If `.claude/` or the skill is missing, stop and tell the user:
 
 ```
 This project doesn't have AI skills configured yet.
-Run /setup first to set up the AI configuration, then come back for the post-mortem.
+Run /aisa:setup first to set up the AI configuration, then come back for the post-mortem.
 ```
 
 ### Step 2: Gather Incident Context

@@ -1,6 +1,6 @@
 ---
-name: aisa-evolve-target
-description: "Targeted evolution after a specific change (new feature, refactor, new integration). Scans only the affected area, updates relevant skills/agents, proposes new ones if needed. Faster than full /aisa-evolve — use after shipping a feature or completing a refactor."
+name: aisa-updater
+description: "Scoped update of skills/agents after a specific change — uses git diff to limit scope, flags out-of-scope drift without fixing it. Faster than full sync. Use after shipping a feature or completing a refactor."
 argument-hint: "<description of what changed>"
 user-invocable: false
 ---
@@ -55,11 +55,11 @@ For ONLY the affected agents:
 - Do they still load the right skills?
 - Do their workflows still make sense after the change?
 
-Validate against Agent Principles A1-A6 from `.claude/skills/aisa-evolve-principles/SKILL.md`.
+Validate against Agent Principles A1-A6 from `.claude/skills/aisa-principles/SKILL.md`.
 
 Workflow maturity checks on affected skills:
 
-Validate against Skill Principles P1-P3 from `.claude/skills/aisa-evolve-principles/SKILL.md`.
+Validate against Skill Principles P1-P3 from `.claude/skills/aisa-principles/SKILL.md`.
 If the change removed required sections, restore them.
 
 For CLAUDE.md:
@@ -124,9 +124,9 @@ chore: update skills/agents for {change description}
 
 - **DO**: Update everything affected by the described change
 - **DO**: Flag drift found outside the scope (in "Also Noticed")
-- **DO NOT**: Fix drift outside the described scope (save for `/aisa-evolve`)
+- **DO NOT**: Fix drift outside the described scope (save for `/aisa-syncer`)
 - **DO NOT**: Create new skills for areas unrelated to the change
-- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa-evolve` territory
+- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa-syncer` territory
 - **NOTE**: `openspec-*` are external framework skills — do not check/enforce workflow maturity patterns on them
 
 ## Quality Gate
@@ -147,9 +147,9 @@ After changes are committed, partially update `.claude/cache/snapshot.json`:
 
 ## See Also
 
-- After applying targeted fixes → run `/aisa-evolve-validate` on modified files
-- If "Also Noticed" section has many items → schedule full `/aisa-evolve`
-- If the change caused an incident → use `/aisa-evolve-postmortem` instead
+- After applying targeted fixes → run `/aisa-linter` on modified files
+- If "Also Noticed" section has many items → schedule full `/aisa-syncer`
+- If the change caused an incident → use `/aisa-postmortem` instead
 
 ## Learning Capture
 

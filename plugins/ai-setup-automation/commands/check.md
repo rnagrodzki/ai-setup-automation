@@ -1,17 +1,17 @@
 ---
-description: Run a quick read-only health check of the project's .claude/ setup
+description: Quick read-only drift check — reports status of every skill, agent, and CLAUDE.md file
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite]
 ---
 
-# /health Command
+# /check Command
 
-Quick health check of the `.claude/` setup — read-only drift scan with no changes unless critical
+Quick read-only drift check of the `.claude/` setup — no changes unless critical
 issues are found. Reports status of every skill, agent, and CLAUDE.md file.
 
 ## Usage
 
-- `/aisa:health` — Run health check across the full `.claude/` setup
+- `/aisa:check` — Run drift check across the full `.claude/` setup
 
 ## Workflow
 
-Invoke the `aisa-evolve-health` skill.
+Invoke the `aisa-checker` skill.

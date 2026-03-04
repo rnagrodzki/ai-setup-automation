@@ -1,22 +1,22 @@
 ---
-description: Run a targeted skills/agents update after a specific change
+description: Update skills/agents affected by a specific feature, refactor, or integration
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite, Write, Edit]
 argument-hint: "<description of what changed>"
 ---
 
-# /target Command
+# /update Command
 
-Scoped evolution after a specific feature, refactor, or integration. Scans only the affected area
-and updates relevant skills/agents without running a full evolution cycle.
+Scoped update after a specific feature, refactor, or integration. Scans only the affected area
+and updates relevant skills/agents without running a full sync cycle.
 
 ## Usage
 
-- `/aisa:target <description>` — Update skills for the described change
+- `/aisa:update <description>` — Update skills for the described change
 
 Examples:
-- `/aisa:target added Stripe webhook handler for subscription cancellation`
-- `/aisa:target refactored auth module from sessions to JWT`
+- `/aisa:update added Stripe webhook handler for subscription cancellation`
+- `/aisa:update refactored auth module from sessions to JWT`
 
 ## Workflow
 
-Invoke the `aisa-evolve-target` skill, passing `$ARGUMENTS` as the change description.
+Invoke the `aisa-updater` skill, passing `$ARGUMENTS` as the change description.

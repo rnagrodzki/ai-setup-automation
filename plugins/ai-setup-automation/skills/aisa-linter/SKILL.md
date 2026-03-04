@@ -1,6 +1,6 @@
 ---
-name: aisa-evolve-validate
-description: "Validate all skills and agents against architectural principles — self-learning, Plan→Critique→Improve→Do→Critique→Improve, structural completeness. Does NOT check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing."
+name: aisa-linter
+description: "Lint skills/agents for structural completeness and principle compliance (P1-P3, A1-A6) — does not check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing."
 argument-hint: "[path-to-specific-file-or-directory]"
 user-invocable: false
 ---
@@ -9,7 +9,7 @@ user-invocable: false
 
 Validate `.claude/` skills and agents against architectural principles and workflow patterns.
 Checks structural correctness and required patterns — does NOT verify content accuracy
-against the codebase (that's `/aisa-evolve-health`'s job).
+against the codebase (that's `/aisa-checker`'s job).
 
 Use this when: new skills/agents are introduced, before committing skill changes, after manual edits,
 or as a pre-flight gate in any workflow that creates/modifies `.claude/` files.
@@ -23,7 +23,7 @@ If not provided, validate ALL skills and agents in `.claude/`.
 
 Read the detailed check procedures in `REFERENCE.md` (in this skill's directory) for exact
 grep patterns and validation logic. The principle definitions are in
-`.claude/skills/aisa-evolve-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
+`.claude/skills/aisa-principles/SKILL.md` (Skill P1-P3, Agent A1-A6).
 
 ### Step 1 — Run the Validation Script
 
@@ -55,7 +55,7 @@ Focus your effort on items the script cannot evaluate mechanically:
 
 The script covers 3a-3f mechanically. If `$ARGUMENTS` targets a specific agent and you need
 deeper analysis, cross-reference with the Agent Principle Checklist in
-`.claude/skills/aisa-evolve-principles/SKILL.md` (A1-A6).
+`.claude/skills/aisa-principles/SKILL.md` (A1-A6).
 
 ### Step 4 — Report
 
@@ -70,7 +70,7 @@ If issues found:
 1. Present report and proposed fixes
 2. Ask: "Apply all fixes? / Select which to apply? / Report only?"
 3. If approved: apply surgically — insert missing pieces only. Use templates from
-   `.claude/skills/aisa-evolve-principles/SKILL.md` for missing sections.
+   `.claude/skills/aisa-principles/SKILL.md` for missing sections.
 4. Commit: `chore: fix principle compliance in {N} skills/agents`
 
 ## Quality Gate

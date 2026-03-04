@@ -1,12 +1,12 @@
-# `/aisa:evolve` — Run a full evolution cycle
+# `/aisa:sync` — Full sync cycle
 
-Runs the complete 7-phase evolution pipeline: snapshot the current state, detect drift between skills and the live codebase, harvest accumulated learnings, identify expansion needs, produce a prioritized change plan, critique it, then execute. User approval is required at three points — after the drift audit, after the change plan, and after critique — before proceeding.
+Runs the complete 7-phase sync pipeline: snapshot the current state, detect drift between skills and the live codebase, harvest accumulated learnings, identify expansion needs, produce a prioritized change plan, critique it, then execute. User approval is required at three points — after the drift audit, after the change plan, and after critique — before proceeding.
 
 ## Usage
 
 ```text
-/aisa:evolve
-/aisa:evolve <focus-area>
+/aisa:sync
+/aisa:sync <focus-area>
 ```
 
 ## Flags
@@ -18,19 +18,19 @@ Runs the complete 7-phase evolution pipeline: snapshot the current state, detect
 ## Examples
 
 ```text
-/aisa:evolve
+/aisa:sync
 ```
 
 > Full cycle across all skills and agents. Pauses for approval after the drift audit, the change plan, and the critique. Rebuilds the cache on completion.
 
 ```text
-/aisa:evolve payment-integration
+/aisa:sync payment-integration
 ```
 
 > Same cycle, but drift analysis and expansion suggestions concentrate on payment-related skills first.
 
 ```text
-/aisa:evolve auth module refactor
+/aisa:sync auth module refactor
 ```
 
 > Focuses the evolution on authentication-related skills and agents.
@@ -54,7 +54,7 @@ The command will not delete skills or agents without explicit user approval.
 
 ## Related Commands
 
-- [`/aisa:health`](health.md) — lighter-weight read-only scan for weekly use
-- [`/aisa:target`](target.md) — scoped update after a single feature or refactor (faster)
+- [`/aisa:check`](check.md) — lighter-weight read-only scan for weekly use
+- [`/aisa:update`](update.md) — scoped update after a single feature or refactor (faster)
 - [`/aisa:cache`](cache.md) — manually manage the snapshot cache to reduce token use
-- [`/aisa:harvest`](harvest.md) — promote learnings without running a full evolution cycle
+- [`/aisa:harvest`](harvest.md) — promote learnings without running a full sync cycle

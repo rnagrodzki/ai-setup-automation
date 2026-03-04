@@ -1,6 +1,6 @@
 ---
-name: aisa-evolve-health
-description: "Quick health check of the .claude/ setup. Runs snapshot and drift audit only — no expansion, no changes unless critical issues found. Use weekly or before sprints."
+name: aisa-checker
+description: "Quick read-only drift check — runs snapshot + drift audit phases only, auto-fixes only CRITICAL issues with approval. Use weekly or before sprints."
 user-invocable: false
 ---
 
@@ -11,7 +11,7 @@ Lightweight verification — read-only unless critical drift is found.
 ## Instructions
 
 Execute only Phase 1 (Snapshot) and Phase 2 (Drift Audit) from the Evolver pipeline
-defined in `.claude/skills/aisa-evolve/REFERENCE.md`.
+defined in `.claude/skills/aisa-syncer/REFERENCE.md`.
 
 **Do NOT execute** Phases 3-7. This is a diagnostic, not an update cycle.
 
@@ -43,7 +43,7 @@ classified as MODIFIED or OUTDATED, pick the single most critical code example
 from the skill and compare against the actual source file. Skip pure rule/convention
 skills with no code examples.
 
-**Checks NOT run in health mode** (save for full `/aisa-evolve`):
+**Checks NOT run in health mode** (save for full `/aisa-syncer`):
 - Symbol verification (Pass B) — expensive grep across src
 - Error code verification (Pass C) — expensive cross-reference
 - Route/endpoint verification (Pass D) — needs router analysis
@@ -93,7 +93,7 @@ Present a concise health report:
 
 ### Learnings Inbox
 - ACTIVE entries: {N} (oldest: {date})
-- Recommended: {run /aisa-evolve-harvest if >10 ACTIVE entries or oldest >2 weeks}
+- Recommended: {run /aisa-harvester if >10 ACTIVE entries or oldest >2 weeks}
 
 ### Recommended Actions
 1. {highest priority action}
@@ -107,7 +107,7 @@ If CRITICAL drift is found (a skill states something actively wrong):
 
 - Present the issue and ask for permission to apply a targeted fix
 - If approved: fix only the CRITICAL items, commit with message `fix: correct critical skill drift in {file}`
-- Do NOT fix OUTDATED or STALE items — those require the full `/aisa-evolve` cycle
+- Do NOT fix OUTDATED or STALE items — those require the full `/aisa-syncer` cycle
 
 ## Quality Gate
 
@@ -129,10 +129,10 @@ with their hashes and principle compliance flags.
 
 ## See Also
 
-- If CRITICAL drift found → apply fix, then run `/aisa-evolve-validate` to verify principle compliance
-- If >10 ACTIVE learning entries → run `/aisa-evolve-harvest`
-- If significant drift across many skills → run full `/aisa-evolve`
-- If OUTDATED skills need updating → run `/aisa-evolve-target <area>` for scoped fixes
+- If CRITICAL drift found → apply fix, then run `/aisa-linter` to verify principle compliance
+- If >10 ACTIVE learning entries → run `/aisa-harvester`
+- If significant drift across many skills → run full `/aisa-syncer`
+- If OUTDATED skills need updating → run `/aisa-updater <area>` for scoped fixes
 
 ## Learning Capture
 

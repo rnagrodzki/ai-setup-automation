@@ -1,13 +1,13 @@
 ---
-name: aisa-evolve-cache
-description: "Manage the .claude/cache/ snapshot for incremental skill/agent audits. Generates file hashes and drift baselines so subsequent aisa-evolve runs skip unchanged content, reducing token consumption by 60-80% on large setups. Run after any aisa-evolve cycle or manually to refresh the cache."
+name: aisa-cacher
+description: "Manage .claude/cache/ snapshots for incremental scanning — supports rebuild, status, and invalidate sub-commands. Reduces token consumption by 60-80% by skipping unchanged content. Run after any sync cycle or manually to refresh."
 argument-hint: "[rebuild|status|invalidate]"
 user-invocable: false
 ---
 
 # Cache Management for Incremental Evolution
 
-Maintain `.claude/cache/` so that `aisa-evolve`, `aisa-evolve-health`, and `aisa-evolve-validate` can
+Maintain `.claude/cache/` so that `aisa-syncer`, `aisa-checker`, and `aisa-linter` can
 skip unchanged files and focus tokens only on what actually changed since the last audit.
 
 ## Cache Structure
@@ -23,7 +23,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 ```json
 {
   "generated_at": "2025-02-23T14:30:00Z",
-  "generated_by": "aisa-evolve v8.0",
+  "generated_by": "aisa-syncer v8.0",
   "project_root_hash": "<sha256 of sorted ls -la on project root>",
   "skills": {
     "identity-coding-standards": {
@@ -74,7 +74,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 ```json
 {
   "generated_at": "2025-02-23T14:35:00Z",
-  "generated_by": "aisa-evolve-health",
+  "generated_by": "aisa-checker",
   "overall_status": "NEEDS_ATTENTION",
   "results": {
     "identity-coding-standards": {
@@ -95,7 +95,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 
 ### `$ARGUMENTS` = `rebuild` (or empty)
 
-Full rebuild of snapshot.json. Use after a complete aisa-evolve cycle or when cache is suspected stale.
+Full rebuild of snapshot.json. Use after a complete aisa-syncer cycle or when cache is suspected stale.
 
 Locate the script with `Glob` for `**/cache-snapshot.js`, then run from the project root:
 
@@ -114,7 +114,7 @@ marketplace root, or can be located with `Glob` pattern `**/cache-snapshot.js`.
 - For each skill: detects Quality Gates, Learning Capture, and PCIDCI workflow via regex patterns
 - For each agent: validates frontmatter fields, tool list, self-review, and learning capture
 - During incremental scans: trust cached flags for hash-matching files (don't re-read to verify)
-- Flags are only re-evaluated when the file hash changes or when `/aisa-evolve-validate` runs explicitly
+- Flags are only re-evaluated when the file hash changes or when `/aisa-linter` runs explicitly
 
 Write to `.claude/cache/snapshot.json`.
 
@@ -144,7 +144,7 @@ report to stdout:
 
 ### `$ARGUMENTS` = `invalidate`
 
-Delete the cache files, forcing a full scan on the next aisa-evolve run:
+Delete the cache files, forcing a full scan on the next aisa-syncer run:
 
 ```bash
 node <plugin-path>/scripts/cache-snapshot.js invalidate --project-root .
@@ -154,7 +154,7 @@ node <plugin-path>/scripts/cache-snapshot.js invalidate --project-root .
 
 ### Incremental Scan Protocol
 
-When any `aisa-evolve-*` skill starts, it should:
+When any `aisa-*` skill starts, it should:
 
 1. **Check** if `.claude/cache/snapshot.json` exists
 2. If YES → **compare** current file hashes against cached hashes
@@ -177,18 +177,18 @@ When any `aisa-evolve-*` skill starts, it should:
 ### Cache Invalidation Triggers
 
 The cache should be fully rebuilt when:
-- `aisa-evolve` completes a full cycle (it rebuilds automatically)
-- `aisa-init` generates a new setup
-- User runs `/aisa-evolve-cache rebuild`
+- `aisa-syncer` completes a full cycle (it rebuilds automatically)
+- `aisa-scaffolder` generates a new setup
+- User runs `/aisa-cacher rebuild`
 
 The cache should be partially invalidated when:
-- `aisa-evolve-target` updates specific skills (update only those entries)
-- `aisa-evolve-harvest` promotes learnings to skills (update promoted targets)
-- `aisa-evolve-postmortem` modifies skills (update modified entries)
+- `aisa-updater` updates specific skills (update only those entries)
+- `aisa-harvester` promotes learnings to skills (update promoted targets)
+- `aisa-postmortem` modifies skills (update modified entries)
 
 ## Auto-Rebuild After Evolution
 
-Every `aisa-evolve` full cycle should, as its final step, rebuild the cache:
+Every `aisa-syncer` full cycle should, as its final step, rebuild the cache:
 
 ```
 Phase 7 — Execute → apply approved changes

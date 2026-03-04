@@ -1,5 +1,5 @@
 ---
-name: aisa-evolve-principles
+name: aisa-principles
 description: "Shared architectural principles, tool registry, and behavioral rules for all aisa-* skills. Not invoked directly — loaded as a dependency by other skills."
 user-invocable: false
 ---

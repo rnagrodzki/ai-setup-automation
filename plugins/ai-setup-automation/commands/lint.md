@@ -1,19 +1,19 @@
 ---
-description: Validate skills and agents against architectural principles
+description: Lint skills and agents for structural completeness and principle compliance (does not check codebase accuracy)
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite]
 argument-hint: "[path-to-specific-file-or-directory]"
 ---
 
-# /validate Command
+# /lint Command
 
-Validate `.claude/` skills and agents against architectural principles — structural completeness,
+Lint `.claude/` skills and agents for structural completeness and principle compliance —
 self-learning directives, and Plan→Critique→Improve→Do→Critique→Improve patterns. Does NOT check codebase accuracy.
 
 ## Usage
 
-- `/validate` — Validate all skills and agents in `.claude/`
-- `/validate <path>` — Validate only the specified file or directory
+- `/aisa:lint` — Lint all skills and agents in `.claude/`
+- `/aisa:lint <path>` — Lint only the specified file or directory
 
 ## Workflow
 
-Invoke the `aisa-evolve-validate` skill, passing `$ARGUMENTS` as the target scope.
+Invoke the `aisa-linter` skill, passing `$ARGUMENTS` as the target scope.

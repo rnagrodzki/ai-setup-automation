@@ -1,6 +1,6 @@
 ---
-name: aisa-init
-description: "Analyze this project and generate a complete .claude/ setup (skills, agents, CLAUDE.md) from scratch. Use when setting up a new project or doing a full rebuild of the AI-assisted development configuration. Scans code, docs, specs, and learnings across technical, business, and design domains."
+name: aisa-scaffolder
+description: "Scan project tech stack and generate a complete .claude/ setup (CLAUDE.md, skills, agents, learnings, cache) from scratch. Use when setting up a new project or doing a full rebuild of the AI-assisted development configuration."
 argument-hint: "[specs-path]"
 user-invocable: false
 ---
@@ -41,7 +41,7 @@ Phase 6 — Wiring & Validation → write files, verify references, commit
 ## Principle Enforcement on Generated Output
 
 Every skill and agent you generate MUST pass the principle checklists defined in
-`.claude/skills/aisa-evolve-principles/SKILL.md` (Skill Principles P1-P3, Agent Principles A1-A6).
+`.claude/skills/aisa-principles/SKILL.md` (Skill Principles P1-P3, Agent Principles A1-A6).
 Validate before completing Phase 5. Exception: `openspec-*` skills are exempt from Quality Gates.
 
 If any generated file fails these checks → fix it before moving to Phase 6. Do not defer.
@@ -55,7 +55,7 @@ After Phase 5 (Generation Critique) — present quality scores, wait for approva
 ## Execution Mode Recommendation
 
 During Phase 2 (Architecture Design), assess the planned topology size and recommend an
-execution mode for `aisa-evolve` lifecycle. Include in CLAUDE.md if Agent Teams are warranted.
+execution mode for `aisa-syncer` lifecycle. Include in CLAUDE.md if Agent Teams are warranted.
 
 ## Output
 

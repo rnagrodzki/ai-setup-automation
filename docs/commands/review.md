@@ -1,11 +1,11 @@
-# `/aisa:audit` — Audit existing AI configuration
+# `/aisa:review` — Deep review of existing AI configuration
 
 Runs a read-only mechanical audit of your `.claude/` setup. It checks every skill and agent against structural and principle requirements, verifies that file references exist on disk, and spots content accuracy issues that automated scripts cannot catch. No files are created or modified.
 
 ## Usage
 
 ```text
-/aisa:audit
+/aisa:review
 ```
 
 ## Flags
@@ -15,7 +15,7 @@ This command takes no arguments.
 ## Examples
 
 ```text
-/aisa:audit
+/aisa:review
 ```
 
 > Prints a two-part report:
@@ -33,12 +33,12 @@ This command takes no arguments.
 
 Nothing — this command is fully read-only. To act on findings:
 
-- Principle compliance failures → [`/aisa:validate`](validate.md) (can auto-fix with approval)
-- Outdated or missing skills → [`/aisa:target`](target.md)
-- Setup too far from current codebase → [`/aisa:evolve`](evolve.md) or [`/aisa:setup`](setup.md)
+- Principle compliance failures → [`/aisa:lint`](lint.md) (can auto-fix with approval)
+- Outdated or missing skills → [`/aisa:update`](update.md)
+- Setup too far from current codebase → [`/aisa:sync`](sync.md) or [`/aisa:setup`](setup.md)
 
 ## Related Commands
 
-- [`/aisa:validate`](validate.md) — deeper principle compliance check with proposed fixes
-- [`/aisa:health`](health.md) — lighter-weight weekly drift scan
-- [`/aisa:evolve`](evolve.md) — full update cycle when audit reveals significant drift
+- [`/aisa:lint`](lint.md) — deeper principle compliance check with proposed fixes
+- [`/aisa:check`](check.md) — lighter-weight weekly drift scan
+- [`/aisa:sync`](sync.md) — full update cycle when review reveals significant drift

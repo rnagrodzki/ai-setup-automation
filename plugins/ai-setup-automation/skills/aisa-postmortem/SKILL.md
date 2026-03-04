@@ -1,6 +1,6 @@
 ---
-name: aisa-evolve-postmortem
-description: "Post-mortem integration after incidents, difficult bugs, or production issues. Creates learning entries, identifies which skills should have prevented the issue, and proposes skill updates to prevent recurrence. Use after any painful debugging session."
+name: aisa-postmortem
+description: "Turn incidents into prevention — root-cause-to-skill-gap analysis, learning entries, and targeted skill updates. Use after any painful debugging session, production issue, or difficult bug."
 argument-hint: "<describe the incident or bug>"
 user-invocable: false
 ---
@@ -138,7 +138,7 @@ Before presenting the post-mortem proposal, verify:
 
 **Principle compliance** — apply to all affected skills and agents:
 
-Validate against Skill P1-P3 and Agent A1-A6 from `.claude/skills/aisa-evolve-principles/SKILL.md`.
+Validate against Skill P1-P3 and Agent A1-A6 from `.claude/skills/aisa-principles/SKILL.md`.
 Missing principles in affected files → include in proposed fixes. New skills include both
 Quality Gates and Learning Capture from creation.
 
@@ -149,9 +149,9 @@ for modified/new skills and agents. Update `drift-report.json` to mark fixed fil
 
 ## See Also
 
-- After applying fixes → run `/aisa-evolve-validate` to verify principle compliance
-- If many skills were updated → run `/aisa-evolve-health` to check overall health
-- To process accumulated learning entries → run `/aisa-evolve-harvest`
+- After applying fixes → run `/aisa-linter` to verify principle compliance
+- If many skills were updated → run `/aisa-checker` to check overall health
+- To process accumulated learning entries → run `/aisa-harvester`
 
 ## Learning Capture
 

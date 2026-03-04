@@ -68,14 +68,14 @@ with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<
 | File | `plugin.json` `name` | Resolved command |
 |---|---|---|
 | `commands/setup.md` | `aisa` | `/aisa:setup` |
-| `commands/audit.md` | `aisa` | `/aisa:audit` |
+| `commands/review.md` | `aisa` | `/aisa:review` |
 
 **Skills** — referenced as `<plugin-name>:<skill-name>`:
 
 | Directory | `plugin.json` `name` | Resolved name |
 |---|---|---|
-| `skills/aisa-init/` | `aisa` | `aisa:aisa-init` |
-| `skills/aisa-evolve/` | `aisa` | `aisa:aisa-evolve` |
+| `skills/aisa-scaffolder/` | `aisa` | `aisa:aisa-scaffolder` |
+| `skills/aisa-syncer/` | `aisa` | `aisa:aisa-syncer` |
 
 The `name` field in `plugin.json` is the namespace prefix — **not** the directory name. Keep it
 stable — renaming it changes every command and skill name for all installed users.

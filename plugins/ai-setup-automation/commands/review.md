@@ -1,17 +1,17 @@
 ---
-description: Audit existing AI configuration and suggest improvements
+description: Deep review of .claude/ setup — runs verification scripts, checks content accuracy, and reports prioritized recommendations
 allowed-tools: [Read, Glob, Grep, Bash, TodoWrite]
 ---
 
-# /audit Command
+# /review Command
 
-Audit the AI configuration for the current project. Runs mechanical verification
+Deep review of the AI configuration for the current project. Runs mechanical verification
 to report exactly what exists, what passes checks, what fails, and why. Does not
 create or modify any files.
 
 ## Usage
 
-- `/audit` — Review existing AI configuration and report gaps
+- `/review` — Deep review of existing AI configuration and report gaps
 
 ## Workflow
 
@@ -65,7 +65,7 @@ proposed fix for every failure.
 Present the report in two clearly labeled sections.
 
 ```text
-## AI Configuration Audit — [project name]
+## AI Configuration Review — [project name]
 
 Detected stack: [language], [framework], [build tool]
 
@@ -113,6 +113,6 @@ Supplementary: [N] additional findings
 
 Do not create any files. To address issues found, suggest:
 
-- Principle compliance failures → `/aisa:validate` (can auto-fix with approval)
-- Missing or outdated skills/agents → `aisa:aisa-evolve-target <area>`
+- Principle compliance failures → `/aisa:lint` (can auto-fix with approval)
+- Missing or outdated skills/agents → `/aisa:update <area>`
 - Full rebuild needed → `/aisa:setup`

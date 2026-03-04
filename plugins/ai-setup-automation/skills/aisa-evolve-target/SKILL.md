@@ -2,6 +2,7 @@
 name: aisa-evolve-target
 description: "Targeted evolution after a specific change (new feature, refactor, new integration). Scans only the affected area, updates relevant skills/agents, proposes new ones if needed. Faster than full /aisa-evolve — use after shipping a feature or completing a refactor."
 argument-hint: "<description of what changed>"
+user-invocable: false
 ---
 
 # Targeted Skills & Agents Update

@@ -2,6 +2,7 @@
 name: aisa-evolve-cache
 description: "Manage the .claude/cache/ snapshot for incremental skill/agent audits. Generates file hashes and drift baselines so subsequent aisa-evolve runs skip unchanged content, reducing token consumption by 60-80% on large setups. Run after any aisa-evolve cycle or manually to refresh the cache."
 argument-hint: "[rebuild|status|invalidate]"
+user-invocable: false
 ---
 
 # Cache Management for Incremental Evolution

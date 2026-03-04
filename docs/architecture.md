@@ -89,11 +89,21 @@ contain a `SKILL.md` file with YAML frontmatter:
 ---
 name: skill-name
 description: "When Claude should invoke this skill (max 1024 characters)"
+argument-hint: "[optional-arg]"   # shown in the UI when user types the skill name
+user-invocable: false             # hide from the / menu (Claude can still auto-invoke)
 ---
 ```
 
-The `description` field is critical — Claude uses it to decide when to activate the
-skill. Write it as a trigger condition, not a summary.
+**Frontmatter fields:**
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `name` | Yes | Skill identifier (max 64 characters). Combined with plugin name to form `<plugin>:<skill>`. |
+| `description` | Yes | When Claude should invoke this skill (max 1024 characters). Write as a trigger condition, not a summary. |
+| `argument-hint` | No | Hint shown in the UI when the user types the skill name. |
+| `user-invocable` | No | Set to `false` to hide from the `/` menu. Claude can still auto-invoke it. Default: `true`. |
+
+The `description` field is critical — Claude uses it to decide when to activate the skill.
 
 Supporting files (`.md` templates, checklists, scripts) live alongside `SKILL.md` in
 the same directory. Reference them with relative paths like `./supporting-file.md`.

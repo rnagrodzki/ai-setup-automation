@@ -5,7 +5,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 ## What It Does
 
 - Detects your tech stack and scaffolds a `.claude/` directory with `CLAUDE.md`, skills, commands, and settings
-- Provides 9 built-in skills for initial setup, ongoing evolution, health checks, and post-incident learning
+- Provides 9 commands covering the full lifecycle: setup, auditing, evolution, health checks, and post-incident learning
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
@@ -15,7 +15,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 
 **Cache-First Audits** — Snapshot hashing skips unchanged files entirely, cutting token consumption by 60–80% on typical runs. Weekly health checks become fast enough to actually run weekly.
 
-**Enforced Dual Critique Gates** — Every workflow critiques the plan before executing and reviews output before delivery. `aisa-evolve-validate` flags any skill that skips either gate.
+**Enforced Dual Critique Gates** — Every workflow critiques the plan before executing and reviews output before delivery. `/aisa:validate` flags any skill that skips either gate.
 
 ---
 
@@ -97,7 +97,7 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 
 **Highlights:**
 
-- **9 built-in skills** covering the full lifecycle: initial setup, health checks, targeted updates, full evolution cycles, incident post-mortems, and learning harvest
+- **9 commands** covering the full lifecycle: initial setup, health checks, targeted updates, full evolution cycles, incident post-mortems, and learning harvest
 - **Cache-first scanning** reduces token consumption by 60–80% on repeat runs
 - **Self-learning loop** — incidents get encoded into skills so the same mistake cannot recur
 - **Dual critique gates** enforced on every workflow: critique the plan, then critique the output
@@ -106,8 +106,13 @@ Creates and continuously evolves AI-ready project configurations (`CLAUDE.md`, `
 | --- | --- |
 | `/aisa:setup` | Detect tech stack and scaffold full `.claude/` configuration |
 | `/aisa:audit` | Audit existing setup and suggest improvements |
-| `/aisa:postmortem` | Guided incident analysis; encode lessons into skills |
 | `/aisa:validate` | Validate skills and agents against architectural principles |
+| `/aisa:postmortem` | Guided incident analysis; encode lessons into skills |
+| `/aisa:evolve` | Full evolution cycle — verify, update, and expand `.claude/` |
+| `/aisa:health` | Quick read-only health check; reports drift status per file |
+| `/aisa:target` | Targeted update after a specific feature, refactor, or integration |
+| `/aisa:harvest` | Promote accumulated learnings into skills and docs |
+| `/aisa:cache` | Manage the snapshot cache for incremental scanning |
 
 > **[Full reference →](docs/plugin-ai-setup-automation.md)** Skills, recommended cadence, lifecycle diagram, execution modes, core principles
 

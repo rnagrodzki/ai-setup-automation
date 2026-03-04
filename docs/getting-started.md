@@ -13,8 +13,8 @@ This registers the marketplace catalog with Claude Code. No plugins are installe
 ### Step 2 — Install the plugins
 
 ```text
-/plugin install ai-setup-automation@ai-setup-automation
-/plugin install sdlc-utilities@ai-setup-automation
+/plugin install aisa@ai-setup-automation
+/plugin install sdlc@ai-setup-automation
 ```
 
 Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugins to install.
@@ -31,6 +31,38 @@ After installation, start a new Claude Code session. You should see messages fro
 > **Note:** Commands and skills are namespaced with the plugin name. The `/setup` command
 > becomes `/aisa:setup`, and `/pr` becomes `/sdlc:pr`. See
 > [Architecture](architecture.md#name-resolution) for details.
+
+## Updating Plugins
+
+### Refresh the marketplace catalog
+
+```text
+/plugin marketplace update ai-setup-automation
+```
+
+### Update individual plugins
+
+```text
+/plugin update aisa@ai-setup-automation
+/plugin update sdlc@ai-setup-automation
+```
+
+### Enable auto-update
+
+Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`.
+
+### Migrating from older installs
+
+If you installed before the naming fix (when plugins were `ai-setup-automation` and `sdlc-utilities`), uninstall and reinstall:
+
+```text
+/plugin uninstall ai-setup-automation@ai-setup-automation
+/plugin uninstall sdlc-utilities@ai-setup-automation
+/plugin install aisa@ai-setup-automation
+/plugin install sdlc@ai-setup-automation
+```
+
+See [Troubleshooting](../README.md#troubleshooting) in the README if you encounter "plugin not found" errors.
 
 ## First Use
 

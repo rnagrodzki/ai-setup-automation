@@ -41,8 +41,8 @@ This registers the marketplace catalog. No plugins are installed yet.
 ### Step 2 — Install the plugins
 
 ```text
-/plugin install ai-setup-automation@ai-setup-automation
-/plugin install sdlc-utilities@ai-setup-automation
+/plugin install aisa@ai-setup-automation
+/plugin install sdlc@ai-setup-automation
 ```
 
 Or browse interactively: run `/plugin`, go to the **Discover** tab, and select the plugins to install.
@@ -55,6 +55,36 @@ Verify by starting a new Claude Code session — both plugins announce themselve
 ```
 
 See [docs/getting-started.md](docs/getting-started.md) for a full first-use walkthrough.
+
+## Updating
+
+### Step 1 — Refresh the marketplace catalog
+
+```text
+/plugin marketplace update ai-setup-automation
+```
+
+### Step 2 — Update individual plugins
+
+```text
+/plugin update aisa@ai-setup-automation
+/plugin update sdlc@ai-setup-automation
+```
+
+### Enable auto-update
+
+Open `/plugin`, go to the **Marketplaces** tab, and toggle auto-update for `ai-setup-automation`. When enabled, Claude Code checks for new versions on startup.
+
+### Migrating from older installs
+
+If you installed the plugins before this naming fix, uninstall the old entries and reinstall:
+
+```text
+/plugin uninstall ai-setup-automation@ai-setup-automation
+/plugin uninstall sdlc-utilities@ai-setup-automation
+/plugin install aisa@ai-setup-automation
+/plugin install sdlc@ai-setup-automation
+```
 
 ## Quick Start
 
@@ -130,6 +160,39 @@ A GitHub Actions workflow runs on every pull request targeting `main` and verifi
 - Fails if a plugin's files changed but its version was not incremented
 
 To skip the check when a version bump is intentionally not needed, add the **`skip-version-check`** label to the pull request. The workflow will pass with a notice.
+
+## Troubleshooting
+
+### "Plugin not found" when updating via `/plugin` UI
+
+This happens when the plugin name registered in the marketplace doesn't match the identity in `plugin.json`. Clear the cache, restart, and reinstall:
+
+```bash
+rm -rf ~/.claude/plugins/cache/ai-setup-automation
+```
+
+Then restart Claude Code and run:
+
+```text
+/plugin install aisa@ai-setup-automation
+/plugin install sdlc@ai-setup-automation
+```
+
+### Plugin not updating after marketplace refresh
+
+The `version` field in `plugin.json` must be bumped for Claude Code to detect a new version. If the version hasn't changed, Claude Code uses the cached copy. See the [CI Checks](#ci-checks) section — every PR that modifies plugin files must bump the version.
+
+### Auto-update not working
+
+Open `/plugin`, go to the **Marketplaces** tab, and verify auto-update is toggled on for `ai-setup-automation`. Auto-update is off by default for third-party marketplaces.
+
+### Timeout during marketplace add or plugin install
+
+Large repositories may exceed the default git timeout. Set the environment variable before starting Claude Code:
+
+```bash
+export CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS=300000
+```
 
 ## License
 

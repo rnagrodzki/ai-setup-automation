@@ -60,6 +60,8 @@ When a user runs `/plugin marketplace add rnagrodzki/ai-setup-automation` in Cla
 
 No plugins are installed yet at this point. The user must then run `/plugin install <name>@ai-setup-automation` (or use the interactive **Discover** tab in `/plugin`) to install each plugin.
 
+**Important:** The `name` in each `marketplace.json` plugin entry must match the `name` in the corresponding `plugin.json`. A mismatch causes "plugin not found" errors when users try to update via the `/plugin` UI, because Claude Code looks up the installed plugin identity (from `plugin.json`) in the marketplace catalog.
+
 ### Plugin Layer
 
 Each plugin has its own `.claude-plugin/plugin.json` that declares:

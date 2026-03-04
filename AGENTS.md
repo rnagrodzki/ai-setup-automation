@@ -4,8 +4,8 @@ This repository is a **Claude Code plugin marketplace** that ships two plugins f
 
 ```text
 /plugin marketplace add rnagrodzki/ai-setup-automation
-/plugin install ai-setup-automation@ai-setup-automation
-/plugin install sdlc-utilities@ai-setup-automation
+/plugin install aisa@ai-setup-automation
+/plugin install sdlc@ai-setup-automation
 ```
 
 ---

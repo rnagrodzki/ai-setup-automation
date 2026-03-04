@@ -7,11 +7,11 @@
   },
   "plugins": [
     {
-      "name": "ai-setup-automation",
+      "name": "aisa",
       "source": "./plugins/ai-setup-automation"
     },
     {
-      "name": "sdlc-utilities",
+      "name": "sdlc",
       "source": "./plugins/sdlc-utilities"
     }
   ]

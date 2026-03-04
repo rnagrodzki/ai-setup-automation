@@ -210,6 +210,177 @@ function evaluateAgentCompliance(content) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Skill structure validation — S1-S5
+// ---------------------------------------------------------------------------
+
+/**
+ * Validate skill file structure and frontmatter.
+ * Checks S1 (layout), S2 (frontmatter), S3 (name), S4 (description), S5 (line count).
+ * @param {string} name - Skill name (directory name or filename without .md)
+ * @param {string} content - File content
+ * @param {string} layout - 'flat' | 'nested' (from discoverSkillFiles)
+ */
+function checkSkillStructure(name, content, layout) {
+  const issues = [];
+
+  // S1: Directory layout — nested (dir/SKILL.md) required
+  const s1_layout_valid = layout === 'nested';
+  if (!s1_layout_valid) {
+    issues.push({
+      check: 'S1',
+      message: `Skill uses flat file layout (${name}.md) instead of required directory layout (${name}/SKILL.md)`,
+      proposed_fix: `Move ${name}.md into a directory: mkdir .claude/skills/${name} && mv .claude/skills/${name}.md .claude/skills/${name}/SKILL.md`,
+    });
+  }
+
+  // S2: Frontmatter present
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+  const s2_frontmatter_present = !!fmMatch;
+  if (!s2_frontmatter_present) {
+    issues.push({
+      check: 'S2',
+      message: 'Skill file has no YAML frontmatter',
+      proposed_fix: 'Add frontmatter at top of SKILL.md: ---\\nname: <skill-name>\\ndescription: "<one-line description>"\\n---',
+    });
+  }
+
+  const fm = fmMatch ? fmMatch[1] : '';
+
+  // S3: name field — present, lowercase-hyphens only, max 64 chars
+  const nameMatch = fm.match(/^name\s*:\s*(.+)/m);
+  const nameVal = nameMatch ? nameMatch[1].trim() : null;
+  const s3_name_valid = !!(nameVal && /^[a-z0-9-]+$/.test(nameVal) && nameVal.length <= 64);
+  if (!nameVal) {
+    issues.push({
+      check: 'S3',
+      message: 'Frontmatter missing `name` field',
+      proposed_fix: `Add 'name: ${name}' to frontmatter`,
+    });
+  } else if (!/^[a-z0-9-]+$/.test(nameVal)) {
+    issues.push({
+      check: 'S3',
+      message: `Frontmatter 'name' field contains invalid characters: '${nameVal}' (must be lowercase letters, digits, hyphens only)`,
+      proposed_fix: `Change name to: ${nameVal.toLowerCase().replace(/[^a-z0-9-]/g, '-')}`,
+    });
+  } else if (nameVal.length > 64) {
+    issues.push({
+      check: 'S3',
+      message: `Frontmatter 'name' field too long: ${nameVal.length} chars (max 64)`,
+      proposed_fix: 'Shorten the name field to 64 characters or fewer',
+    });
+  }
+
+  // S4: description field — present, max 1024 chars
+  const descMatch = fm.match(/^description\s*:\s*(.+)/m);
+  const descVal = descMatch ? descMatch[1].trim().replace(/^["']|["']$/g, '') : null;
+  const s4_description_valid = !!(descVal && descVal.length <= 1024);
+  if (!descVal) {
+    issues.push({
+      check: 'S4',
+      message: 'Frontmatter missing `description` field',
+      proposed_fix: `Add 'description: "<one-line description of what this skill does>"' to frontmatter`,
+    });
+  } else if (descVal.length > 1024) {
+    issues.push({
+      check: 'S4',
+      message: `Frontmatter 'description' too long: ${descVal.length} chars (max 1024)`,
+      proposed_fix: 'Shorten the description field to 1024 characters or fewer',
+    });
+  }
+
+  // S5: Line count — max 500 lines
+  const lineCount = content.split('\n').length;
+  const s5_line_count_valid = lineCount <= 500;
+  if (!s5_line_count_valid) {
+    issues.push({
+      check: 'S5',
+      message: `SKILL.md exceeds 500 lines: ${lineCount} lines`,
+      proposed_fix: 'Extract detailed reference material into a REFERENCE.md file in the same directory and link to it from SKILL.md',
+    });
+  }
+
+  return {
+    checks: {
+      s1_layout_valid,
+      s2_frontmatter_present,
+      s3_name_valid,
+      s4_description_valid,
+      s5_line_count_valid,
+      line_count: lineCount,
+    },
+    issues,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Skill competency overlap detection
+// ---------------------------------------------------------------------------
+
+const STOP_WORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+  'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had',
+  'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'shall',
+  'not', 'no', 'nor', 'so', 'yet', 'both', 'either', 'neither', 'each', 'every',
+  'this', 'that', 'these', 'those', 'it', 'its', 'use', 'using', 'used', 'any', 'all',
+  'run', 'runs', 'running', 'add', 'adds', 'adding', 'when', 'how', 'what', 'which',
+]);
+
+/**
+ * Extract keywords from a skill's description and first-level headings.
+ */
+function extractSkillKeywords(content) {
+  const words = new Set();
+  // From frontmatter description
+  const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+  const fm = fmMatch ? fmMatch[1] : '';
+  const descMatch = fm.match(/^description\s*:\s*(.+)/m);
+  if (descMatch) {
+    descMatch[1].toLowerCase().split(/\W+/).filter(w => w.length > 3 && !STOP_WORDS.has(w)).forEach(w => words.add(w));
+  }
+  // From h2 headings
+  const headings = content.match(/^## .+/gm) || [];
+  for (const h of headings) {
+    h.replace(/^## /, '').toLowerCase().split(/\W+/).filter(w => w.length > 3 && !STOP_WORDS.has(w)).forEach(w => words.add(w));
+  }
+  return words;
+}
+
+/**
+ * Detect competency overlap between skills using Jaccard similarity on keywords.
+ * @param {Array<{name: string, content: string}>} skills
+ * @returns {{ pairs: Array<{skill_a, skill_b, overlap_score, shared_keywords}> }}
+ */
+function detectSkillOverlap(skills) {
+  const OVERLAP_THRESHOLD = 0.4;
+  const pairs = [];
+
+  const keywordSets = skills.map(s => ({ name: s.name, keywords: extractSkillKeywords(s.content) }));
+
+  for (let i = 0; i < keywordSets.length; i++) {
+    for (let j = i + 1; j < keywordSets.length; j++) {
+      const a = keywordSets[i];
+      const b = keywordSets[j];
+      if (a.keywords.size === 0 || b.keywords.size === 0) continue;
+
+      const intersection = [...a.keywords].filter(k => b.keywords.has(k));
+      const union = new Set([...a.keywords, ...b.keywords]);
+      const score = intersection.length / union.size;
+
+      if (score >= OVERLAP_THRESHOLD) {
+        pairs.push({
+          skill_a: a.name,
+          skill_b: b.name,
+          overlap_score: Math.round(score * 100) / 100,
+          shared_keywords: intersection.sort(),
+        });
+      }
+    }
+  }
+
+  return { pairs };
+}
+
 module.exports = {
   VALID_TOOLS,
   SKILL_LEARNING_PATTERNS,
@@ -225,4 +396,6 @@ module.exports = {
   checkToolsValid,
   checkCapabilityToolConsistency,
   checkSkillReferencesValid,
+  checkSkillStructure,
+  detectSkillOverlap,
 };

@@ -1,0 +1,8 @@
+{
+  "mode": "file",
+  "versionFile": "plugins/ai-setup-automation/.claude-plugin/plugin.json",
+  "fileType": "plugin.json",
+  "tagPrefix": "v",
+  "changelog": false,
+  "changelogFile": "CHANGELOG.md"
+}

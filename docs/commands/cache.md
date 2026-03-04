@@ -1,6 +1,6 @@
 # `/aisa:cache` — Manage the snapshot cache
 
-Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file. Evolution commands use this snapshot to skip unchanged files, reducing token consumption by 60–80% on repeat runs. The cache is rebuilt automatically after every full [`/aisa:evolve`](evolve.md) cycle; use this command to inspect or manually control it.
+Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file. Evolution commands use this snapshot to skip unchanged files, reducing token consumption by 60–80% on repeat runs. The cache is rebuilt automatically after every full [`/aisa:sync`](sync.md) cycle; use this command to inspect or manually control it.
 
 ## Usage
 
@@ -36,7 +36,7 @@ Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file
 /aisa:cache invalidate
 ```
 
-> Deletes the snapshot. The next [`/aisa:evolve`](evolve.md) or [`/aisa:health`](health.md) run will do a full scan of all files.
+> Deletes the snapshot. The next [`/aisa:sync`](sync.md) or [`/aisa:check`](check.md) run will do a full scan of all files.
 
 ## Prerequisites
 
@@ -51,5 +51,5 @@ Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file
 
 ## Related Commands
 
-- [`/aisa:evolve`](evolve.md) — rebuilds the cache automatically on completion
-- [`/aisa:health`](health.md) — uses the cache to skip unchanged files during drift scans
+- [`/aisa:sync`](sync.md) — rebuilds the cache automatically on completion
+- [`/aisa:check`](check.md) — uses the cache to skip unchanged files during drift scans

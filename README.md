@@ -5,7 +5,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 ## What It Does
 
 - Detects your tech stack and scaffolds a `.claude/` directory with `CLAUDE.md`, skills, agents, and settings
-- Provides 9 commands covering the full lifecycle: setup, auditing, evolution, health checks, and post-incident learning
+- Provides 9 commands covering the full lifecycle: setup, review, sync, checks, and post-incident learning
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
@@ -73,15 +73,15 @@ The command detects your tech stack, presents a setup plan for your approval, an
 
 | Command | Description |
 | --- | --- |
-| [`/aisa:setup`](docs/commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:audit`](docs/commands/audit.md) | Audit existing setup and suggest improvements |
-| [`/aisa:validate`](docs/commands/validate.md) | Validate skills and agents against architectural principles |
-| [`/aisa:postmortem`](docs/commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
-| [`/aisa:evolve`](docs/commands/evolve.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:health`](docs/commands/health.md) | Quick read-only health check; reports drift status per file |
-| [`/aisa:target`](docs/commands/target.md) | Targeted update after a specific feature, refactor, or integration |
-| [`/aisa:harvest`](docs/commands/harvest.md) | Promote accumulated learnings into skills and docs |
-| [`/aisa:cache`](docs/commands/cache.md) | Manage the snapshot cache for incremental scanning |
+| [`/aisa:setup`](docs/commands/setup.md) | Detect tech stack and scaffold a complete `.claude/` configuration from scratch |
+| [`/aisa:review`](docs/commands/review.md) | Deep review of `.claude/` setup — verification scripts, content accuracy, prioritized recommendations |
+| [`/aisa:lint`](docs/commands/lint.md) | Lint skills and agents for structural completeness and principle compliance |
+| [`/aisa:postmortem`](docs/commands/postmortem.md) | Guided post-mortem after incidents — gathers context, checks git history, encodes lessons into skills |
+| [`/aisa:sync`](docs/commands/sync.md) | Full sync cycle — verify skills/agents against codebase, detect drift, harvest learnings, apply updates |
+| [`/aisa:check`](docs/commands/check.md) | Quick read-only drift check — reports status of every skill, agent, and CLAUDE.md file |
+| [`/aisa:update`](docs/commands/update.md) | Update skills/agents affected by a specific feature, refactor, or integration |
+| [`/aisa:harvest`](docs/commands/harvest.md) | Promote accumulated learnings from `.claude/learnings/log.md` into skills and documentation |
+| [`/aisa:cache`](docs/commands/cache.md) | Manage the cache snapshot for incremental scanning (rebuild, status, invalidate) |
 
 ---
 

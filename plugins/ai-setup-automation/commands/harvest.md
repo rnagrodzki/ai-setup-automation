@@ -1,5 +1,5 @@
 ---
-description: Promote accumulated learnings from the log into skills and docs
+description: Promote accumulated learnings from .claude/learnings/log.md into skills and documentation
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite, Write, Edit]
 ---
 
@@ -16,4 +16,4 @@ Run when the log has 10+ ACTIVE entries or the oldest entry is more than 2 weeks
 
 ## Workflow
 
-Invoke the `aisa-evolve-harvest` skill.
+Invoke the `aisa-harvester` skill.

@@ -1,5 +1,5 @@
 ---
-description: Run a post-mortem analysis after an incident, bug, or painful debugging session
+description: Guided post-mortem after incidents — gathers context, checks git history, encodes lessons into skills
 allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Skill]
 argument-hint: "<optional: brief incident description>"
 ---
@@ -8,7 +8,7 @@ argument-hint: "<optional: brief incident description>"
 
 Guide a structured post-mortem after any incident — a production bug, a painful debugging
 session, a failed deployment, or a mistake by an AI agent. Gathers context, checks git
-history for evidence, then hands off to the `aisa-evolve-postmortem` skill to encode the
+history for evidence, then hands off to the `aisa-postmortem` skill to encode the
 lessons into the project's skills so the same mistake can't happen again.
 
 ## Usage
@@ -25,7 +25,7 @@ Verify the project has the required `.claude/` structure:
 ```bash
 test -d .claude && echo "OK" || echo "MISSING: .claude/ directory not found"
 test -d .claude/skills && echo "OK" || echo "MISSING: .claude/skills/ not found"
-test -f .claude/skills/aisa-evolve-postmortem/SKILL.md && echo "OK" || echo "MISSING: aisa-evolve-postmortem skill not found"
+test -f .claude/skills/aisa-postmortem/SKILL.md && echo "OK" || echo "MISSING: aisa-postmortem skill not found"
 ```
 
 If `.claude/` or the skill is missing, stop and tell the user:
@@ -116,6 +116,6 @@ Wait for explicit user confirmation before proceeding.
 
 ### Step 5: Delegate to Skill
 
-Invoke the `aisa-evolve-postmortem` skill with the compiled incident description as the argument.
+Invoke the `aisa-postmortem` skill with the compiled incident description as the argument.
 Pass the full context gathered in Steps 2–3 so the skill can begin its root cause analysis
 without repeating the same questions.

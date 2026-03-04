@@ -15,8 +15,8 @@ touch plugins/ai-setup-automation/commands/<command-name>.md
 
 The filename (without `.md`) becomes the slash command name, prefixed with the plugin name:
 - `setup.md` in the `ai-setup-automation` plugin → `/aisa:setup`
-- `audit.md` in the `ai-setup-automation` plugin → `/aisa:audit`
-- `audit.md` in a plugin named `my-plugin` → `/my-plugin:audit`
+- `review.md` in the `ai-setup-automation` plugin → `/aisa:review`
+- `review.md` in a plugin named `my-plugin` → `/my-plugin:audit`
 
 ### Step 2: Write the Command File
 
@@ -76,7 +76,7 @@ Explain what this command does.
 
 ## Example: Audit Command
 
-`commands/audit.md`:
+`commands/review.md`:
 ```markdown
 ---
 description: Audit the current project's AI configuration and suggest improvements

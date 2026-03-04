@@ -1,5 +1,5 @@
 ---
-description: Manage the .claude/cache/ snapshot for incremental skill/agent audits
+description: Manage the cache snapshot for incremental scanning (rebuild, status, invalidate)
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite]
 argument-hint: "[rebuild|status|invalidate]"
 ---
@@ -17,4 +17,4 @@ consumption by 60–80% by skipping files unchanged since the last audit.
 
 ## Workflow
 
-Invoke the `aisa-evolve-cache` skill, passing `$ARGUMENTS` as the sub-command.
+Invoke the `aisa-cacher` skill, passing `$ARGUMENTS` as the sub-command.

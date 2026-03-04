@@ -63,5 +63,5 @@ Walks you through a structured post-mortem after a production bug, painful debug
 ## Related Commands
 
 - [`/aisa:harvest`](harvest.md) — promote accumulated learning log entries into skills
-- [`/aisa:target`](target.md) — if the incident revealed a code area whose skill needs updating
-- [`/aisa:validate`](validate.md) — verify that newly updated skills follow architectural principles
+- [`/aisa:update`](update.md) — if the incident revealed a code area whose skill needs updating
+- [`/aisa:lint`](lint.md) — verify that newly updated skills follow architectural principles

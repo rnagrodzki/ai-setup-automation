@@ -1,5 +1,5 @@
 ---
-description: Initialize AI configuration for the current project
+description: Detect tech stack and scaffold a complete .claude/ configuration from scratch
 allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
 ---
 
@@ -68,9 +68,9 @@ What would you like to do?
 
 Wait for explicit user choice:
 
-- **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:audit`) — locate
+- **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:review`) — locate
   `verify-setup.js` via Glob, run `health` and `validate` modes, present the structured
-  report, then suggest targeted fixes with `aisa:aisa-evolve-target`. Do NOT proceed with setup.
+  report, then suggest targeted fixes with `aisa:update`. Do NOT proceed with setup.
 
 - **If "rebuild" (or 2)**: Confirm once more:
   `"This will permanently delete N skills and N agents. Type 'confirm' to proceed."`
@@ -102,7 +102,7 @@ Wait for explicit user confirmation before creating any files.
 
 ### Step 4: Execute Setup
 
-Use the `aisa-init` skill to perform the actual setup based on
+Use the `aisa-scaffolder` skill to perform the actual setup based on
 the detected tech stack and user confirmation.
 
 ### Step 5: Verify and Report Results
@@ -160,6 +160,6 @@ Combine both outputs for the user:
 
 ### Next Steps
 - To add more skills: see https://github.com/rnagrodzki/ai-setup-automation/blob/main/docs/adding-skills.md
-- If issues found: run `/aisa:validate` for detailed principle compliance report
-- For scoped updates later: run `aisa:aisa-evolve-target <area>`
+- If issues found: run `/aisa:lint` for detailed principle compliance report
+- For scoped updates later: run `/aisa:update <area>`
 ```

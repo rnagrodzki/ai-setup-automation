@@ -16,12 +16,12 @@ mkdir -p plugins/ai-setup-automation/skills/<skill-name>/
 Choose a directory name that makes the skill's purpose immediately obvious. The convention
 used in this repo:
 
-- **Prefix pattern**: `<plugin-prefix>-<noun>`, e.g., `aisa-init`, `aisa-evolve-health`
+- **Prefix pattern**: `<plugin-prefix>-<noun>`, e.g., `aisa-scaffolder`, `aisa-checker`
 
 Use lowercase and hyphens only. Avoid vague names (`setup`, `utils`) — names should be specific.
 
 > **Name resolution:** When loaded from a marketplace plugin, skills are referenced as
-> `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-init`). The plugin name
+> `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-scaffolder`). The plugin name
 > comes from the `name` field in `plugin.json`.
 
 ### Step 2: Create SKILL.md

@@ -71,7 +71,7 @@ The command will:
 If your project already has some AI configuration:
 
 ```text
-/aisa:audit
+/aisa:review
 ```
 
 This reviews what exists and suggests improvements without modifying any files.
@@ -83,12 +83,12 @@ This reviews what exists and suggests improvements without modifying any files.
 | Command | Description |
 | --- | --- |
 | [`/aisa:setup`](commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:audit`](commands/audit.md) | Audit existing setup and suggest improvements |
-| [`/aisa:validate`](commands/validate.md) | Validate skills and agents against architectural principles |
+| [`/aisa:review`](commands/review.md) | Audit existing setup and suggest improvements |
+| [`/aisa:lint`](commands/lint.md) | Validate skills and agents against architectural principles |
 | [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
-| [`/aisa:evolve`](commands/evolve.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:health`](commands/health.md) | Quick read-only health check; reports drift status per file |
-| [`/aisa:target`](commands/target.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa:sync`](commands/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa:check`](commands/check.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa:update`](commands/update.md) | Targeted update after a specific feature, refactor, or integration |
 | [`/aisa:harvest`](commands/harvest.md) | Promote accumulated learnings into skills and docs |
 | [`/aisa:cache`](commands/cache.md) | Manage the snapshot cache for incremental scanning |
 

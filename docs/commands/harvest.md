@@ -36,5 +36,5 @@ This command takes no arguments.
 ## Related Commands
 
 - [`/aisa:postmortem`](postmortem.md) — creates learning log entries from incidents
-- [`/aisa:evolve`](evolve.md) — includes harvesting as one phase of the full evolution cycle
-- [`/aisa:validate`](validate.md) — check newly created or updated skills against principles
+- [`/aisa:sync`](sync.md) — includes harvesting as one phase of the full sync cycle
+- [`/aisa:lint`](lint.md) — check newly created or updated skills against principles

@@ -30,31 +30,52 @@ test -f .claude/skills/aisa-evolve-postmortem/SKILL.md && echo "OK" || echo "MIS
 
 If `.claude/` or the skill is missing, stop and tell the user:
 
-```
+```text
 This project doesn't have AI skills configured yet.
 Run /aisa:setup first to set up the AI configuration, then come back for the post-mortem.
 ```
 
 ### Step 2: Gather Incident Context
 
-If the user provided `$ARGUMENTS`, skip to Step 3 and use `$ARGUMENTS` as the incident description.
+**Priority order — stop at the first source that provides enough context:**
 
-Otherwise, ask the following questions **one at a time** — wait for each answer before asking the next:
+1. **Fast mode**: If the user provided `$ARGUMENTS`, use that as the incident description and skip to Step 3.
 
-1. **What happened?**
-   Ask: "What went wrong? Describe the incident, bug, or painful situation you want to analyze."
+2. **Conversation-aware mode**: If `$ARGUMENTS` is empty, review the current conversation history before asking anything.
+   - Look for: debugging sessions, error messages, stack traces, "it's broken", failed tests, production issues, agent mistakes, or any problem-solving discussion.
+   - If you find relevant context, extract it and compose the incident description yourself. Identify: what went wrong, how it was discovered, how it was resolved (or current status), rough diagnosis time, and affected area.
+   - Present a summary to the user for confirmation:
 
-2. **How was it discovered?**
-   Ask: "How did you find out? (e.g. test failure, user report, monitoring alert, code review, you noticed it yourself)"
+     ```text
+     I found context in our conversation. Here's what I'll use for the post-mortem:
 
-3. **How was it resolved?**
-   Ask: "How was it fixed — or is it still open? If fixed, what was the solution?"
+     Incident:    [what happened, from conversation]
+     Discovered:  [how it was found]
+     Resolution:  [how it was fixed / still open]
+     Diagnosis:   [estimated time, if inferable]
+     Area:        [affected part]
 
-4. **How long did it take to diagnose?**
-   Ask: "How long did it take to identify the root cause? (rough estimate is fine)"
+     Does this look right? I'll fill in any gaps below if anything is missing.
+     ```
 
-5. **What area was affected?**
-   Ask: "Which part of the codebase or system was involved? (e.g. a specific file, service, feature, or skill)"
+   - Then ask only for the pieces that are genuinely missing or unclear. Skip questions you can already answer from context.
+
+3. **Interactive mode**: If the conversation has no relevant incident context, ask the following questions **one at a time** — wait for each answer before asking the next:
+
+   1. **What happened?**
+      Ask: "What went wrong? Describe the incident, bug, or painful situation you want to analyze."
+
+   2. **How was it discovered?**
+      Ask: "How did you find out? (e.g. test failure, user report, monitoring alert, code review, you noticed it yourself)"
+
+   3. **How was it resolved?**
+      Ask: "How was it fixed — or is it still open? If fixed, what was the solution?"
+
+   4. **How long did it take to diagnose?**
+      Ask: "How long did it take to identify the root cause? (rough estimate is fine)"
+
+   5. **What area was affected?**
+      Ask: "Which part of the codebase or system was involved? (e.g. a specific file, service, feature, or skill)"
 
 ### Step 3: Gather Git Context
 
@@ -74,7 +95,7 @@ Identify any commits that look like fixes (keywords: fix, revert, hotfix, patch)
 
 Present the compiled incident context back to the user:
 
-```
+```text
 Post-Mortem Summary
 ───────────────────
 Incident:    [what happened]

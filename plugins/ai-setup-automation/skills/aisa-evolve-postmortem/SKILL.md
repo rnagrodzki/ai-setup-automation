@@ -17,7 +17,11 @@ Incident: `$ARGUMENTS`
 
 ### Step 1 — Understand the Incident
 
-Gather evidence about what happened:
+Gather evidence in priority order — stop when you have enough to proceed:
+
+1. **From `$ARGUMENTS`**: If provided, use it as the primary incident description.
+2. **From conversation history**: Review the current conversation for debugging sessions, error messages, stack traces, failed tests, or problem-solving discussion. Extract what went wrong, how it was discovered, how it was resolved, and what area was affected.
+3. **From git history**:
 
 ```bash
 # Check recent commits for fixes
@@ -26,11 +30,12 @@ git log --oneline -20
 git diff HEAD~5 --stat
 ```
 
-Ask (if context unclear):
-- What went wrong?
-- How was it discovered?
-- How was it fixed?
-- How long did it take to diagnose?
+Ask follow-up questions **only for gaps not covered** by the above sources:
+
+- What went wrong? _(if not in conversation or arguments)_
+- How was it discovered? _(if not in conversation or arguments)_
+- How was it fixed? _(if not in conversation or arguments)_
+- How long did it take to diagnose? _(if not inferable from conversation)_
 
 ### Step 2 — Root Cause → Skill Gap Analysis
 

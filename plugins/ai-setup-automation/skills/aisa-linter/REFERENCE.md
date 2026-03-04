@@ -206,3 +206,30 @@ It does NOT:
 - Check symbol signatures or API routes (use `/aisa-syncer` full cycle)
 - Evaluate skill content quality or specificity (use `/aisa-syncer` critique phase)
 - Process learnings or propose new skills (use `/aisa-harvester`)
+
+---
+
+## Skill Competency Overlap Check (Step 5)
+
+The validation script automatically computes keyword overlap between all skills using Jaccard similarity on descriptions and headings. Pairs with overlap score ≥ 0.4 appear as S6 WARNING issues and in the `skill_overlap` section of the JSON output.
+
+**For each flagged pair, the linter agent must:**
+
+1. Read both skills in full
+2. Determine: **genuine duplication** or **legitimate decomposition**?
+   - Genuine duplication: same task done two ways, overlapping trigger conditions, shared implementation steps
+   - Legitimate decomposition: related but distinct scopes (e.g. "scan" vs "report", "plan" vs "execute")
+3. If genuine duplication: recommend delegating overlapping functionality to a single dedicated skill and having the other call/reference it
+
+**Report format:**
+
+```markdown
+| Skill A | Skill B | Overlap Score | Shared Keywords | Verdict |
+|---------|---------|:-------------:|-----------------|---------|
+| {name} | {name} | 0.XX | keyword1, keyword2 | DUPLICATE / DECOMPOSITION / REVIEW NEEDED |
+```
+
+**Verdict definitions:**
+- **DUPLICATE** — consolidate; one skill should delegate to the other
+- **DECOMPOSITION** — acceptable; document the boundary explicitly in both skills
+- **REVIEW NEEDED** — ambiguous; present to the user for a decision

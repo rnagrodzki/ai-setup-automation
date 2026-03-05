@@ -36,6 +36,6 @@ Read-only by default. If a CRITICAL issue is found (e.g. a broken file reference
 
 ## Related Commands
 
-- [`/aisa:review`](review.md) — deeper mechanical + LLM review with recommendations
+- [`/aisa:setup-review`](setup-review.md) — deeper mechanical + LLM review with recommendations
 - [`/aisa:sync`](sync.md) — full update cycle when check reveals significant drift
 - [`/aisa:cache`](cache.md) — rebuild or inspect the snapshot cache used to speed up checks

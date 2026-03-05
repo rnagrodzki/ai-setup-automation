@@ -3,7 +3,7 @@ description: Deep review of .claude/ setup — runs verification scripts, checks
 allowed-tools: [Read, Glob, Grep, Bash, TodoWrite]
 ---
 
-# /review Command
+# /setup-review Command
 
 Deep review of the AI configuration for the current project. Runs mechanical verification
 to report exactly what exists, what passes checks, what fails, and why. Does not
@@ -11,7 +11,7 @@ create or modify any files.
 
 ## Usage
 
-- `/review` — Deep review of existing AI configuration and report gaps
+- `/setup-review` — Deep review of existing AI configuration and report gaps
 
 ## Workflow
 

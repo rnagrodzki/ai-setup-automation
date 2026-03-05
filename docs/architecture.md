@@ -68,7 +68,7 @@ with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<
 | File | `plugin.json` `name` | Resolved command |
 |---|---|---|
 | `commands/setup.md` | `aisa` | `/aisa:setup` |
-| `commands/review.md` | `aisa` | `/aisa:review` |
+| `commands/setup-review.md` | `aisa` | `/aisa:setup-review` |
 
 **Skills** — referenced as `<plugin-name>:<skill-name>`:
 

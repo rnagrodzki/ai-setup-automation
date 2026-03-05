@@ -54,6 +54,6 @@ After creation, runs `verify-setup.js` automatically and prints a health + compl
 
 ## Related Commands
 
-- [`/aisa:review`](review.md) — non-destructive review of existing configuration
+- [`/aisa:setup-review`](setup-review.md) — non-destructive review of existing configuration
 - [`/aisa:lint`](lint.md) — check new skills against architectural principles
 - [`/aisa:update`](update.md) — update specific skills after shipping a feature

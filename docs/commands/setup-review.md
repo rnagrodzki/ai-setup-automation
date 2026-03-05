@@ -1,11 +1,11 @@
-# `/aisa:review` — Deep review of existing AI configuration
+# `/aisa:setup-review` — Deep review of existing AI configuration
 
 Runs a read-only mechanical audit of your `.claude/` setup. It checks every skill and agent against structural and principle requirements, verifies that file references exist on disk, and spots content accuracy issues that automated scripts cannot catch. No files are created or modified.
 
 ## Usage
 
 ```text
-/aisa:review
+/aisa:setup-review
 ```
 
 ## Flags
@@ -15,7 +15,7 @@ This command takes no arguments.
 ## Examples
 
 ```text
-/aisa:review
+/aisa:setup-review
 ```
 
 > Prints a two-part report:

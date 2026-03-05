@@ -1,6 +1,6 @@
 # `/aisa:lint` — Lint skills and agents for structural completeness and principle compliance
 
-Checks every skill and agent in `.claude/` against the plugin's architectural requirements: self-learning directives, the mandatory Plan→Critique→Improve→Do→Critique→Improve cycle, structural completeness, and valid frontmatter. Does **not** check whether skill content is accurate to your codebase — use [`/aisa:review`](review.md) for that.
+Checks every skill and agent in `.claude/` against the plugin's architectural requirements: self-learning directives, the mandatory Plan→Critique→Improve→Do→Critique→Improve cycle, structural completeness, and valid frontmatter. Does **not** check whether skill content is accurate to your codebase — use [`/aisa:setup-review`](setup-review.md) for that.
 
 ## Usage
 
@@ -45,6 +45,6 @@ Read-only by default. When failures are found, the command proposes fixes and as
 
 ## Related Commands
 
-- [`/aisa:review`](review.md) — includes linting plus LLM spot-check of content accuracy
+- [`/aisa:setup-review`](setup-review.md) — includes linting plus LLM spot-check of content accuracy
 - [`/aisa:update`](update.md) — update skills after lint reveals outdated content
 - [`/aisa:sync`](sync.md) — full cycle that includes linting as a built-in step

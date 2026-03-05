@@ -13,7 +13,7 @@ All functionality is exposed through `/aisa:*` commands. Skills are implementati
 | Command | Description |
 | --- | --- |
 | [`/aisa:setup`](commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:review`](commands/review.md) | Audit existing setup and suggest improvements |
+| [`/aisa:setup-review`](commands/setup-review.md) | Audit existing setup and suggest improvements |
 | [`/aisa:lint`](commands/lint.md) | Validate skills and agents against architectural principles |
 | [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
 | [`/aisa:sync`](commands/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |

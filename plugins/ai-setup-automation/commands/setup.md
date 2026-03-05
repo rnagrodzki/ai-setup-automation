@@ -68,7 +68,7 @@ What would you like to do?
 
 Wait for explicit user choice:
 
-- **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:review`) — locate
+- **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:setup-review`) — locate
   `verify-setup.js` via Glob, run `health` and `validate` modes, present the structured
   report, then suggest targeted fixes with `aisa:update`. Do NOT proceed with setup.
 

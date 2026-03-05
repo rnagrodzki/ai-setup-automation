@@ -33,7 +33,11 @@ function parseArgs(argv) {
 
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
-    if (a === '--project-root' && args[i + 1]) {
+    if (a === '--project-root') {
+      if (!args[i + 1]) {
+        process.stderr.write('Error: --project-root requires a value\n');
+        process.exit(2);
+      }
       projectRoot = path.resolve(args[++i]);
     } else if (a === '--json') {
       outputFormat = 'json';
@@ -234,7 +238,8 @@ function renderBrief({ cli_installed, cli_version, latest_version, update_availa
   }
 
   const parts = [];
-  parts.push(`v${cli_version} installed`);
+  const displayVersion = cli_version.replace(/^v/, '');
+  parts.push(`v${displayVersion} installed`);
 
   if (project_initialized) {
     parts.push('project initialized');

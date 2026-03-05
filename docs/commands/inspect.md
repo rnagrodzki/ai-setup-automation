@@ -1,11 +1,11 @@
-# `/aisa:check` — Quick read-only drift check
+# `/aisa:inspect` — Quick read-only drift check
 
 A lightweight drift scan of your `.claude/` setup. Reports a CURRENT / OUTDATED / STALE / CRITICAL status for every skill, agent, and `CLAUDE.md`. Fast enough to run weekly — uses the snapshot cache to skip unchanged files. Only fixes critical issues, and only with your permission.
 
 ## Usage
 
 ```text
-/aisa:check
+/aisa:inspect
 ```
 
 ## Flags
@@ -15,7 +15,7 @@ This command takes no arguments.
 ## Examples
 
 ```text
-/aisa:check
+/aisa:inspect
 ```
 
 > Scans all skills and agents, prints a per-file status table, and summarizes findings:
@@ -26,7 +26,7 @@ This command takes no arguments.
 
 ## Prerequisites
 
-- An existing `.claude/` directory (run [`/aisa:setup`](setup.md) first)
+- An existing `.claude/` directory (run [`/aisa:init`](init.md) first)
 - Node.js >= 16
 - `.claude/cache/snapshot.json` improves speed but is not required; the command works without it
 
@@ -36,6 +36,7 @@ Read-only by default. If a CRITICAL issue is found (e.g. a broken file reference
 
 ## Related Commands
 
-- [`/aisa:review`](review.md) — deeper mechanical + LLM review with recommendations
-- [`/aisa:sync`](sync.md) — full update cycle when check reveals significant drift
+- [`/aisa:audit`](audit.md) — deeper mechanical + LLM review with recommendations
+- [`/aisa:lint`](lint.md) — structural principle compliance check (frontmatter, P1-P3, A1-A6)
+- [`/aisa:sync`](sync.md) — full update cycle when inspect reveals significant drift
 - [`/aisa:cache`](cache.md) — rebuild or inspect the snapshot cache used to speed up checks

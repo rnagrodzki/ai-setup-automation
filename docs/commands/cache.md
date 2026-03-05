@@ -36,7 +36,7 @@ Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file
 /aisa:cache invalidate
 ```
 
-> Deletes the snapshot. The next [`/aisa:sync`](sync.md) or [`/aisa:check`](check.md) run will do a full scan of all files.
+> Deletes the snapshot. The next [`/aisa:sync`](sync.md) or [`/aisa:inspect`](inspect.md) run will do a full scan of all files.
 
 ## Prerequisites
 
@@ -52,4 +52,4 @@ Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file
 ## Related Commands
 
 - [`/aisa:sync`](sync.md) — rebuilds the cache automatically on completion
-- [`/aisa:check`](check.md) — uses the cache to skip unchanged files during drift scans
+- [`/aisa:inspect`](inspect.md) — uses the cache to skip unchanged files during drift scans

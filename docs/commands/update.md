@@ -42,7 +42,7 @@ Scans only the area of the codebase that changed and updates the relevant skills
 
 ## Prerequisites
 
-- An existing `.claude/` directory with relevant skills (run [`/aisa:setup`](setup.md) first)
+- An existing `.claude/` directory with relevant skills (run [`/aisa:init`](init.md) first)
 - A clear description of what changed — the more specific, the tighter the scope
 
 ## What It Creates / Modifies

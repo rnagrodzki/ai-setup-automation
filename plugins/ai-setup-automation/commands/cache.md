@@ -1,5 +1,5 @@
 ---
-description: Manage the cache snapshot for incremental scanning (rebuild, status, invalidate)
+description: Manage the .claude/cache/ snapshot used by inspect and sync — sub-commands: rebuild (default), status (report freshness), invalidate (force full scan). Reduces token use by 60-80%
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite]
 argument-hint: "[rebuild|status|invalidate]"
 ---

@@ -1,5 +1,5 @@
 ---
-description: Promote accumulated learnings from .claude/learnings/log.md into skills and documentation
+description: Promote ACTIVE entries from .claude/learnings/log.md into skill gotchas, new skills, and documentation. Run when log has 10+ entries or oldest entry exceeds 2 weeks
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite, Write, Edit]
 ---
 

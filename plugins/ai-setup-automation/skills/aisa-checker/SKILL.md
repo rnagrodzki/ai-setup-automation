@@ -32,6 +32,25 @@ The script handles in a single invocation:
 
 Report the scan mode from the `cache` field: snapshot age, files changed vs unchanged.
 
+### Step 1b — OpenSpec Tooling Check (conditional)
+
+If a specs or openspec directory is detected in the project (check for `specs/`, `.openspec/`, `openspec/`, `spec/`, `docs/specs/`), also run:
+
+```bash
+node <plugin-path>/scripts/check-openspec.js --project-root . --json
+```
+
+Locate the script with `Glob` for `**/check-openspec.js`. Include a one-line summary in the Health Check Report under a new `### OpenSpec Tooling` section:
+
+```
+### OpenSpec Tooling
+- CLI: [✅ v1.2.0 installed / ❌ not installed]
+- Project: [✅ initialized / ⚠️ not initialized]
+- Version: [✅ up to date / ⚠️ update available (x.y.z)]
+```
+
+If CLI is not installed and the project has specs, classify OpenSpec tooling as **OUTDATED** in the recommendations. Do not run this check if no specs directory is found — it is not relevant for non-spec-driven projects.
+
 ### Step 2 — Interpret Results and Supplement
 
 Use the script's `classifications` object as a starting point. The script assigns

@@ -1,9 +1,9 @@
 ---
-description: Deep review of .claude/ setup — runs verification scripts, checks content accuracy, and reports prioritized recommendations
+description: Deep read-only review of .claude/ content accuracy — runs mechanical validation (file paths, principle compliance), spots outdated code examples, checks skill specificity, identifies coverage gaps. Reports HEALTHY / NEEDS_ATTENTION / CRITICAL
 allowed-tools: [Read, Glob, Grep, Bash, TodoWrite]
 ---
 
-# /review Command
+# /audit Command
 
 Deep review of the AI configuration for the current project. Runs mechanical verification
 to report exactly what exists, what passes checks, what fails, and why. Does not
@@ -11,7 +11,7 @@ create or modify any files.
 
 ## Usage
 
-- `/review` — Deep review of existing AI configuration and report gaps
+- `/aisa:audit` — Deep review of existing AI configuration and report gaps
 
 ## Workflow
 
@@ -115,4 +115,4 @@ Do not create any files. To address issues found, suggest:
 
 - Principle compliance failures → `/aisa:lint` (can auto-fix with approval)
 - Missing or outdated skills/agents → `/aisa:update <area>`
-- Full rebuild needed → `/aisa:setup`
+- Full rebuild needed → `/aisa:init`

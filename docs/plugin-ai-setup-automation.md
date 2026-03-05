@@ -12,12 +12,12 @@ All functionality is exposed through `/aisa:*` commands. Skills are implementati
 
 | Command | Description |
 | --- | --- |
-| [`/aisa:setup`](commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:review`](commands/review.md) | Audit existing setup and suggest improvements |
+| [`/aisa:init`](commands/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa:audit`](commands/audit.md) | Audit existing setup and suggest improvements |
 | [`/aisa:lint`](commands/lint.md) | Validate skills and agents against architectural principles |
 | [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
 | [`/aisa:sync`](commands/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:check`](commands/check.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa:inspect`](commands/inspect.md) | Quick read-only health check; reports drift status per file |
 | [`/aisa:update`](commands/update.md) | Targeted update after a specific feature, refactor, or integration |
 | [`/aisa:harvest`](commands/harvest.md) | Promote accumulated learnings into skills and docs |
 | [`/aisa:cache`](commands/cache.md) | Manage the snapshot cache for incremental scanning |
@@ -30,9 +30,9 @@ Each command has a dedicated doc with usage, examples, prerequisites, and what i
 
 | When | Command |
 | --- | --- |
-| New project or full rebuild | `/aisa:setup` |
+| New project or full rebuild | `/aisa:init` |
 | After shipping a feature or refactor | `/aisa:update <description>` |
-| Weekly or before a sprint | `/aisa:check` |
+| Weekly or before a sprint | `/aisa:inspect` |
 | Every 2–4 weeks | `/aisa:sync` |
 | When 10+ learning log entries accumulate | `/aisa:harvest` |
 | After an incident or painful bug | `/aisa:postmortem` |
@@ -43,9 +43,9 @@ Each command has a dedicated doc with usage, examples, prerequisites, and what i
 ## Lifecycle Diagram
 
 ```text
-New project ──→ /aisa:setup ──→ daily development ──→ /aisa:update (after features)
+New project ──→ /aisa:init ──→ daily development ──→ /aisa:update (after features)
                     │                  │                       │
-                    │                  ├── /aisa:check (weekly)
+                    │                  ├── /aisa:inspect (weekly)
                     │                  ├── /aisa:harvest (when log fills up)
                     │                  ├── /aisa:lint (after adding/editing skills)
                     │                  ├── /aisa:sync (every 2-4 weeks)
@@ -61,13 +61,13 @@ New project ──→ /aisa:setup ──→ daily development ──→ /aisa:up
 ```text
 .claude/skills/
 ├── aisa-scaffolder/
-│   ├── SKILL.md          # aisa:aisa-scaffolder — build from scratch (invoked by /aisa:setup)
+│   ├── SKILL.md          # aisa:aisa-scaffolder — build from scratch (invoked by /aisa:init)
 │   └── REFERENCE.md      # Full pipeline specification
 ├── aisa-syncer/
 │   ├── SKILL.md          # aisa:aisa-syncer — full sync cycle (invoked by /aisa:sync)
 │   └── REFERENCE.md      # Full Evolver pipeline specification
 ├── aisa-checker/
-│   └── SKILL.md          # aisa:aisa-checker (invoked by /aisa:check)
+│   └── SKILL.md          # aisa:aisa-checker (invoked by /aisa:inspect)
 ├── aisa-harvester/
 │   └── SKILL.md          # aisa:aisa-harvester (invoked by /aisa:harvest)
 ├── aisa-updater/

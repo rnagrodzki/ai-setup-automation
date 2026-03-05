@@ -108,11 +108,22 @@ Rules:
 If any remediation was executed, re-run the check script and present an updated status
 report using the same format as Step 3. This confirms the action had the intended effect.
 
-## P3 — Critique-Improve Cycle (PCIDCI)
+## Quality Gate
+
+| Trigger | Check | Pass | Fail | Max Iterations |
+|---|---|---|---|---|
+| Script not found | `Glob **/check-openspec.js` returns results | At least one path returned | No results — script missing | 1 |
+| JSON parse failure | `JSON.parse(stdout)` succeeds | Valid JSON object | SyntaxError or empty output | 1 (surface raw error) |
+| Classification mismatch | `cli_installed` field matches CLI status label | Labels consistent with JSON | Discrepancy between field and label | 1 (re-derive) |
+| Remediation executed | Re-verification run after each executed action | Updated status report presented | No re-verification performed | 1 |
+| User confirmation | Each suggestion confirmed before execution | Explicit "yes" received | Abort remediation; skip command | 1 |
+
+If any gate fails its check, do not proceed to the next step — resolve the failure first.
+
+### Post-execution Critique Checklist
 
 After completing Steps 1-5, perform an internal critique before finalising the report:
 
-**Critique checklist:**
 - [ ] Did the script run without error? If not, was the error surfaced clearly?
 - [ ] Is the classification (GOOD / NEEDS_ACTION / UNAVAILABLE) consistent with the JSON fields?
 - [ ] Were all entries in `suggestions` presented to the user — none silently dropped?
@@ -121,19 +132,7 @@ After completing Steps 1-5, perform an internal critique before finalising the r
 
 If any checklist item fails, correct the gap before presenting the final output.
 
-## P2 — Quality Gate
-
-| Trigger | Check | Pass | Fail | Max Iterations |
-|---|---|---|---|---|
-| Script not found | `Glob **/check-openspec.js` returns results | At least one path returned | No results — script missing | 1 |
-| JSON parse failure | `JSON.parse(stdout)` succeeds | Valid JSON object | SyntaxError or empty output | 1 (surface raw error) |
-| Classification mismatch | `cli_installed` field matches CLI status label | Labels consistent with JSON | Discrepancy between field and label | 1 (re-derive) |
-| Remediation executed | Re-verification run after each executed action | Updated status report presented | No re-verification performed | 1 |
-| User confirmation | Each suggestion confirmed before execution | Explicit "yes" received | Command executed without confirmation | 0 (never skip) |
-
-If any gate fails its check, do not proceed to the next step — resolve the failure first.
-
-## P1 — Learning Capture
+## Learning Capture
 
 After completing the skill (or if an unexpected condition is encountered), append any
 notable discoveries to `.claude/learnings/log.md` using the standard format:
@@ -157,5 +156,5 @@ or the underlying script in the future.
 ## See Also
 
 - `aisa-checker` — general health check for skills and agents
-- `plugins/ai-setup-automation/scripts/check-openspec.js` — the script this skill drives
+- `**/scripts/check-openspec.js` — the script this skill drives
 - `.claude/learnings/log.md` — shared learnings log

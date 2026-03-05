@@ -5,7 +5,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 ## What It Does
 
 - Detects your tech stack and scaffolds a `.claude/` directory with `CLAUDE.md`, skills, agents, and settings
-- Provides 9 commands covering the full lifecycle: setup, review, sync, checks, and post-incident learning
+- Provides 10 commands covering the full lifecycle: setup, review, sync, checks, and post-incident learning
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
@@ -74,7 +74,7 @@ The command detects your tech stack, presents a setup plan for your approval, an
 | Command | Description |
 | --- | --- |
 | [`/aisa:setup`](docs/commands/setup.md) | Detect tech stack and scaffold a complete `.claude/` configuration from scratch |
-| [`/aisa:review`](docs/commands/review.md) | Deep review of `.claude/` setup — verification scripts, content accuracy, prioritized recommendations |
+| [`/aisa:setup-review`](docs/commands/setup-review.md) | Deep review of `.claude/` setup — verification scripts, content accuracy, prioritized recommendations |
 | [`/aisa:lint`](docs/commands/lint.md) | Lint skills and agents for structural completeness and principle compliance |
 | [`/aisa:postmortem`](docs/commands/postmortem.md) | Guided post-mortem after incidents — gathers context, checks git history, encodes lessons into skills |
 | [`/aisa:sync`](docs/commands/sync.md) | Full sync cycle — verify skills/agents against codebase, detect drift, harvest learnings, apply updates |
@@ -82,6 +82,7 @@ The command detects your tech stack, presents a setup plan for your approval, an
 | [`/aisa:update`](docs/commands/update.md) | Update skills/agents affected by a specific feature, refactor, or integration |
 | [`/aisa:harvest`](docs/commands/harvest.md) | Promote accumulated learnings from `.claude/learnings/log.md` into skills and documentation |
 | [`/aisa:cache`](docs/commands/cache.md) | Manage the cache snapshot for incremental scanning (rebuild, status, invalidate) |
+| [`/aisa:spec-check`](docs/commands/spec-check.md) | Check openspec CLI availability, project initialization, and version currency |
 
 ---
 

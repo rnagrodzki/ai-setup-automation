@@ -1,5 +1,5 @@
 ---
-description: Guided post-mortem after incidents — gathers context, checks git history, encodes lessons into skills
+description: Incident-to-prevention pipeline — gathers context from conversation or git history, maps root causes to skill gaps, encodes lessons into .claude/ skills and learnings log
 allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Skill]
 argument-hint: "<optional: brief incident description>"
 ---
@@ -32,7 +32,7 @@ If `.claude/` or the skill is missing, stop and tell the user:
 
 ```text
 This project doesn't have AI skills configured yet.
-Run /aisa:setup first to set up the AI configuration, then come back for the post-mortem.
+Run /aisa:init first to set up the AI configuration, then come back for the post-mortem.
 ```
 
 ### Step 2: Gather Incident Context

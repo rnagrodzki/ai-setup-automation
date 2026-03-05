@@ -51,7 +51,7 @@ Walks you through a structured post-mortem after a production bug, painful debug
 
 ## Prerequisites
 
-- An existing `.claude/` directory with skills (run [`/aisa:setup`](setup.md) first — the command checks for this and stops with instructions if it's missing)
+- An existing `.claude/` directory with skills (run [`/aisa:init`](init.md) first — the command checks for this and stops with instructions if it's missing)
 
 ## What It Creates / Modifies
 

@@ -1,5 +1,5 @@
 ---
-description: Update skills/agents affected by a specific feature, refactor, or integration
+description: Targeted skill/agent update after a specific code change — uses git diff to scope impact, updates only affected .claude/ files, flags out-of-scope drift without fixing it
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite, Write, Edit]
 argument-hint: "<description of what changed>"
 ---

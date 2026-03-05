@@ -20,11 +20,11 @@
 After installation, start a new Claude Code session. You should see a message from the plugin:
 
 ```text
-[ai-setup-automation] Plugin loaded. Use /aisa:setup to initialize AI configuration for your project.
+[ai-setup-automation] Plugin loaded. Use /aisa:init to initialize AI configuration for your project.
 ```
 
 > **Note:** Commands and skills are namespaced with the plugin name. The `/setup` command
-> becomes `/aisa:setup`. See [Architecture](architecture.md#name-resolution) for details.
+> becomes `/aisa:init`. See [Architecture](architecture.md#name-resolution) for details.
 
 ## Updating
 
@@ -56,7 +56,7 @@ See [Troubleshooting](../README.md#troubleshooting) in the README if you encount
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:setup`
+3. Run `/aisa:init`
 4. Follow the interactive prompts
 
 The command will:
@@ -71,7 +71,7 @@ The command will:
 If your project already has some AI configuration:
 
 ```text
-/aisa:setup-review
+/aisa:audit
 ```
 
 This reviews what exists and suggests improvements without modifying any files.
@@ -82,12 +82,12 @@ This reviews what exists and suggests improvements without modifying any files.
 
 | Command | Description |
 | --- | --- |
-| [`/aisa:setup`](commands/setup.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:setup-review`](commands/setup-review.md) | Audit existing setup and suggest improvements |
+| [`/aisa:init`](commands/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa:audit`](commands/audit.md) | Audit existing setup and suggest improvements |
 | [`/aisa:lint`](commands/lint.md) | Validate skills and agents against architectural principles |
 | [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
 | [`/aisa:sync`](commands/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:check`](commands/check.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa:inspect`](commands/inspect.md) | Quick read-only health check; reports drift status per file |
 | [`/aisa:update`](commands/update.md) | Targeted update after a specific feature, refactor, or integration |
 | [`/aisa:harvest`](commands/harvest.md) | Promote accumulated learnings into skills and docs |
 | [`/aisa:cache`](commands/cache.md) | Manage the snapshot cache for incremental scanning |

@@ -1,9 +1,9 @@
 ---
-description: Detect tech stack and scaffold a complete .claude/ configuration from scratch
+description: Scaffold a new .claude/ directory — detects tech stack, generates CLAUDE.md, skills, agents, learnings journal, and cache. One-time setup for new projects; offers audit or rebuild if config already exists
 allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
 ---
 
-# /setup Command
+# /init Command
 
 Initialize the AI configuration for the current project. This command
 creates CLAUDE.md, .claude/ directory structure, skills, agents, and learnings
@@ -11,7 +11,7 @@ based on the detected tech stack.
 
 ## Usage
 
-- `/setup` — Full setup: detect tech stack, create CLAUDE.md, scaffold .claude/
+- `/aisa:init` — Full setup: detect tech stack, create CLAUDE.md, scaffold .claude/
 
 ## Workflow
 
@@ -68,7 +68,7 @@ What would you like to do?
 
 Wait for explicit user choice:
 
-- **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:setup-review`) — locate
+- **If "audit" (or 1)**: Run the mechanical audit (same as `/aisa:audit`) — locate
   `verify-setup.js` via Glob, run `health` and `validate` modes, present the structured
   report, then suggest targeted fixes with `aisa:update`. Do NOT proceed with setup.
 

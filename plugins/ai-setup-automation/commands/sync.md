@@ -1,5 +1,5 @@
 ---
-description: Full sync cycle — verify skills/agents against codebase, detect drift, harvest learnings, and apply updates
+description: Full maintenance cycle — runs drift detection, harvests learnings, identifies expansion needs, applies prioritized updates to .claude/ skills and agents. Modifies files; includes approval gates
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite, Write, Edit, AskUserQuestion]
 argument-hint: "[focus-area]"
 ---

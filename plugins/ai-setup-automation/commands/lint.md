@@ -1,5 +1,5 @@
 ---
-description: Lint skills and agents for structural completeness and principle compliance (does not check codebase accuracy)
+description: Validate skill and agent structure against architectural principles (P1-P3, A1-A6) — checks frontmatter, self-learning directives, PCIDCI pattern. Does not verify whether skill content is accurate to the codebase
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite]
 argument-hint: "[path-to-specific-file-or-directory]"
 ---

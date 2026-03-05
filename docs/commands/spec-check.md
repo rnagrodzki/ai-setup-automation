@@ -35,5 +35,5 @@ Read-only by default. When the check reveals a missing or outdated installation,
 
 ## Related Commands
 
-- [`/aisa:check`](check.md) — read-only drift scan of the `.claude/` setup
-- [`/aisa:setup`](setup.md) — full AI project configuration scaffolding
+- [`/aisa:inspect`](inspect.md) — read-only drift scan of the `.claude/` setup
+- [`/aisa:init`](init.md) — full AI project configuration scaffolding

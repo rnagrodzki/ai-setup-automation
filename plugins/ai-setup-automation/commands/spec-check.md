@@ -1,5 +1,5 @@
 ---
-description: Check openspec CLI availability, project initialization, and version currency
+description: Check openspec CLI availability, project initialization status, and version currency — suggests install/init/update with user confirmation. Read-only unless remediation is approved
 allowed-tools: [Read, Glob, Grep, Bash, Skill, TodoWrite]
 ---
 

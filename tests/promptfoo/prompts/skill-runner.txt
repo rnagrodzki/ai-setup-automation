@@ -3,14 +3,14 @@ You are Claude Code, an AI coding assistant. You have been configured with the f
 ---BEGIN SKILL INSTRUCTIONS---
 {{skill_content}}
 ---END SKILL INSTRUCTIONS---
-{{#if reference_content}}
+{% if reference_content %}
 
 The skill also references this supporting document:
 
 ---BEGIN REFERENCE DOCUMENT---
 {{reference_content}}
 ---END REFERENCE DOCUMENT---
-{{/if}}
+{% endif %}
 
 ## Simulated Project Context
 

@@ -69,12 +69,18 @@ Before proceeding from Phase 6 (Critique) to Phase 7 (Execute), verify:
 - [ ] Every P0 item has a concrete fix — no "investigate later" deferrals
 - [ ] The change plan covers all drift identified in Phase 2
 - [ ] New skills proposed in Phase 4 cite concrete evidence in today's codebase
+- [ ] Phase 4 output includes an explicit **Agent Analysis section** — "none proposed" must list which task types were evaluated and why Rule 7 (agents are expensive) was not met for each
+- [ ] Phase 4.3 shows threshold evaluation per domain (complexity + business rule count + logic scatter), not just the conclusion
 - [ ] All changes are surgical — no full regeneration without justification
 - [ ] Phase 6 critique was genuinely performed and is not an approval rubber-stamp
 
 ## Pause Points
 
 After Phase 2 (Drift Audit) — present drift findings, wait for approval.
+After Phase 4 (Expansion Analysis) — present expansion findings including:
+- Skills proposed (N) with justification
+- **Agent Analysis: proposed (N) OR "none — [task types evaluated + why Rule 7 not met for each]"**
+Wait for approval before merging into Phase 5.
 After Phase 5 (Change Plan) — present prioritized manifest, wait for approval.
 After Phase 6 (Critique) — present quality scores, wait for approval.
 

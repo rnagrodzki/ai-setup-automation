@@ -554,14 +554,47 @@ Based on the Domain State Scan from Phase 1.3:
 - **New external integrations** → do they carry business semantics that need a domain skill?
 - **New regulatory requirements** → do compliance skills need to be created or updated?
 
+**Required output per domain evaluated** (show reasoning, not just conclusion):
+
+```text
+Domain: {name}
+  Complexity:          HIGH / MED / LOW
+  Business rules:      {N} — {list them}
+  Logic scatter:       scattered across {N} files / centralized
+  Threshold met:       YES → NEW_SKILL: {proposed name}
+                       NO  → MERGE_INTO_EXISTING: {skill name} / NOT_JUSTIFIED: {reason}
+```
+
 **4.4 · Agent Gap Analysis**
 
-Given the evolved project state:
+Build an explicit agent inventory before evaluating gaps:
 
-- Are there new task types that would benefit from an agent? (Apply the standard justification: parallelism, tool restriction, or context isolation)
+```text
+Current agents:
+  {list each .claude/agents/*.md — or "none"}
+
+Task types in this project:
+  {enumerate recurring tasks: component creation, content authoring, testing, code review, deployment, etc.}
+```
+
+For each task type, apply the agent justification test (Rule 7 — agents are expensive):
+
+- **Parallelism** — would running N instances simultaneously add value?
+- **Tool restriction** — should this task be limited to a specific tool subset?
+- **Context isolation** — does this task benefit from a clean context window?
+
+If ANY condition is YES → propose an agent. If NO for all → document the conclusion explicitly.
+
+**Required output table (MANDATORY — must be present even if no agents proposed):**
+
+| Task Type | Parallelism | Tool Restriction | Context Isolation | Verdict                                         |
+|-----------|-------------|------------------|-------------------|-------------------------------------------------|
+| {type}    | Y/N         | Y/N              | Y/N               | PROPOSE: {agent name} / NOT JUSTIFIED: {reason} |
+
+Also evaluate:
+
 - Do existing agents need new skills loaded?
 - Are any existing agents no longer needed? (The project evolved past their purpose)
-- Has the project grown enough that tasks previously handled by the main session now warrant delegation to an agent?
 
 **4.5 · Testing Evolution**
 

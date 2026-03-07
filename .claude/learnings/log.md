@@ -49,3 +49,21 @@ Entries flow from incidents, debugging sessions, and evolution cycles.
 - **Impact**: LOW — confusing to contributors and AI agents reading the file.
 - **Action**: Remove hardcoded branch metadata from AGENTS.md. If branch context is needed, use git commands instead of hardcoding in docs.
 - **Status**: ACTIVE
+
+### [PATTERN_FAILED] aisa-syncer Phase 4 agent analysis silently skipped
+
+- **Date**: 2026-03-07
+- **Session**: post-mortem
+- **Discovery**: `/aisa:sync` ran on an Astro/Svelte project with a blog content collection. Phase 4 proposed one skill (`sky4me-frontend`) and stopped. Phase 4.4 (Agent Gap Analysis) produced no output — not even a "none found" conclusion. The blog content domain was merged into the frontend skill instead of evaluated as a separate bounded context. Root cause: SKILL.md has no required output structure for Phase 4, so one skill candidate satisfies the phase. The Quality Gate only validates what WAS proposed, not whether Phase 4.4 was executed at all.
+- **Impact**: HIGH — projects ship without agent coverage; content domains get merged into technical skills, reducing skill specificity; users have no visibility into what expansion was considered vs. skipped.
+- **Action**: (1) Add required "Agent Analysis" section to Phase 4 output template in SKILL.md — must be present even if conclusion is "none". (2) Add Quality Gate: "Phase 4 includes explicit agent analysis". (3) Add Pause Point after Phase 4. (4) Require Phase 4.3 threshold evaluation to be shown in output, not just the conclusion.
+- **Status**: ACTIVE
+
+### [PATTERN_FAILED] Phase 4 Quality Gate vacuously passes when expansion is shallow
+
+- **Date**: 2026-03-07
+- **Session**: post-mortem
+- **Discovery**: The aisa-syncer Quality Gate checks "new skills proposed in Phase 4 cite concrete evidence" — but if Phase 4 proposes minimal items (e.g. 1 skill, 0 agents), the gate passes trivially. It validates the quality of what WAS found but cannot detect what was MISSED. The gate is structurally blind to skipped sub-phases.
+- **Impact**: HIGH — sync appears to complete successfully with a "Approved" quality gate even when Phase 4.4 was never run.
+- **Action**: Rewrite Quality Gate to require proof of execution per sub-phase: "Phase 4 output includes explicit agent analysis section (even if empty with justification)".
+- **Status**: ACTIVE

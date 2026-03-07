@@ -36,9 +36,3 @@ The project has a `.claude/` directory with the following structure:
 - Has `## Quality Gate` section
 - Workflow has PCIDCI pattern
 - Only issue: file is 520 lines (exceeds 500-line limit)
-
-Expected results:
-- data-processor: PASS
-- report_generator: FAIL (S1, S3, 2a, 2b, 2c violations)
-- validator: FAIL (S5 violation only)
-- Overall: NON-COMPLIANT

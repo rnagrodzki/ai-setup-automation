@@ -5,30 +5,24 @@
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:lint on the project"
   assert:
-    # Must produce the skill compliance table
+    # Must produce a markdown table structure
     - type: regex
-      value: "Layout|FM|frontmatter|S1|S2"
-    # Must identify the flat file violation
+      value: "\\|.*\\|"
+    # Must identify the flat file skill
     - type: icontains
       value: "report_generator"
-    # Must identify COMPLIANT, HAS ISSUES, or NON-COMPLIANT in output
+    # Must identify overall status
     - type: regex
-      value: "(COMPLIANT|HAS.ISSUES|NON.COMPLIANT|NON_COMPLIANT|HAS_ISSUES)"
-    # Must mention verify-setup.js (step 1 of the skill)
-    - type: icontains
-      value: "verify-setup"
-    # Must mention frontmatter or structural checks
+      value: "(COMPLIANT|HAS.ISSUES|NON.COMPLIANT|HAS_ISSUES|NON_COMPLIANT)"
+    # Must mention running the validation script (allow paraphrase)
+    - type: regex
+      value: "(verify-setup|validation script|validate)"
+    # Must mention frontmatter checks
     - type: icontains
       value: "frontmatter"
-    # Must mention Quality Gate
-    - type: icontains
-      value: "Quality Gate"
-    # Must mention Learning Capture
-    - type: icontains
-      value: "Learning Capture"
-    # Behavioral: should identify violations and propose fixes
+    # Behavioral: identifies violations for report_generator and data-processor passes
     - type: llm-rubric
-      value: "The response identifies multiple compliance failures (S1, S3, 2a, 2b, 2c) for the report_generator skill and proposes at least one concrete fix"
+      value: "The response identifies multiple compliance failures for the report_generator skill (S1 flat-file, S3 underscore name, and missing Learning Capture/Quality Gates/PCIDCI violations) with at least one proposed fix, and correctly shows data-processor as passing"
 
 - description: "aisa-linter: healthy project reports COMPLIANT"
   vars:
@@ -37,29 +31,40 @@
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:lint on the project"
   assert:
-    # Must produce compliance table
+    # Must produce a markdown table structure
     - type: regex
-      value: "Layout|FM|frontmatter|S1|S2"
+      value: "\\|.*\\|"
+    # Must mention both skill names from the fixture
+    - type: icontains
+      value: "data-processor"
+    - type: icontains
+      value: "report-generator"
     # Must reach COMPLIANT conclusion
     - type: icontains
       value: "COMPLIANT"
-    # Must NOT flag critical violations for the healthy project
+    # Must NOT flag critical violations
     - type: not-icontains
       value: "NON-COMPLIANT"
+    # Behavioral: no violations flagged for either skill
+    - type: llm-rubric
+      value: "The response does not flag any structural or principle violations for either skill, and confirms both data-processor and report-generator pass all checks"
 
-- description: "aisa-linter: scoped to specific skill"
+- description: "aisa-linter: scoped to validator skill only"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
     reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:lint on .claude/skills/validator only"
   assert:
-    # Should scope to validator only
+    # Must mention the target skill
     - type: icontains
       value: "validator"
-    # Should check S5 (line count)
+    # Must identify the S5/line-count violation (specific terms, not bare 'lines')
     - type: regex
-      value: "(S5|line count|500|lines)"
-    # Behavioral: should focus on the specific requested skill
+      value: "(S5|line count|500 lines)"
+    # Must NOT discuss out-of-scope skills
+    - type: not-icontains
+      value: "report_generator"
+    # Behavioral: focus on validator and its S5 violation
     - type: llm-rubric
-      value: "The response focuses validation on the validator skill specifically, and identifies the line count (S5) violation as a failure"
+      value: "The response focuses validation on the validator skill specifically, identifies the line count (S5) violation as the only failure, and does not report on other skills"

@@ -15,9 +15,9 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:cache status"
+    user_request: "Run /aisa:cache status — the cache has a snapshot.json from 3 days ago covering 2 skills (data-processor and report-generator). Both files are unchanged since the snapshot was taken."
   assert:
     - type: regex
       value: "(snapshot|cache|UNCHANGED|MODIFIED)"
     - type: llm-rubric
-      value: "The response reports the current cache status including how many files are unchanged vs modified, without rebuilding the cache"
+      value: "The response reports the cache as fresh/current with both skills showing as UNCHANGED, and does not rebuild the cache"

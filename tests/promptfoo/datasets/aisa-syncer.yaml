@@ -5,7 +5,7 @@
     user_request: "Run /aisa:sync on the project"
   assert:
     - type: regex
-      value: "(Phase [1-7]|Phase 1|Phase 2)"
+      value: "(Drift Audit|Change Plan|Phase [1-7])"
     - type: regex
       value: "(P0|P1|P2|P3|P4|P5)"
     - type: llm-rubric

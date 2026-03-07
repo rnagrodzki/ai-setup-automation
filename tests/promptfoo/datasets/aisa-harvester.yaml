@@ -14,8 +14,8 @@
 - description: "aisa-harvester: no ACTIVE entries produces minimal output"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
-    project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:harvest on the learning log"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:harvest — there is no .claude/ directory and no learning log"
   assert:
     - type: llm-rubric
-      value: "The response notes there are no ACTIVE entries to harvest and does not produce a promotion proposal with fabricated content"
+      value: "The response notes there is no learning log or .claude/ setup to harvest from and does not fabricate harvest proposals"

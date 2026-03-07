@@ -13,17 +13,17 @@
     - type: llm-rubric
       value: "The response accurately describes P1 (Self-Learning Directive), P2 (Quality Gates / Critique-Improve Cycle), and P3 (Plan-Critique-Improve-Do-Critique-Improve pattern)"
 
-- description: "aisa-principles: lists valid tools from the tool registry"
+- description: "aisa-principles: correctly identifies A1-A6 agent principles"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-principles/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "List all valid tools from the tool registry and explain what each is used for"
+    user_request: "What are the A1-A6 agent principles and what does each require?"
   assert:
     - type: icontains
-      value: "Bash"
+      value: "A1"
     - type: icontains
-      value: "Read"
+      value: "A6"
     - type: icontains
-      value: "Skill"
+      value: "frontmatter"
     - type: llm-rubric
-      value: "The response lists the valid tools (at minimum: Bash, Read, Write, Edit, Glob, Grep, Skill, TodoWrite) and describes their purposes"
+      value: "The response accurately describes all 6 agent principles: A1 (frontmatter with name/description/model), A2 (tool validity), A3 (capability-tool consistency), A4 (workflow self-review), A5 (learning capture), and A6 (skill reference validity)"

@@ -23,5 +23,7 @@
       value: "Architecture"
     - type: regex
       value: "(critique|review|Quality Gate|QUALITY GATE)"
+    - type: not-icontains
+      value: "Phase 4"
     - type: llm-rubric
-      value: "The response reaches the Architecture Critique phase and pauses or requests approval before generating files — it does NOT skip the critique gate"
+      value: "The response explicitly stops after presenting the Architecture Critique and asks the user to review or approve before proceeding to Phase 4 (file generation) — it does NOT continue to generate files without waiting for approval"

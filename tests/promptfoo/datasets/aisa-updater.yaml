@@ -7,7 +7,7 @@
     - type: regex
       value: "(P0|P1|P2|P3|P4|P5)"
     - type: regex
-      value: "(Also Noticed|out.of.scope|scope)"
+      value: "(Also Noticed|out-of-scope|scope)"
     - type: llm-rubric
       value: "The response proposes changes scoped to the data-processor skill and includes an 'Also Noticed' section flagging other drift (report_generator violations) without fixing them"
 

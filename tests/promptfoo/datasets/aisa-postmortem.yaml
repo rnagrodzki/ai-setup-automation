@@ -15,11 +15,11 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:postmortem — incident: skill produced output without running verify-setup.js, skipping structural validation entirely"
+    user_request: "Run /aisa:postmortem — incident: a sync operation completed without validating skill structure, and a skill with broken frontmatter ended up deployed"
   assert:
     - type: regex
       value: "(Root Cause|root cause)"
     - type: regex
-      value: "(verify-setup|validation|structural)"
+      value: "(validation|structural|frontmatter|corrupt)"
     - type: llm-rubric
-      value: "The response identifies the root cause as a missing step in the skill workflow and proposes a specific addition (e.g., explicit step to run verify-setup.js) traceable to that root cause"
+      value: "The response identifies the root cause as a missing validation step in the skill workflow and proposes a specific addition to prevent unvalidated skills from being deployed"

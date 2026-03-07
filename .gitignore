@@ -2,4 +2,5 @@
 
 .evidences/
 
-# Promptfoo behavioral tests — results stored globally in ~/.promptfoo/, nothing to ignore here
+# Promptfoo behavioral tests
+tests/promptfoo/.promptfoo-data/

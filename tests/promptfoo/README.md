@@ -13,23 +13,23 @@ Regression tests that run skills through Claude and verify behavioral patterns.
 From this directory:
 
 ```bash
-promptfoo eval
+promptfoo eval --env-file .env
 ```
 
 Open the web UI to inspect results:
 
 ```bash
-promptfoo view
+promptfoo view --env-file .env
 ```
 
 ## Results
 
-Promptfoo stores results in `~/.promptfoo/` in your home directory (not in this repo):
+Results are stored locally in `.promptfoo-data/` (gitignored) instead of the default `~/.promptfoo/` in your home directory. This is configured via `PROMPTFOO_CONFIG_DIR` in the `.env` file.
 
-- `~/.promptfoo/promptfoo.db` — SQLite database with all eval results
-- `~/.promptfoo/logs/` — debug and error logs
+- `.promptfoo-data/promptfoo.db` — SQLite database with all eval results
+- `.promptfoo-data/logs/` — debug and error logs
 
-`promptfoo view` reads from this database and opens a local web UI to browse past evals.
+Both `eval` and `view` must use `--env-file .env` to pick up this location.
 
 ## How it works
 

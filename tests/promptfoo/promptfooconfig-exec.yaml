@@ -1,0 +1,15 @@
+description: "Script execution tests for ai-setup-automation skills (runs real scripts against fixture directories)"
+
+providers:
+  - id: file://providers/claude-cli.js
+
+prompts:
+  - file://prompts/skill-runner-exec.txt
+
+defaultTest:
+  options:
+    transformVars: "file://scripts/extract-skill-content.js"
+    provider: "file://providers/claude-cli.js"
+
+tests:
+  - file://datasets/aisa-cacher-exec.yaml

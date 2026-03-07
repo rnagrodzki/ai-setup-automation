@@ -15,6 +15,13 @@ tasks:
     cmds:
       - promptfoo view --env-file .env
 
+  test:exec:
+    desc: Run script execution tests (real Claude + real scripts against fixture directories)
+    silent: true
+    dir: tests/promptfoo
+    cmds:
+      - promptfoo eval --config promptfooconfig-exec.yaml --env-file .env
+
   test:skill:
     desc: Run tests for one or more skills (interactive multi-select or pass skill names as args)
     silent: true

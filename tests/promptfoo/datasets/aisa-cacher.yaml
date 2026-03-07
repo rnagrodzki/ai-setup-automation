@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:cache rebuild"
+    user_request: "Run /aisa:cache rebuild. After running, show a summary of what was written to snapshot.json — list each skill found, its hash, and the compliance flags detected."
   assert:
     - type: icontains
       value: "snapshot"

@@ -1,0 +1,38 @@
+# Fixture appropriateness:
+#   healthy-project -- CORRECT: has .claude/skills/ with 2 real skill files for rebuild/status
+#   empty-project   -- CORRECT (edge): no .claude/ directory, validates graceful MISSING report
+
+- description: "aisa-cacher-exec: rebuild produces valid snapshot.json"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    project_root: "file://fixtures-fs/healthy-project"
+    user_request: "Run /aisa:cache rebuild"
+  assert:
+    - type: icontains
+      value: "snapshot"
+    - type: regex
+      value: "(data-processor|report-generator)"
+    - type: llm-rubric
+      value: "The response shows Claude running the cache-snapshot.js script against the project directory and producing output that includes skill file hashes or a snapshot summary"
+
+- description: "aisa-cacher-exec: status reports freshness after rebuild"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    project_root: "file://fixtures-fs/healthy-project"
+    user_request: "Run /aisa:cache status"
+  assert:
+    - type: regex
+      value: "(EXISTS|Skills cached|snapshot)"
+    - type: llm-rubric
+      value: "The response reports cache status including whether snapshot.json exists and how many skills are cached"
+
+- description: "aisa-cacher-exec: status on empty project reports MISSING"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    project_root: "file://fixtures-fs/empty-project"
+    user_request: "Run /aisa:cache status"
+  assert:
+    - type: regex
+      value: "(MISSING|not found|no cache|does not exist)"
+    - type: llm-rubric
+      value: "The response reports that no .claude/cache/ directory or snapshot.json exists and does not fabricate snapshot data"

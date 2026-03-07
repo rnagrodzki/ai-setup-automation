@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Resolve paths relative to repo root (two levels up from tests/promptfoo/scripts/)
+// Resolve paths relative to repo root (three levels up from tests/promptfoo/scripts/)
 const REPO_ROOT = path.resolve(__dirname, '../../..');
 
 module.exports = async function transformVars(vars) {

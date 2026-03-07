@@ -1,0 +1,36 @@
+# Fixture appropriateness:
+#   minimal       -- CORRECT: tests are knowledge recall, not project analysis
+#   healthy-setup -- INVALID: adds noise without value (project context is irrelevant)
+#   drifted-setup -- INVALID: same reason
+#   no-setup      -- INVALID: same reason
+#   learning-log  -- INVALID: same reason
+
+- description: "aisa-principles: correctly states P1-P3 skill principles"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-principles/SKILL.md"
+    project_context: "file://fixtures/minimal-context.md"
+    user_request: "What are the P1, P2, and P3 skill principles and what does each require?"
+  assert:
+    - type: icontains
+      value: "P1"
+    - type: icontains
+      value: "P2"
+    - type: icontains
+      value: "P3"
+    - type: llm-rubric
+      value: "The response accurately describes P1 (Self-Learning Directive), P2 (Quality Gates / Critique-Improve Cycle), and P3 (Plan-Critique-Improve-Do-Critique-Improve pattern)"
+
+- description: "aisa-principles: correctly identifies A1-A6 agent principles"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-principles/SKILL.md"
+    project_context: "file://fixtures/minimal-context.md"
+    user_request: "What are the A1-A6 agent principles and what does each require?"
+  assert:
+    - type: icontains
+      value: "A1"
+    - type: icontains
+      value: "A6"
+    - type: icontains
+      value: "frontmatter"
+    - type: llm-rubric
+      value: "The response accurately describes all 6 agent principles: A1 (frontmatter with name/description/model), A2 (tool validity), A3 (capability-tool consistency), A4 (workflow self-review), A5 (learning capture), and A6 (skill reference validity)"

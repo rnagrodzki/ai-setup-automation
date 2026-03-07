@@ -1,0 +1,32 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: incident descriptions reference data-processor/report-generator skills
+#   drifted-setup -- CORRECT (alternate): could test incident mapping against broken skills
+#   learning-log  -- CORRECT (alternate): could test interaction with existing learning entries
+#   no-setup      -- INVALID: postmortem maps gaps to skills; no skills means no useful output
+#   minimal       -- INVALID: same reason
+
+- description: "aisa-postmortem: maps incident to skill gaps and creates learning entries"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:postmortem — incident: the data-processor skill didn't mention that CSV files from vendor X have BOM characters, causing a data import failure in production"
+  assert:
+    - type: icontains
+      value: "data-processor"
+    - type: regex
+      value: "(Root Cause|root cause|skill gap|Skill Gap)"
+    - type: llm-rubric
+      value: "The response maps the BOM character issue to a gap in the data-processor skill, proposes adding a gotcha or warning about BOM characters, and creates or proposes a learning log entry"
+
+- description: "aisa-postmortem: traces every fix to a specific root cause"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:postmortem — incident: a sync operation completed without validating skill structure, and a skill with broken frontmatter ended up deployed"
+  assert:
+    - type: regex
+      value: "(Root Cause|root cause)"
+    - type: regex
+      value: "(validation|structural|frontmatter|corrupt)"
+    - type: llm-rubric
+      value: "The response identifies the root cause as a missing validation step in the skill workflow and proposes a specific addition to prevent unvalidated skills from being deployed"

@@ -1,0 +1,36 @@
+# Fixture appropriateness:
+#   no-setup      -- REQUIRED: scaffolder only applies to projects without .claude/
+#   healthy-setup -- INVALID: setup already exists; scaffolder would abort or skip
+#   drifted-setup -- INVALID: scaffolder doesn't fix drift (use syncer)
+#   learning-log  -- INVALID: scaffolder doesn't process existing learnings
+#   minimal       -- INVALID: scaffolder needs real project structure to analyze tech stack
+
+- description: "aisa-scaffolder: new project generates complete setup with quality gates"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-scaffolder/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:init to scaffold a new .claude/ setup for this project"
+  assert:
+    - type: regex
+      value: "(Phase [1-6]|Phase 1|Phase 2)"
+    - type: regex
+      value: "(Quality Gate|QUALITY GATE)"
+    - type: icontains
+      value: "SKILL.md"
+    - type: llm-rubric
+      value: "The response describes or begins a multi-phase scaffolding process, includes at least one quality gate or critique step, and proposes generating skills and a CLAUDE.md for the project"
+
+- description: "aisa-scaffolder: pauses at architecture critique quality gate"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-scaffolder/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:init — proceed through Phase 3 (Architecture Critique) only"
+  assert:
+    - type: icontains
+      value: "Architecture"
+    - type: regex
+      value: "(critique|review|Quality Gate|QUALITY GATE)"
+    - type: not-icontains
+      value: "Phase 4"
+    - type: llm-rubric
+      value: "The response explicitly stops after presenting the Architecture Critique and asks the user to review or approve before proceeding to Phase 4 (file generation) — it does NOT continue to generate files without waiting for approval"

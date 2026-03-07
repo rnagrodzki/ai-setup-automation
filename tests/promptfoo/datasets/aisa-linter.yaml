@@ -1,0 +1,77 @@
+# Fixture appropriateness:
+#   drifted-setup -- CORRECT: primary use case; exposes S1/S3/P2/P3 violations
+#   healthy-setup -- CORRECT: validates all-pass outcome
+#   no-setup      -- INVALID: nothing to lint (use scaffolder first)
+#   learning-log  -- INVALID: learning log state doesn't affect skill structure
+#   minimal       -- INVALID: no skills to lint
+
+- description: "aisa-linter: drifted project detects all failures"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:lint on the project"
+  assert:
+    # Must produce a markdown table structure
+    - type: regex
+      value: "\\|.*\\|"
+    # Must identify the flat file skill
+    - type: icontains
+      value: "report_generator"
+    # Must identify overall status
+    - type: regex
+      value: "(COMPLIANT|HAS.ISSUES|NON.COMPLIANT|HAS_ISSUES|NON_COMPLIANT)"
+    # Must mention running the validation script (allow paraphrase)
+    - type: regex
+      value: "(verify-setup|validation script|validate)"
+    # Must mention frontmatter checks
+    - type: icontains
+      value: "frontmatter"
+    # Behavioral: identifies violations for report_generator and data-processor passes
+    - type: llm-rubric
+      value: "The response identifies multiple compliance failures for the report_generator skill (S1 flat-file, S3 underscore name, and missing Learning Capture/Quality Gates/PCIDCI violations) with at least one proposed fix, and correctly shows data-processor as passing"
+
+- description: "aisa-linter: healthy project reports COMPLIANT"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:lint on the project"
+  assert:
+    # Must produce a markdown table structure
+    - type: regex
+      value: "\\|.*\\|"
+    # Must mention both skill names from the fixture
+    - type: icontains
+      value: "data-processor"
+    - type: icontains
+      value: "report-generator"
+    # Must reach COMPLIANT conclusion
+    - type: icontains
+      value: "COMPLIANT"
+    # Must NOT flag critical violations
+    - type: not-icontains
+      value: "NON-COMPLIANT"
+    # Behavioral: no violations flagged for either skill
+    - type: llm-rubric
+      value: "The response does not flag any structural or principle violations for either skill, and confirms both data-processor and report-generator pass all checks"
+
+- description: "aisa-linter: scoped to validator skill only"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:lint on .claude/skills/validator only"
+  assert:
+    # Must mention the target skill
+    - type: icontains
+      value: "validator"
+    # Must identify the S5/line-count violation (specific terms, not bare 'lines')
+    - type: regex
+      value: "(S5|line count|500 lines)"
+    # Must NOT discuss out-of-scope skills
+    - type: not-icontains
+      value: "report_generator"
+    # Behavioral: focus on validator and its S5 violation
+    - type: llm-rubric
+      value: "The response focuses validation on the validator skill specifically, identifies the line count (S5) violation as the only failure, and does not report on other skills"

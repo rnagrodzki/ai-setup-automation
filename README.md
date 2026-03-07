@@ -98,6 +98,20 @@ The command detects your tech stack, presents a setup plan for your approval, an
 
 ---
 
+## Testing
+
+Behavioral regression tests use [promptfoo](https://promptfoo.dev/) to validate plugin skills against expected outputs. Tests require [Task](https://taskfile.dev/) and [gum](https://github.com/charmbracelet/gum) for interactive selection.
+
+| Command | Description |
+| --- | --- |
+| `task test` | Run all skill tests |
+| `task test:skill` | Select one or more skills to test (interactive) |
+| `task test:skill -- aisa-linter` | Test a specific skill directly |
+| `task test:skill -- aisa-linter aisa-cacher` | Test multiple skills directly |
+| `task test:view` | Open the promptfoo web UI to inspect results |
+
+---
+
 ## Documentation
 
 | Document | Description |

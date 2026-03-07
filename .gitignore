@@ -1,3 +1,6 @@
 .worktrees/
 
 .evidences/
+
+# Promptfoo behavioral tests
+tests/promptfoo/.promptfoo-data/

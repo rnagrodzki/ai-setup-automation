@@ -1,0 +1,32 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: initialized project tests the "all good" path
+#   no-setup      -- CORRECT: uninitialized project tests NEEDS_ACTION + confirmation gate
+#   drifted-setup -- INVALID: openspec status is independent of skill structure drift
+#   learning-log  -- INVALID: same reason
+#   minimal       -- INVALID: openspec checker needs a real project context for init status
+
+- description: "aisa-openspec-checker: reports GOOD when openspec is installed and current"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-openspec-checker/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:spec-check — openspec v1.2.0 is installed and the project is initialized and up to date"
+  assert:
+    - type: regex
+      value: "(GOOD|NEEDS_ACTION|UNAVAILABLE)"
+    - type: icontains
+      value: "openspec"
+    - type: llm-rubric
+      value: "The response classifies the openspec status as GOOD and does not suggest any remediations"
+
+- description: "aisa-openspec-checker: NEEDS_ACTION when not installed, requires confirmation before installing"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-openspec-checker/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:spec-check — openspec is not installed"
+  assert:
+    - type: icontains
+      value: "install"
+    - type: regex
+      value: "(NEEDS_ACTION|confirm|confirmation|approve)"
+    - type: llm-rubric
+      value: "The response classifies status as NEEDS_ACTION and asks for explicit confirmation before running the install command — it does NOT auto-install without user approval"

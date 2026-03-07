@@ -1,0 +1,28 @@
+# Fixture appropriateness:
+#   learning-log  -- REQUIRED: harvester needs ACTIVE log entries to cluster and promote
+#   no-setup      -- CORRECT (edge): validates graceful handling when no log exists
+#   healthy-setup -- INVALID: log.md is empty; would produce a trivial "nothing to harvest" response
+#   drifted-setup -- INVALID: drifted fixture has no learnings log entries
+#   minimal       -- INVALID: no log to harvest from
+
+- description: "aisa-harvester: clusters ACTIVE entries and proposes promotions"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
+    project_context: "file://fixtures/learning-log-active.md"
+    user_request: "Run /aisa:harvest on the learning log"
+  assert:
+    - type: regex
+      value: "(ACTIVE|PROMOTED|harvest)"
+    - type: icontains
+      value: "api-client"
+    - type: llm-rubric
+      value: "The response identifies the 3 ACTIVE entries, clusters the 2 api-client GOTCHA entries together as high-priority (same skill, same type), and proposes promoting them into the api-client skill as gotcha/warning notes"
+
+- description: "aisa-harvester: no ACTIVE entries produces minimal output"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:harvest — there is no .claude/ directory and no learning log"
+  assert:
+    - type: llm-rubric
+      value: "The response notes there is no learning log or .claude/ setup to harvest from and does not fabricate harvest proposals"

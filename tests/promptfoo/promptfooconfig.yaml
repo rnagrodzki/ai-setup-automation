@@ -1,0 +1,24 @@
+description: "Behavioral regression tests for ai-setup-automation skills"
+
+providers:
+  - id: file://providers/claude-cli.js
+
+prompts:
+  - file://prompts/skill-runner.txt
+
+defaultTest:
+  options:
+    transformVars: "file://scripts/extract-skill-content.js"
+    provider: "file://providers/claude-cli.js"
+
+tests:
+  - file://datasets/aisa-linter.yaml
+  - file://datasets/aisa-checker.yaml
+  - file://datasets/aisa-scaffolder.yaml
+  - file://datasets/aisa-syncer.yaml
+  - file://datasets/aisa-updater.yaml
+  - file://datasets/aisa-harvester.yaml
+  - file://datasets/aisa-postmortem.yaml
+  - file://datasets/aisa-cacher.yaml
+  - file://datasets/aisa-openspec-checker.yaml
+  - file://datasets/aisa-principles.yaml

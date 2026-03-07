@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-03-04T14:30:00Z",
+  "generated_by": "aisa-cacher v1.0",
+  "project_root_hash": "abc123def456",
+  "skills": {
+    "data-processor": {
+      "path": ".claude/skills/data-processor/SKILL.md",
+      "sha256": "1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890ab",
+      "lines": 28,
+      "mtime": "2026-03-01T10:00:00Z",
+      "has_quality_gates": true,
+      "has_learning_capture": true,
+      "has_pcidci_workflow": true,
+      "exempt_from_gates": false
+    },
+    "report-generator": {
+      "path": ".claude/skills/report-generator/SKILL.md",
+      "sha256": "2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+      "lines": 35,
+      "mtime": "2026-03-01T10:00:00Z",
+      "has_quality_gates": true,
+      "has_learning_capture": true,
+      "has_pcidci_workflow": true,
+      "exempt_from_gates": false
+    }
+  },
+  "agents": {},
+  "claude_md": {
+    "sha256": "3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    "mtime": "2026-03-01T09:00:00Z"
+  },
+  "learnings_log": {
+    "total_entries": 3,
+    "active": 2,
+    "promoted": 1,
+    "stale": 0,
+    "sha256": "4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12"
+  },
+  "project_indicators": {}
+}

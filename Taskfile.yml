@@ -1,0 +1,47 @@
+version: "3"
+
+tasks:
+  test:
+    desc: Run all promptfoo skill tests
+    silent: true
+    dir: tests/promptfoo
+    cmds:
+      - promptfoo eval --env-file .env
+
+  test:view:
+    desc: Open promptfoo web UI to inspect test results
+    silent: true
+    dir: tests/promptfoo
+    cmds:
+      - promptfoo view --env-file .env
+
+  test:exec:
+    desc: Run script execution tests (real Claude + real scripts against fixture directories)
+    silent: true
+    dir: tests/promptfoo
+    cmds:
+      - promptfoo eval --config promptfooconfig-exec.yaml --env-file .env
+
+  test:skill:
+    desc: Run tests for one or more skills (interactive multi-select or pass skill names as args)
+    silent: true
+    dir: tests/promptfoo
+    cmds:
+      - |
+        SKILLS_DIR="../../plugins/ai-setup-automation/skills"
+        if [ -n "{{.CLI_ARGS}}" ]; then
+          SELECTED="{{.CLI_ARGS}}"
+        else
+          if ! command -v gum > /dev/null 2>&1; then
+            echo "gum is required for interactive selection."
+            echo "Install: brew install gum  or  https://github.com/charmbracelet/gum"
+            exit 1
+          fi
+          SELECTED=$(ls "$SKILLS_DIR" | gum choose --no-limit --header "Select skills to test (space to toggle, enter to confirm)")
+        fi
+        if [ -z "$SELECTED" ]; then
+          echo "No skills selected."
+          exit 1
+        fi
+        PATTERN=$(echo "$SELECTED" | tr ' \n' '|' | sed 's/|$//')
+        promptfoo eval --env-file .env --filter-pattern "^($PATTERN):"

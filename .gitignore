@@ -2,8 +2,4 @@
 
 .evidences/
 
-# Promptfoo behavioral tests
-tests/promptfoo/output.json
-tests/promptfoo/output.html
-tests/promptfoo/.promptfoo/
-tests/promptfoo/node_modules/
+# Promptfoo behavioral tests — results stored globally in ~/.promptfoo/, nothing to ignore here

@@ -6,20 +6,30 @@ Regression tests that run skills through Claude and verify behavioral patterns.
 
 - Claude Code CLI installed (`claude` in PATH) and logged in
 - Node.js 18+
+- promptfoo installed globally: `npm install -g promptfoo`
 
 ## Run tests
 
 From this directory:
 
 ```bash
-npx promptfoo eval
+promptfoo eval
 ```
 
 Open the web UI to inspect results:
 
 ```bash
-npx promptfoo view
+promptfoo view
 ```
+
+## Results
+
+Promptfoo stores results in `~/.promptfoo/` in your home directory (not in this repo):
+
+- `~/.promptfoo/promptfoo.db` — SQLite database with all eval results
+- `~/.promptfoo/logs/` — debug and error logs
+
+`promptfoo view` reads from this database and opens a local web UI to browse past evals.
 
 ## How it works
 

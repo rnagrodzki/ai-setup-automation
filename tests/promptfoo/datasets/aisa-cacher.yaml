@@ -1,0 +1,23 @@
+- description: "aisa-cacher: rebuild produces snapshot with file hashes"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:cache rebuild"
+  assert:
+    - type: icontains
+      value: "snapshot"
+    - type: regex
+      value: "(UNCHANGED|MODIFIED|NEW|rebuild)"
+    - type: llm-rubric
+      value: "The response describes rebuilding the cache snapshot, scanning skill files, and producing a snapshot.json that records file hashes and compliance flags"
+
+- description: "aisa-cacher: status reports cache freshness"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:cache status"
+  assert:
+    - type: regex
+      value: "(snapshot|cache|UNCHANGED|MODIFIED)"
+    - type: llm-rubric
+      value: "The response reports the current cache status including how many files are unchanged vs modified, without rebuilding the cache"

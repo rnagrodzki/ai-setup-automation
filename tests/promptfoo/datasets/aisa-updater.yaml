@@ -1,0 +1,23 @@
+- description: "aisa-updater: proposes scoped changes and flags out-of-scope drift"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-updater/SKILL.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:update after adding a new pagination feature to the data-processor module"
+  assert:
+    - type: regex
+      value: "(P0|P1|P2|P3|P4|P5)"
+    - type: regex
+      value: "(Also Noticed|out.of.scope|scope)"
+    - type: llm-rubric
+      value: "The response proposes changes scoped to the data-processor skill and includes an 'Also Noticed' section flagging other drift (report_generator violations) without fixing them"
+
+- description: "aisa-updater: respects scope discipline on healthy project"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-updater/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:update after renaming a function in report-generator module"
+  assert:
+    - type: icontains
+      value: "report-generator"
+    - type: llm-rubric
+      value: "The response focuses only on the report-generator skill and does not propose widespread changes to unrelated skills"

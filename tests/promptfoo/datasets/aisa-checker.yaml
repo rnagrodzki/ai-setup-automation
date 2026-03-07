@@ -1,0 +1,27 @@
+- description: "aisa-checker: drifted project shows OUTDATED classifications"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:check on the project"
+  assert:
+    - type: regex
+      value: "\\|.*\\|"
+    - type: regex
+      value: "(CURRENT|OUTDATED|STALE|CRITICAL)"
+    - type: icontains
+      value: "Health Check"
+    - type: llm-rubric
+      value: "The response produces a health check report that classifies at least one skill as OUTDATED or CRITICAL due to the structural violations in the project"
+
+- description: "aisa-checker: healthy project shows all CURRENT"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:check on the project"
+  assert:
+    - type: icontains
+      value: "CURRENT"
+    - type: not-icontains
+      value: "CRITICAL"
+    - type: llm-rubric
+      value: "The response produces a health check report showing both skills as CURRENT with no critical issues"

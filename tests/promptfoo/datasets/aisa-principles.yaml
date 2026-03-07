@@ -1,0 +1,29 @@
+- description: "aisa-principles: correctly states P1-P3 skill principles"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-principles/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "What are the P1, P2, and P3 skill principles and what does each require?"
+  assert:
+    - type: icontains
+      value: "P1"
+    - type: icontains
+      value: "P2"
+    - type: icontains
+      value: "P3"
+    - type: llm-rubric
+      value: "The response accurately describes P1 (Self-Learning Directive), P2 (Quality Gates / Critique-Improve Cycle), and P3 (Plan-Critique-Improve-Do-Critique-Improve pattern)"
+
+- description: "aisa-principles: lists valid tools from the tool registry"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-principles/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "List all valid tools from the tool registry and explain what each is used for"
+  assert:
+    - type: icontains
+      value: "Bash"
+    - type: icontains
+      value: "Read"
+    - type: icontains
+      value: "Skill"
+    - type: llm-rubric
+      value: "The response lists the valid tools (at minimum: Bash, Read, Write, Edit, Glob, Grep, Skill, TodoWrite) and describes their purposes"

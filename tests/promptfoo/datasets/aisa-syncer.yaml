@@ -1,0 +1,25 @@
+- description: "aisa-syncer: drifted project produces prioritized change plan"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:sync on the project"
+  assert:
+    - type: regex
+      value: "(Phase [1-7]|Phase 1|Phase 2)"
+    - type: regex
+      value: "(P0|P1|P2|P3|P4|P5)"
+    - type: llm-rubric
+      value: "The response describes a multi-phase sync process and produces a prioritized change manifest with at least one entry flagged for the drifted skills"
+
+- description: "aisa-syncer: pauses after drift audit for approval"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:sync — complete Phase 2 (Drift Audit) and show findings before continuing"
+  assert:
+    - type: icontains
+      value: "Drift"
+    - type: regex
+      value: "(OUTDATED|STALE|CRITICAL|drift)"
+    - type: llm-rubric
+      value: "The response completes the drift audit phase and pauses to present findings before proceeding to later phases"

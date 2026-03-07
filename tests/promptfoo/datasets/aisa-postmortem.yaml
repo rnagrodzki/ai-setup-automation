@@ -1,0 +1,25 @@
+- description: "aisa-postmortem: maps incident to skill gaps and creates learning entries"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:postmortem — incident: the data-processor skill didn't mention that CSV files from vendor X have BOM characters, causing a data import failure in production"
+  assert:
+    - type: icontains
+      value: "data-processor"
+    - type: regex
+      value: "(Root Cause|root cause|skill gap|Skill Gap)"
+    - type: llm-rubric
+      value: "The response maps the BOM character issue to a gap in the data-processor skill, proposes adding a gotcha or warning about BOM characters, and creates or proposes a learning log entry"
+
+- description: "aisa-postmortem: traces every fix to a specific root cause"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:postmortem — incident: skill produced output without running verify-setup.js, skipping structural validation entirely"
+  assert:
+    - type: regex
+      value: "(Root Cause|root cause)"
+    - type: regex
+      value: "(verify-setup|validation|structural)"
+    - type: llm-rubric
+      value: "The response identifies the root cause as a missing step in the skill workflow and proposes a specific addition (e.g., explicit step to run verify-setup.js) traceable to that root cause"

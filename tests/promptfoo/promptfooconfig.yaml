@@ -1,0 +1,16 @@
+description: "Behavioral regression tests for ai-setup-automation skills"
+
+providers:
+  - id: file://providers/claude-cli.js
+
+prompts:
+  - file://prompts/skill-runner.txt
+
+defaultTest:
+  options:
+    provider:
+      id: file://providers/claude-cli.js
+    transformVars: "file://scripts/extract-skill-content.js"
+
+tests:
+  - file://datasets/aisa-linter.yaml

@@ -6,3 +6,4 @@
 tests/promptfoo/output.json
 tests/promptfoo/output.html
 tests/promptfoo/.promptfoo/
+tests/promptfoo/node_modules/

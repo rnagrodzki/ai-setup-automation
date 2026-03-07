@@ -8,8 +8,6 @@ prompts:
 
 defaultTest:
   options:
-    provider:
-      id: file://providers/claude-cli.js
     transformVars: "file://scripts/extract-skill-content.js"
 
 tests:

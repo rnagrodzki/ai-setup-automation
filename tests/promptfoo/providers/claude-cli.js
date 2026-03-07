@@ -5,11 +5,11 @@ class ClaudeCliProvider {
     return 'claude-cli';
   }
 
-  async callApi(prompt) {
+  async callApi(prompt, context) {
     return new Promise((resolve) => {
       const proc = execFile('claude', ['-p', '--output-format', 'text'], {
         timeout: 120_000,
-        maxBuffer: 1024 * 1024,
+        maxBuffer: 20 * 1024 * 1024,
       }, (error, stdout, stderr) => {
         if (error) {
           return resolve({ error: error.message, output: stderr });

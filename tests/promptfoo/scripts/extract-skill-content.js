@@ -9,7 +9,11 @@ module.exports = async function transformVars(vars) {
 
   if (vars.skill_path) {
     const fullPath = path.join(REPO_ROOT, vars.skill_path);
-    result.skill_content = fs.readFileSync(fullPath, 'utf8');
+    try {
+      result.skill_content = fs.readFileSync(fullPath, 'utf8');
+    } catch (err) {
+      throw new Error(`extract-skill-content: cannot read skill_path "${fullPath}": ${err.message}`);
+    }
   }
 
   if (vars.reference_path) {

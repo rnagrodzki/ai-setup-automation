@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   drifted-setup -- CORRECT: primary use case; exposes S1/S3/P2/P3 violations
+#   healthy-setup -- CORRECT: validates all-pass outcome
+#   no-setup      -- INVALID: nothing to lint (use scaffolder first)
+#   learning-log  -- INVALID: learning log state doesn't affect skill structure
+#   minimal       -- INVALID: no skills to lint
+
 - description: "aisa-linter: drifted project detects all failures"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"

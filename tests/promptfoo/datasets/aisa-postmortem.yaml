@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: incident descriptions reference data-processor/report-generator skills
+#   drifted-setup -- CORRECT (alternate): could test incident mapping against broken skills
+#   learning-log  -- CORRECT (alternate): could test interaction with existing learning entries
+#   no-setup      -- INVALID: postmortem maps gaps to skills; no skills means no useful output
+#   minimal       -- INVALID: same reason
+
 - description: "aisa-postmortem: maps incident to skill gaps and creates learning entries"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"

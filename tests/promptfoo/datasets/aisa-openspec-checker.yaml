@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: initialized project tests the "all good" path
+#   no-setup      -- CORRECT: uninitialized project tests NEEDS_ACTION + confirmation gate
+#   drifted-setup -- INVALID: openspec status is independent of skill structure drift
+#   learning-log  -- INVALID: same reason
+#   minimal       -- INVALID: openspec checker needs a real project context for init status
+
 - description: "aisa-openspec-checker: reports GOOD when openspec is installed and current"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-openspec-checker/SKILL.md"

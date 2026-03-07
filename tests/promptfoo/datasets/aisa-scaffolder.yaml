@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   no-setup      -- REQUIRED: scaffolder only applies to projects without .claude/
+#   healthy-setup -- INVALID: setup already exists; scaffolder would abort or skip
+#   drifted-setup -- INVALID: scaffolder doesn't fix drift (use syncer)
+#   learning-log  -- INVALID: scaffolder doesn't process existing learnings
+#   minimal       -- INVALID: scaffolder needs real project structure to analyze tech stack
+
 - description: "aisa-scaffolder: new project generates complete setup with quality gates"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-scaffolder/SKILL.md"

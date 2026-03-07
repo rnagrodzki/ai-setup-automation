@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: has a .claude/cache/snapshot.json to rebuild or report on
+#   no-setup      -- CORRECT (edge): validates graceful handling of missing .claude/ directory
+#   drifted-setup -- INVALID: drift state is irrelevant to cache operations
+#   learning-log  -- INVALID: same reason
+#   minimal       -- INVALID: no project structure to scan
+
 - description: "aisa-cacher: rebuild produces snapshot with file hashes"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
@@ -21,3 +28,14 @@
       value: "(snapshot|cache|UNCHANGED|MODIFIED)"
     - type: llm-rubric
       value: "The response reports the cache as fresh/current with both skills showing as UNCHANGED, and does not rebuild the cache"
+
+- description: "aisa-cacher: no .claude/ directory reports missing cache"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:cache status"
+  assert:
+    - type: regex
+      value: "(MISSING|not found|no cache|does not exist)"
+    - type: llm-rubric
+      value: "The response reports that no .claude/cache/ directory exists and does not fabricate snapshot data. It may recommend running aisa-scaffolder or aisa-syncer first."

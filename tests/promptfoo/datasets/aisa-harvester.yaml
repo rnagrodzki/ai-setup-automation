@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   learning-log  -- REQUIRED: harvester needs ACTIVE log entries to cluster and promote
+#   no-setup      -- CORRECT (edge): validates graceful handling when no log exists
+#   healthy-setup -- INVALID: log.md is empty; would produce a trivial "nothing to harvest" response
+#   drifted-setup -- INVALID: drifted fixture has no learnings log entries
+#   minimal       -- INVALID: no log to harvest from
+
 - description: "aisa-harvester: clusters ACTIVE entries and proposes promotions"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"

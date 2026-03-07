@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   drifted-setup -- CORRECT: primary use case; reveals drift needing fixes
+#   healthy-setup -- CORRECT: validates "no drift" boundary (syncer should not invent problems)
+#   no-setup      -- INVALID: nothing to sync (use scaffolder first)
+#   learning-log  -- INVALID: learnings are an input to sync, not the main test target
+#   minimal       -- INVALID: no project structure to analyze
+
 - description: "aisa-syncer: drifted project produces prioritized change plan"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
@@ -10,6 +17,19 @@
       value: "(P0|P1|P2|P3|P4|P5)"
     - type: llm-rubric
       value: "The response describes a multi-phase sync process and produces a prioritized change manifest with at least one entry flagged for the drifted skills"
+
+- description: "aisa-syncer: healthy project reports minimal/no drift"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:sync on the project"
+  assert:
+    - type: regex
+      value: "(Phase [1-7]|Phase 1|Phase 2)"
+    - type: not-icontains
+      value: "CRITICAL"
+    - type: llm-rubric
+      value: "The response runs sync phases and finds no critical drift or stale content. Both skills pass principle checks. The change plan is empty or contains only minor enhancements."
 
 - description: "aisa-syncer: pauses after drift audit for approval"
   vars:

@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   drifted-setup -- CORRECT: tests scope discipline; out-of-scope drift should be flagged not fixed
+#   healthy-setup -- CORRECT: tests minimal-change behavior after a targeted code change
+#   no-setup      -- INVALID: nothing to update (use scaffolder first)
+#   learning-log  -- INVALID: learnings are harvested separately; not the updater's concern
+#   minimal       -- INVALID: no project structure to scope changes against
+
 - description: "aisa-updater: proposes scoped changes and flags out-of-scope drift"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-updater/SKILL.md"

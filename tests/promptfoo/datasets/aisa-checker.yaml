@@ -1,3 +1,10 @@
+# Fixture appropriateness:
+#   drifted-setup -- CORRECT: primary use case; checker classifies violations as OUTDATED/CRITICAL
+#   healthy-setup -- CORRECT: validates all-CURRENT happy path
+#   no-setup      -- CORRECT (edge): validates graceful handling when no .claude/ exists
+#   learning-log  -- INVALID: learning log state doesn't affect skill structure health
+#   minimal       -- INVALID: no project structure to check
+
 - description: "aisa-checker: drifted project shows OUTDATED classifications"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
@@ -25,3 +32,12 @@
       value: "CRITICAL"
     - type: llm-rubric
       value: "The response produces a health check report showing both skills as CURRENT with no critical issues"
+
+- description: "aisa-checker: no .claude/ directory reports nothing to check"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa:check on the project"
+  assert:
+    - type: llm-rubric
+      value: "The response notes there is no .claude/ setup to check and does not fabricate health check results. It may recommend running aisa-scaffolder first."

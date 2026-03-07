@@ -9,6 +9,7 @@ prompts:
 defaultTest:
   options:
     transformVars: "file://scripts/extract-skill-content.js"
+    provider: "file://providers/claude-cli.js"
 
 tests:
   - file://datasets/aisa-linter.yaml

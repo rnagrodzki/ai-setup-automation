@@ -32,6 +32,17 @@ module.exports = async function transformVars(vars) {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'promptfoo-fixture-'));
     fs.cpSync(sourceDir, tmpDir, { recursive: true });
     result.project_root = tmpDir;
+    result.repo_root = REPO_ROOT;
+  }
+
+  // script_path with "repo://" prefix resolves relative to repo root
+  if (vars.script_path && vars.script_path.startsWith('repo://')) {
+    result.script_path = path.join(REPO_ROOT, vars.script_path.replace('repo://', ''));
+  }
+
+  // script_args: replace {{project_root}} placeholder after temp dir resolution
+  if (vars.script_args && result.project_root) {
+    result.script_args = vars.script_args.replace('{{project_root}}', result.project_root);
   }
 
   return result;

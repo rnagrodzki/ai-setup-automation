@@ -1,15 +1,16 @@
 description: "Script execution tests for ai-setup-automation skills (runs real scripts against fixture directories)"
 
+# Each dataset test case specifies its own provider (script-runner.js).
+# The prompt is unused for script tests but required by promptfoo config schema.
 providers:
-  - id: file://providers/claude-cli.js
+  - id: file://providers/script-runner.js
 
 prompts:
-  - file://prompts/skill-runner-exec.txt
+  - "run"
 
 defaultTest:
   options:
     transformVars: "file://scripts/extract-skill-content.js"
-    provider: "file://providers/claude-cli.js"
 
 tests:
   - file://datasets/aisa-cacher-exec.yaml

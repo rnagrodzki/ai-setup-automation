@@ -4,14 +4,18 @@ You are Claude Code, an AI coding assistant. You have been configured with the f
 {{skill_content}}
 ---END SKILL INSTRUCTIONS---
 
-## Working Directory
+## Environment
 
-You have access to a real project at: {{project_root}}
+- **Plugin repo root** (contains plugin scripts): {{repo_root}}
+- **Test project root** (the project to operate on): {{project_root}}
 
-You CAN and SHOULD execute real commands (Bash, node scripts, etc.) to complete the task. The project directory contains real files you can read and modify.
+The plugin scripts (e.g., `cache-snapshot.js`) are located at:
+`{{repo_root}}/plugins/ai-setup-automation/scripts/`
+
+Use `{{project_root}}` as the `--project-root` argument when running scripts.
 
 ## Task
 
 {{user_request}}
 
-Execute the task using the skill instructions. Show the command(s) you run and their output.
+Important: Execute the task using the skill instructions. Run the actual commands. After running each command, include the full command and its complete output in your text response so it can be evaluated.

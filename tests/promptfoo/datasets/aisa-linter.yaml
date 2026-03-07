@@ -1,0 +1,65 @@
+- description: "aisa-linter: drifted project detects all failures"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:lint on the project"
+  assert:
+    # Must produce the skill compliance table
+    - type: regex
+      value: "Layout|FM|frontmatter|S1|S2"
+    # Must identify the flat file violation
+    - type: icontains
+      value: "report_generator"
+    # Must identify COMPLIANT, HAS ISSUES, or NON-COMPLIANT in output
+    - type: regex
+      value: "(COMPLIANT|HAS.ISSUES|NON.COMPLIANT|NON_COMPLIANT|HAS_ISSUES)"
+    # Must mention verify-setup.js (step 1 of the skill)
+    - type: icontains
+      value: "verify-setup"
+    # Must mention frontmatter or structural checks
+    - type: icontains
+      value: "frontmatter"
+    # Must mention Quality Gate
+    - type: icontains
+      value: "Quality Gate"
+    # Must mention Learning Capture
+    - type: icontains
+      value: "Learning Capture"
+    # Behavioral: should identify violations and propose fixes
+    - type: llm-rubric
+      value: "The response identifies multiple compliance failures (S1, S3, 2a, 2b, 2c) for the report_generator skill and proposes at least one concrete fix"
+
+- description: "aisa-linter: healthy project reports COMPLIANT"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa:lint on the project"
+  assert:
+    # Must produce compliance table
+    - type: regex
+      value: "Layout|FM|frontmatter|S1|S2"
+    # Must reach COMPLIANT conclusion
+    - type: icontains
+      value: "COMPLIANT"
+    # Must NOT flag critical violations for the healthy project
+    - type: not-icontains
+      value: "NON-COMPLIANT"
+
+- description: "aisa-linter: scoped to specific skill"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa:lint on .claude/skills/validator only"
+  assert:
+    # Should scope to validator only
+    - type: icontains
+      value: "validator"
+    # Should check S5 (line count)
+    - type: regex
+      value: "(S5|line count|500|lines)"
+    # Behavioral: should focus on the specific requested skill
+    - type: llm-rubric
+      value: "The response focuses validation on the validator skill specifically, and identifies the line count (S5) violation as a failure"

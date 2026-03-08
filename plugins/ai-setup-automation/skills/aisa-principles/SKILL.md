@@ -6,7 +6,7 @@ user-invocable: false
 
 # Shared Principles & Standards
 
-> **Version:** 8.0 · **Last updated:** 2026-02-24
+> **Version:** 8.1 · **Last updated:** 2026-03-08
 
 This file is the single source of truth for architectural principles enforced across all `aisa-*` skills.
 Do not duplicate these definitions — reference this file.
@@ -99,7 +99,7 @@ Apply to every agent:
 ## Behavioral Rules
 
 These rules apply to ALL `aisa-*` skills. Rules 1-19 are foundational (from architect),
-rules 20-28 are evolution-specific (from evolver).
+rules 20-30 are evolution-specific (from evolver).
 
 ### Foundation Rules
 
@@ -162,6 +162,8 @@ rules 20-28 are evolution-specific (from evolver).
 28. **Cache-first scanning.** Check snapshot hashes before deep-reading files. Skip unchanged content.
 
 29. **Always parallel.** Use subagent workstreams or Agent Teams for every audit.
+
+30. **Always produce visible output.** Every skill execution MUST produce structured text output. Empty or silent completions are a failure. Error cases produce a structured error report. Edge cases (nothing to process, no data found) produce an explicit "nothing found" report following the skill's defined output format. Tool-only work without a text summary is never acceptable.
 
 ---
 

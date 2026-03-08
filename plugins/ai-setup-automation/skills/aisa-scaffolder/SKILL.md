@@ -68,10 +68,10 @@ Use this structure (adapt content to findings):
 ### Verdict
 {PASS / FAIL with revision required}
 
-[PAUSE — awaiting approval before generating files]
+[PAUSE] **Please review the Architecture Critique above and confirm you'd like to proceed to file generation, or request revisions.**
 
 ## Phase 4 — Generation
-{list of files being generated with brief rationale for each}
+{list of files being generated with brief rationale for each — e.g., .claude/skills/foo/SKILL.md, .claude/agents/bar.md, .claude/learnings/log.md, CLAUDE.md}
 
 ## Phase 5 — Generation Critique ← QUALITY GATE
 ### Critique Findings

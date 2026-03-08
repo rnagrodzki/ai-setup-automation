@@ -28,7 +28,9 @@ proceeding to the next phase. Use the following structure for each phase:
 {2-4 lines summarizing what was found: skill count, agent count, learnings log status}
 
 ## Phase 2 — Drift Audit
-{table or bullet list of each skill/agent with CURRENT / OUTDATED / STALE / CRITICAL status}
+{table or bullet list of each skill/agent with their classification status — for healthy projects all should show CURRENT}
+
+[PAUSE — present drift findings here and await approval before proceeding to Phase 3 and beyond]
 
 ## Phase 3 — Learnings Harvest
 {N ACTIVE entries processed; list promotions or "no entries to promote"}

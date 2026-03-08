@@ -4,3 +4,5 @@
 
 # Promptfoo behavioral tests
 tests/promptfoo/.promptfoo-data/
+
+.DS_Store

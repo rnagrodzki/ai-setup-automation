@@ -1,5 +1,8 @@
 description: "Behavioral regression tests for ai-setup-automation skills"
 
+evaluateOptions:
+  maxConcurrency: 8
+
 providers:
   - id: file://providers/claude-cli.js
 

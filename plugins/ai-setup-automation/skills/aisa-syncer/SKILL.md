@@ -49,6 +49,8 @@ proceeding to the next phase. Use the following structure for each phase:
 {any meta-patterns captured in .claude/learnings/log.md, or "No new patterns detected"}
 ```
 
+**MANDATORY**: Every phase header MUST appear in the output, even when no issues are found. For a healthy project with no drift, each phase header must still appear with an explicit "no issues found" or "all skills CURRENT" statement — do not skip phases or produce abbreviated output. The `## Learnings` section is always required; write "No new patterns detected" if none were found.
+
 This structure is required regardless of whether REFERENCE.md is read. Each phase header signals
 to the user that the phase ran and allows approval gates to fire at the right moment.
 
@@ -118,9 +120,7 @@ After Phase 6 (Critique) — present quality scores, wait for approval.
 
 ## Learning Capture
 
-After each evolution cycle, if meta-patterns emerge about the setup's structure
-(e.g., recurring drift in a specific skill cluster, evolution bottlenecks, unexpected
-inter-skill dependencies), append entries to `.claude/learnings/log.md` using the standard format.
+After each evolution cycle, always include a `## Learnings` section in your output. If meta-patterns emerge about the setup's structure (e.g., recurring drift in a specific skill cluster, evolution bottlenecks, unexpected inter-skill dependencies), append entries to `.claude/learnings/log.md` using the standard format. If no patterns emerge, explicitly state "No new patterns detected" — never omit this section.
 
 ## Output
 

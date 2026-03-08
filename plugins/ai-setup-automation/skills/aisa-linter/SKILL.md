@@ -66,7 +66,7 @@ agent compliance table, issues table with concrete proposed fixes.
 
 Overall status: COMPLIANT / HAS ISSUES / NON-COMPLIANT
 
-Always close the report with a `## Learnings` section:
+**MANDATORY**: Always close the report with a `## Learnings` section — this applies whether linting a single file or the full `.claude/` directory. Never omit it.
 
 ```markdown
 ## Learnings
@@ -76,7 +76,7 @@ Quality Gates"), summarize them here and note they have been captured in .claude
 If no new patterns were detected, explicitly state: "No new systemic patterns detected in this run."}
 ```
 
-This section must always be present — it is the evidence that learning capture ran.
+This section must always be present — it is the evidence that learning capture ran. Produce it even when the scope is a single file and no issues were found.
 
 ### Step 5 — Competency Overlap Review
 

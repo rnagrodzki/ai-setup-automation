@@ -128,7 +128,7 @@ If any gate fails its check, do not proceed to the next step — resolve the fai
 After completing Steps 1-5, perform an internal critique before finalising the report:
 
 - [ ] Did the script run without error? If not, was the error surfaced clearly?
-- [ ] Is the classification (GOOD / NEEDS_ACTION / UNAVAILABLE) consistent with the JSON fields?
+- [ ] Is the classification (GOOD / NEEDS_ACTION) consistent with the JSON fields?
 - [ ] Were all entries in `suggestions` presented to the user — none silently dropped?
 - [ ] Was each executed command confirmed individually before running?
 - [ ] Does the re-verification report reflect the actual post-remediation state?

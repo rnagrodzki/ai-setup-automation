@@ -68,7 +68,7 @@ Use this structure (adapt content to findings):
 ### Verdict
 {PASS / FAIL with revision required}
 
-[PAUSE — awaiting approval to proceed to Phase 4]
+[PAUSE — awaiting approval before generating files]
 
 ## Phase 4 — Generation
 {list of files being generated with brief rationale for each}
@@ -88,6 +88,19 @@ Use this structure (adapt content to findings):
 {discoveries captured in .claude/learnings/log.md, or "No new patterns detected — learnings
 infrastructure created for future entries"}
 ```
+
+## Quality Gate
+
+Before delivering any phase output, perform an internal verification:
+
+- [ ] Every proposed skill is justified by evidence from the Discovery phase (no assumptions)
+- [ ] Architecture Critique (Phase 3) contains specific findings — not a rubber-stamp "looks good"
+- [ ] Generation Critique (Phase 5) verifies each generated file against P1-P3 / A1-A6 principles
+- [ ] At least one generated skill was spot-checked with a representative task simulation
+- [ ] The `## Learnings` section appears in the final output (even if it states "No new patterns detected")
+- [ ] No phase was skipped — all phase headers are visible in the output
+
+If any item fails, correct it before presenting output.
 
 ## Pause Points
 

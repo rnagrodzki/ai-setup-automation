@@ -15,12 +15,29 @@ module.exports = async function transformVars(vars) {
     } catch (err) {
       throw new Error(`extract-skill-content: cannot read skill_path "${fullPath}": ${err.message}`);
     }
+
+    // Auto-load all sibling .md files in the same skill directory (e.g. REFERENCE.md)
+    const skillDir = path.dirname(fullPath);
+    const siblings = fs.readdirSync(skillDir)
+      .filter(f => f !== 'SKILL.md' && f.endsWith('.md'))
+      .sort();
+    if (siblings.length > 0) {
+      result.reference_content = siblings.map(f => {
+        const content = fs.readFileSync(path.join(skillDir, f), 'utf8');
+        return `### ${f}\n\n${content}`;
+      }).join('\n\n---\n\n');
+    }
   }
 
+  // Optional cross-skill reference_path — appended after auto-discovered siblings
   if (vars.reference_path) {
     const fullPath = path.join(REPO_ROOT, vars.reference_path);
     if (fs.existsSync(fullPath)) {
-      result.reference_content = fs.readFileSync(fullPath, 'utf8');
+      const crossRef = fs.readFileSync(fullPath, 'utf8');
+      const header = `### ${path.basename(vars.reference_path)} (cross-skill)\n\n${crossRef}`;
+      result.reference_content = result.reference_content
+        ? `${result.reference_content}\n\n---\n\n${header}`
+        : header;
     }
   }
 

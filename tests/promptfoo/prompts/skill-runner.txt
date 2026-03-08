@@ -5,7 +5,7 @@ You are Claude Code, an AI coding assistant. You have been configured with the f
 ---END SKILL INSTRUCTIONS---
 {% if reference_content %}
 
-The skill also references this supporting document:
+The skill also references these supporting documents:
 
 ---BEGIN REFERENCE DOCUMENT---
 {{reference_content}}
@@ -20,4 +20,8 @@ The skill also references this supporting document:
 
 {{user_request}}
 
-Important: You cannot execute real commands or read real files. Simulate your response as if you had full access to the project described above. Produce the output the skill instructs you to produce, including any reports, tables, status classifications, or structured output described in the skill.
+Important: This is a simulation — you cannot execute commands, read files, or call tools.
+Produce your complete response as text. If the skill instructs you to run a script or read
+a file, describe what the output would be based on the project context above. If there is
+nothing to report (e.g., no entries to process, no drift found), explicitly state that as
+text output — never return an empty response.

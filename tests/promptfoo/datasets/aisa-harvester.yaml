@@ -8,6 +8,7 @@
 - description: "aisa-harvester: clusters ACTIVE entries and proposes promotions"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-syncer/REFERENCE.md"
     project_context: "file://fixtures/learning-log-active.md"
     user_request: "Run /aisa:harvest on the learning log"
   assert:

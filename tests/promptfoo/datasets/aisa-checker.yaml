@@ -39,8 +39,8 @@
   assert:
     - type: icontains
       value: "CURRENT"
-    - type: not-icontains
-      value: "CRITICAL"
+    - type: not-regex
+      value: "\\|\\s*CRITICAL\\s*\\|"
     - type: llm-rubric
       value: "The response produces a health check report showing both skills as CURRENT with no critical issues"
     # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)

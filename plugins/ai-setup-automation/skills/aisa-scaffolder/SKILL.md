@@ -46,6 +46,49 @@ Validate before completing Phase 5. Exception: `openspec-*` skills are exempt fr
 
 If any generated file fails these checks → fix it before moving to Phase 6. Do not defer.
 
+## Required Output Format
+
+Every phase MUST produce a visible section header and summary before pausing or proceeding.
+Use this structure (adapt content to findings):
+
+```
+## Phase 1 — Discovery Report
+{project structure, tech stack, specs found, existing learnings — 4-8 lines}
+
+[PAUSE — awaiting approval to proceed to Phase 2]
+
+## Phase 2 — Architecture Design
+{N skills proposed across technical/business/design dimensions; agents: N proposed or "none (Rule 7 not met)"}
+
+## Phase 3 — Architecture Critique ← QUALITY GATE
+### Critique Findings
+{specificity check, domain coverage, principle compliance — list any issues found}
+### Simulation
+{pick one proposed skill, walk through a representative task to verify it adds value}
+### Verdict
+{PASS / FAIL with revision required}
+
+[PAUSE — awaiting approval to proceed to Phase 4]
+
+## Phase 4 — Generation
+{list of files being generated with brief rationale for each}
+
+## Phase 5 — Generation Critique ← QUALITY GATE
+### Critique Findings
+{principle checks P1-P3/A1-A6 per generated file; spot-check one file with verify command}
+### Verdict
+{PASS / FAIL}
+
+[PAUSE — awaiting approval to proceed to Phase 6]
+
+## Phase 6 — Wiring & Validation
+{files written; references verified; commit summary}
+
+## Learnings
+{discoveries captured in .claude/learnings/log.md, or "No new patterns detected — learnings
+infrastructure created for future entries"}
+```
+
 ## Pause Points
 
 After Phase 1 (Discovery Report) — present findings, wait for approval.

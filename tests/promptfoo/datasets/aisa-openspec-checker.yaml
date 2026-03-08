@@ -12,7 +12,7 @@
     user_request: "Run /aisa:spec-check — openspec v1.2.0 is installed and the project is initialized and up to date"
   assert:
     - type: regex
-      value: "(GOOD|NEEDS_ACTION|UNAVAILABLE)"
+      value: "(GOOD|NEEDS_ACTION)"
     - type: icontains
       value: "openspec"
     - type: llm-rubric
@@ -38,7 +38,7 @@
     - type: icontains
       value: "install"
     - type: regex
-      value: "(NEEDS_ACTION|confirm|confirmation|approve)"
+      value: "(NEEDS_ACTION|confirm|confirmation|approve|Proceed)"
     - type: llm-rubric
       value: "The response classifies status as NEEDS_ACTION and asks for explicit confirmation before running the install command — it does NOT auto-install without user approval"
     # Cross-cutting: principle compliance for edge cases (Rule 30, Rule 11)

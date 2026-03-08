@@ -20,6 +20,38 @@ Useful for previewing what an evolution cycle would change without modifying any
 
 Read the full pipeline specification in `REFERENCE.md` (in this skill's directory) and execute all 7 phases.
 
+**Output format** — every phase MUST produce a visible text section header and summary before
+proceeding to the next phase. Use the following structure for each phase:
+
+```
+## Phase 1 — Snapshot
+{2-4 lines summarizing what was found: skill count, agent count, learnings log status}
+
+## Phase 2 — Drift Audit
+{table or bullet list of each skill/agent with CURRENT / OUTDATED / STALE / CRITICAL status}
+
+## Phase 3 — Learnings Harvest
+{N ACTIVE entries processed; list promotions or "no entries to promote"}
+
+## Phase 4 — Expansion Analysis
+{skills proposed (N) with justification; agents: proposed or "none — [reason Rule 7 not met]"}
+
+## Phase 5 — Change Plan
+{priority summary table: P0–P5 counts}
+
+## Phase 6 — Critique
+{quality scores table; simulation result}
+
+## Phase 7 — Execute
+{list of files written/updated; commit summary}
+
+## Learnings
+{any meta-patterns captured in .claude/learnings/log.md, or "No new patterns detected"}
+```
+
+This structure is required regardless of whether REFERENCE.md is read. Each phase header signals
+to the user that the phase ran and allows approval gates to fire at the right moment.
+
 **Before Phase 1**: Check `.claude/cache/snapshot.json` — if present, use incremental scanning
 (only deep-audit files whose hashes changed). See `aisa-cacher` skill for protocol.
 

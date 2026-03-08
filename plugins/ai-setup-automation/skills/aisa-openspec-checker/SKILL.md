@@ -35,13 +35,16 @@ Capture the JSON output for interpretation in Step 2.
 
 ### Step 2 — Interpret Results
 
-Parse the JSON and classify the overall state into one of three categories:
+Parse the JSON and classify the overall state into one of two categories:
 
 | Category | Condition |
 |---|---|
 | **GOOD** | `cli_installed && project_initialized && update_available !== true` |
-| **NEEDS_ACTION** | CLI installed but `!project_initialized` OR `update_available === true` |
-| **UNAVAILABLE** | `!cli_installed` |
+| **NEEDS_ACTION** | `!cli_installed` OR `!project_initialized` OR `update_available === true` |
+
+> **Note:** There is no UNAVAILABLE state. Even when the CLI is not installed, the correct classification
+> is NEEDS_ACTION — because a clear remediation exists (install the CLI). UNAVAILABLE would only apply
+> if no remediation were possible, which is not the case here.
 
 Map each field to a display status:
 
@@ -53,7 +56,7 @@ Map each field to a display status:
 - `update_available: true` → Version: update available (`latest_version`)
 
 If the script exits with a non-zero code or the output cannot be parsed as JSON, classify
-the state as UNAVAILABLE and surface the raw error output.
+the state as NEEDS_ACTION and surface the raw error output.
 
 ### Step 3 — Present Findings
 
@@ -66,7 +69,7 @@ Present a concise status report:
 - Project: ✅ initialized                 (or ⚠️ not initialized)
 - Version: ✅ up to date                  (or ⚠️ update available: {latest_version})
 
-Overall: GOOD | NEEDS_ACTION | UNAVAILABLE
+Overall: GOOD | NEEDS_ACTION
 ```
 
 If the overall state is GOOD, stop here — no remediations are needed.

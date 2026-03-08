@@ -66,6 +66,18 @@ agent compliance table, issues table with concrete proposed fixes.
 
 Overall status: COMPLIANT / HAS ISSUES / NON-COMPLIANT
 
+Always close the report with a `## Learnings` section:
+
+```markdown
+## Learnings
+
+{If systemic patterns were detected (e.g. "all agents missing self-review", "no skills have
+Quality Gates"), summarize them here and note they have been captured in .claude/learnings/log.md.
+If no new patterns were detected, explicitly state: "No new systemic patterns detected in this run."}
+```
+
+This section must always be present — it is the evidence that learning capture ran.
+
 ### Step 5 — Competency Overlap Review
 
 Review the `skill_overlap` section of the JSON output (or "Skill Competency Overlap" section in markdown output).

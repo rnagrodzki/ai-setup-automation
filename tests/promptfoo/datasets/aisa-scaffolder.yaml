@@ -19,6 +19,17 @@
       value: "SKILL.md"
     - type: llm-rubric
       value: "The response describes or begins a multi-phase scaffolding process, includes at least one quality gate or critique step, and proposes generating skills and a CLAUDE.md for the project"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
 
 - description: "aisa-scaffolder: pauses at architecture critique quality gate"
   vars:
@@ -30,7 +41,18 @@
       value: "Architecture"
     - type: regex
       value: "(critique|review|Quality Gate|QUALITY GATE)"
-    - type: not-icontains
-      value: "Phase 4"
+    - type: not-regex
+      value: "## Phase 4"
     - type: llm-rubric
       value: "The response explicitly stops after presenting the Architecture Critique and asks the user to review or approve before proceeding to Phase 4 (file generation) — it does NOT continue to generate files without waiting for approval"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6

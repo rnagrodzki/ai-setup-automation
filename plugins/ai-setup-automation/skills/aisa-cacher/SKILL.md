@@ -142,6 +142,20 @@ report to stdout:
 {FRESH — no rebuild needed / PARTIALLY STALE — incremental scan sufficient / STALE — full rebuild recommended}
 ```
 
+After presenting the cache status report, always close with:
+
+```markdown
+## Learnings
+{If cache analysis reveals patterns (e.g., "skills always drift together", "spec changes correlate with domain drift"), note them here. Otherwise: "No new patterns detected."}
+```
+
+This section is **mandatory** — it is the evidence that P1 learning capture ran.
+
+Before delivering the status report, perform an internal critique:
+- [ ] Did I verify each file hash comparison, or did I assume the cache is correct?
+- [ ] Is the freshness recommendation (FRESH / PARTIALLY STALE / STALE) supported by the hash evidence?
+- [ ] Have I explicitly stated any files that are UNCHANGED vs MODIFIED?
+
 ### `$ARGUMENTS` = `invalidate`
 
 Delete the cache files, forcing a full scan on the next aisa-syncer run:

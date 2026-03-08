@@ -12,7 +12,7 @@ class ClaudeCliProvider {
       delete env.CLAUDECODE;
 
       const proc = execFile('claude', ['-p', '--output-format', 'text', '--input-format', 'text'], {
-        timeout: 120_000,
+        timeout: 300_000,
         maxBuffer: 20 * 1024 * 1024,
         env,
       }, (error, stdout, stderr) => {

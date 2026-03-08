@@ -46,6 +46,62 @@ Validate before completing Phase 5. Exception: `openspec-*` skills are exempt fr
 
 If any generated file fails these checks → fix it before moving to Phase 6. Do not defer.
 
+## Required Output Format
+
+Every phase MUST produce a visible section header and summary before pausing or proceeding.
+Use this structure (adapt content to findings):
+
+```
+## Phase 1 — Discovery Report
+{project structure, tech stack, specs found, existing learnings — 4-8 lines}
+
+[PAUSE — awaiting approval to proceed to Phase 2]
+
+## Phase 2 — Architecture Design
+{N skills proposed across technical/business/design dimensions; agents: N proposed or "none (Rule 7 not met)"}
+
+## Phase 3 — Architecture Critique ← QUALITY GATE
+### Critique Findings
+{specificity check, domain coverage, principle compliance — list any issues found}
+### Simulation
+{pick one proposed skill, walk through a representative task to verify it adds value}
+### Verdict
+{PASS / FAIL with revision required}
+
+[PAUSE] **Please review the Architecture Critique above and confirm you'd like to proceed to file generation, or request revisions.**
+
+## Phase 4 — Generation
+{list of files being generated with brief rationale for each — e.g., .claude/skills/foo/SKILL.md, .claude/agents/bar.md, .claude/learnings/log.md, CLAUDE.md}
+
+## Phase 5 — Generation Critique ← QUALITY GATE
+### Critique Findings
+{principle checks P1-P3/A1-A6 per generated file; spot-check one file with verify command}
+### Verdict
+{PASS / FAIL}
+
+[PAUSE — awaiting approval to proceed to Phase 6]
+
+## Phase 6 — Wiring & Validation
+{files written; references verified; commit summary}
+
+## Learnings
+{discoveries captured in .claude/learnings/log.md, or "No new patterns detected — learnings
+infrastructure created for future entries"}
+```
+
+## Quality Gate
+
+Before delivering any phase output, perform an internal verification:
+
+- [ ] Every proposed skill is justified by evidence from the Discovery phase (no assumptions)
+- [ ] Architecture Critique (Phase 3) contains specific findings — not a rubber-stamp "looks good"
+- [ ] Generation Critique (Phase 5) verifies each generated file against P1-P3 / A1-A6 principles
+- [ ] At least one generated skill was spot-checked with a representative task simulation
+- [ ] The `## Learnings` section appears in the final output (even if it states "No new patterns detected")
+- [ ] No phase was skipped — all phase headers are visible in the output
+
+If any item fails, correct it before presenting output.
+
 ## Pause Points
 
 After Phase 1 (Discovery Report) — present findings, wait for approval.

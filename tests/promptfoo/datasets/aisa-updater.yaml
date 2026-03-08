@@ -17,6 +17,17 @@
       value: "(Also Noticed|out-of-scope|scope)"
     - type: llm-rubric
       value: "The response proposes changes scoped to the data-processor skill and includes an 'Also Noticed' section flagging other drift (report_generator violations) without fixing them"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
 
 - description: "aisa-updater: respects scope discipline on healthy project"
   vars:
@@ -28,3 +39,14 @@
       value: "report-generator"
     - type: llm-rubric
       value: "The response focuses only on the report-generator skill and does not propose widespread changes to unrelated skills"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6

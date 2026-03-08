@@ -77,6 +77,12 @@ you catch semantic drift.
 
 Classify each file: **CURRENT** / **OUTDATED** / **STALE** / **CRITICAL**
 
+Classification definitions:
+- **CURRENT**: All mechanical checks pass, no structural or semantic drift detected — use this as the default when no issues are found
+- **OUTDATED**: Content exists but has drift signals (missing self-learning, critique gaps, stale references)
+- **STALE**: File exists but shows no evidence of maintenance or relevance to current codebase
+- **CRITICAL**: Structural violation present (wrong layout, missing frontmatter) or drift so severe it misleads users
+
 The script now also checks skill structural compliance:
 - Flat-file layout (`{name}.md` instead of `{name}/SKILL.md`) → classified **CRITICAL**
 - Missing YAML frontmatter → classified **OUTDATED**

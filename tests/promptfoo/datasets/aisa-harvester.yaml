@@ -8,6 +8,7 @@
 - description: "aisa-harvester: clusters ACTIVE entries and proposes promotions"
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-syncer/REFERENCE.md"
     project_context: "file://fixtures/learning-log-active.md"
     user_request: "Run /aisa:harvest on the learning log"
   assert:
@@ -17,6 +18,17 @@
       value: "api-client"
     - type: llm-rubric
       value: "The response identifies the 3 ACTIVE entries, clusters the 2 api-client GOTCHA entries together as high-priority (same skill, same type), and proposes promoting them into the api-client skill as gotcha/warning notes"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
 
 - description: "aisa-harvester: no ACTIVE entries produces minimal output"
   vars:
@@ -26,3 +38,12 @@
   assert:
     - type: llm-rubric
       value: "The response notes there is no learning log or .claude/ setup to harvest from and does not fabricate harvest proposals"
+    # Cross-cutting: principle compliance for edge cases (Rule 30, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance for edge cases. Verify:
+        1. NON-EMPTY OUTPUT: The response is a structured text report, not empty or near-empty. [Rule 30]
+        2. EXPLICIT NOTHING-FOUND: The response explicitly states what was not found or why no action was taken. [Rule 30]
+        3. HONEST CONFIDENCE: No unsubstantiated claims without evidence. [Rule 11]
+        Score 1.0 if all pass, 0.5 if only 1-2 pass, 0.0 if none pass.
+      threshold: 0.5

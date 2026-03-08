@@ -1,5 +1,8 @@
 description: "Script execution tests for ai-setup-automation skills (runs real scripts against fixture directories)"
 
+evaluateOptions:
+  maxConcurrency: 8
+
 # Each dataset test case specifies its own provider (script-runner.js).
 # The prompt is unused for script tests but required by promptfoo config schema.
 providers:

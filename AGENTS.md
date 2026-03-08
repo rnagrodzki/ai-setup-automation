@@ -53,6 +53,10 @@ Place the skill under `plugins/ai-setup-automation/skills/<skill-name>/SKILL.md`
 
 Edit `plugins/ai-setup-automation/hooks/hooks.json`. Follow `docs/adding-hooks.md`.
 
+### Testing with Promptfoo
+
+**NEVER run `promptfoo eval` on the full test suite automatically.** Only single-skill verification is allowed (e.g., `promptfoo eval -c promptfooconfig.yaml --filter-pattern <skill-name>`). Running all tests consumes excessive resources and must be triggered manually by the user.
+
 ### Plugin manifest fields
 
 See `docs/architecture.md` for required fields in `plugin.json`.

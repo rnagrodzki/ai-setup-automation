@@ -1,0 +1,48 @@
+---
+const repoUrl = 'https://github.com/rnagrodzki/ai-setup-automation';
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-links">
+      <a href={repoUrl} target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span class="footer-sep" aria-hidden="true">&middot;</span>
+      <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener noreferrer">AGPL-3.0</a>
+      <span class="footer-sep" aria-hidden="true">&middot;</span>
+      <span>Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></span>
+    </span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .footer-links {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-links a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.12s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-text);
+  }
+
+  .footer-sep {
+    margin: 0 0.5rem;
+    opacity: 0.4;
+  }
+</style>

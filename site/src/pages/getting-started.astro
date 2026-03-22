@@ -1,0 +1,13 @@
+---
+import { getCollection, render } from 'astro:content';
+import GuideLayout from '../layouts/GuideLayout.astro';
+
+const guides = await getCollection('guides');
+const entry = guides.find(g => g.id === 'getting-started');
+if (!entry) throw new Error('getting-started.md not found in guides collection');
+const { Content } = await render(entry);
+---
+
+<GuideLayout title="Getting Started" description="Install the ai-setup-automation plugin and configure your first project.">
+  <Content />
+</GuideLayout>

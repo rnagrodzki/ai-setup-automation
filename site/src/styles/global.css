@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  /* Base colors — darker than sdlc-marketplace */
+  --color-bg: #0a0f1a;
+  --color-surface: #131c2e;
+  --color-surface-2: #1e293b;
+  --color-border: #334155;
+  --color-text: #e2e8f0;
+  --color-text-muted: #64748b;
+
+  /* Category accent colors */
+  --color-essentials: #3b82f6;
+  --color-analysis: #f59e0b;
+  --color-utilities: #10b981;
+  --color-internal: #6b7280;
+
+  /* Pipeline step type colors */
+  --step-script: #64748b;
+  --step-llm: #3b82f6;
+  --step-critique: #f59e0b;
+  --step-user: #22c55e;
+  --step-dispatch: #a855f7;
+  --step-verify: #10b981;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: #fff;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -45,3 +45,24 @@ tasks:
         fi
         PATTERN=$(echo "$SELECTED" | tr ' \n' '|' | sed 's/|$//')
         promptfoo eval --env-file .env --filter-pattern "^($PATTERN):"
+
+  site:dev:
+    desc: Start Astro dev server for docs site
+    silent: true
+    dir: site
+    cmds:
+      - pnpm dev
+
+  site:build:
+    desc: Build the docs site
+    silent: true
+    dir: site
+    cmds:
+      - pnpm build
+
+  site:preview:
+    desc: Preview the built docs site
+    silent: true
+    dir: site
+    cmds:
+      - pnpm preview

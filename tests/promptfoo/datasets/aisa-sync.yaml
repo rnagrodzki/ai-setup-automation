@@ -5,9 +5,9 @@
 #   learning-log  -- INVALID: learnings are an input to sync, not the main test target
 #   minimal       -- INVALID: no project structure to analyze
 
-- description: "aisa-syncer: drifted project produces prioritized change plan"
+- description: "aisa-sync: drifted project produces prioritized change plan"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:sync on the project"
   assert:
@@ -29,9 +29,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-syncer: healthy project reports minimal/no drift"
+- description: "aisa-sync: healthy project reports minimal/no drift"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:sync on the project"
   assert:
@@ -53,9 +53,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-syncer: pauses after drift audit for approval"
+- description: "aisa-sync: pauses after drift audit for approval"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-syncer/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:sync — complete Phase 2 (Drift Audit) and show findings before continuing"
   assert:

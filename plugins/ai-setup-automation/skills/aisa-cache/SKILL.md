@@ -1,13 +1,13 @@
 ---
-name: aisa-cacher
+name: aisa-cache
+user-invocable: true
 description: "Manage .claude/cache/ snapshots for incremental scanning — supports rebuild, status, and invalidate sub-commands. Reduces token consumption by 60-80% by skipping unchanged content. Run after any sync cycle or manually to refresh."
 argument-hint: "[rebuild|status|invalidate]"
-user-invocable: false
 ---
 
 # Cache Management for Incremental Evolution
 
-Maintain `.claude/cache/` so that `aisa-syncer`, `aisa-checker`, and `aisa-linter` can
+Maintain `.claude/cache/` so that `aisa-sync`, `aisa-inspect`, and `aisa-lint` can
 skip unchanged files and focus tokens only on what actually changed since the last audit.
 
 ## Cache Structure
@@ -23,7 +23,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 ```json
 {
   "generated_at": "2025-02-23T14:30:00Z",
-  "generated_by": "aisa-syncer v8.0",
+  "generated_by": "aisa-sync v8.0",
   "project_root_hash": "<sha256 of sorted ls -la on project root>",
   "skills": {
     "identity-coding-standards": {
@@ -74,7 +74,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 ```json
 {
   "generated_at": "2025-02-23T14:35:00Z",
-  "generated_by": "aisa-checker",
+  "generated_by": "aisa-inspect",
   "overall_status": "NEEDS_ATTENTION",
   "results": {
     "identity-coding-standards": {
@@ -95,7 +95,7 @@ skip unchanged files and focus tokens only on what actually changed since the la
 
 ### `$ARGUMENTS` = `rebuild` (or empty)
 
-Full rebuild of snapshot.json. Use after a complete aisa-syncer cycle or when cache is suspected stale.
+Full rebuild of snapshot.json. Use after a complete aisa-sync cycle or when cache is suspected stale.
 
 Locate the script with `Glob` for `**/cache-snapshot.js`, then run from the project root:
 
@@ -114,7 +114,7 @@ marketplace root, or can be located with `Glob` pattern `**/cache-snapshot.js`.
 - For each skill: detects Quality Gates, Learning Capture, and PCIDCI workflow via regex patterns
 - For each agent: validates frontmatter fields, tool list, self-review, and learning capture
 - During incremental scans: trust cached flags for hash-matching files (don't re-read to verify)
-- Flags are only re-evaluated when the file hash changes or when `/aisa-linter` runs explicitly
+- Flags are only re-evaluated when the file hash changes or when `/aisa:aisa-lint` runs explicitly
 
 Write to `.claude/cache/snapshot.json`.
 
@@ -158,7 +158,7 @@ Before delivering the status report, perform an internal critique:
 
 ### `$ARGUMENTS` = `invalidate`
 
-Delete the cache files, forcing a full scan on the next aisa-syncer run:
+Delete the cache files, forcing a full scan on the next aisa-sync run:
 
 ```bash
 node <plugin-path>/scripts/cache-snapshot.js invalidate --project-root .
@@ -191,18 +191,18 @@ When any `aisa-*` skill starts, it should:
 ### Cache Invalidation Triggers
 
 The cache should be fully rebuilt when:
-- `aisa-syncer` completes a full cycle (it rebuilds automatically)
-- `aisa-scaffolder` generates a new setup
-- User runs `/aisa-cacher rebuild`
+- `aisa-sync` completes a full cycle (it rebuilds automatically)
+- `aisa-init` generates a new setup
+- User runs `/aisa:aisa-cache rebuild`
 
 The cache should be partially invalidated when:
-- `aisa-updater` updates specific skills (update only those entries)
-- `aisa-harvester` promotes learnings to skills (update promoted targets)
+- `aisa-update` updates specific skills (update only those entries)
+- `aisa-harvest` promotes learnings to skills (update promoted targets)
 - `aisa-postmortem` modifies skills (update modified entries)
 
 ## Auto-Rebuild After Evolution
 
-Every `aisa-syncer` full cycle should, as its final step, rebuild the cache:
+Every `aisa-sync` full cycle should, as its final step, rebuild the cache:
 
 ```
 Phase 7 — Execute → apply approved changes

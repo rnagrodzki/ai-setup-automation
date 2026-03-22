@@ -1,6 +1,6 @@
 # Principle Validation — Detailed Check Procedures
 
-Reference specification for `/aisa-linter`. The SKILL.md defines the workflow;
+Reference specification for `/aisa:aisa-lint`. The SKILL.md defines the workflow;
 this file defines the exact checks to run.
 
 ---
@@ -201,11 +201,11 @@ ls -la ".claude/skills/X.md"
 This skill answers ONE question: **Do the skills and agents follow the required architectural patterns?**
 
 It does NOT:
-- Verify code examples against the actual codebase (use `/aisa-checker`)
-- Check if file paths in skills resolve to real files (use `/aisa-checker`)
-- Check symbol signatures or API routes (use `/aisa-syncer` full cycle)
-- Evaluate skill content quality or specificity (use `/aisa-syncer` critique phase)
-- Process learnings or propose new skills (use `/aisa-harvester`)
+- Verify code examples against the actual codebase (use `/aisa:aisa-inspect`)
+- Check if file paths in skills resolve to real files (use `/aisa:aisa-inspect`)
+- Check symbol signatures or API routes (use `/aisa:aisa-sync` full cycle)
+- Evaluate skill content quality or specificity (use `/aisa:aisa-sync` critique phase)
+- Process learnings or propose new skills (use `/aisa:aisa-harvest`)
 
 ---
 

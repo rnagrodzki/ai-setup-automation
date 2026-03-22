@@ -16,12 +16,12 @@ mkdir -p plugins/ai-setup-automation/skills/<skill-name>/
 Choose a directory name that makes the skill's purpose immediately obvious. The convention
 used in this repo:
 
-- **Prefix pattern**: `<plugin-prefix>-<noun>`, e.g., `aisa-scaffolder`, `aisa-checker`
+- **Prefix pattern**: `<plugin-prefix>-<noun>`, e.g., `aisa-init`, `aisa-inspect`
 
 Use lowercase and hyphens only. Avoid vague names (`setup`, `utils`) — names should be specific.
 
 > **Name resolution:** When loaded from a marketplace plugin, skills are referenced as
-> `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-scaffolder`). The plugin name
+> `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-init`). The plugin name
 > comes from the `name` field in `plugin.json`.
 
 ### Step 2: Create SKILL.md
@@ -61,6 +61,12 @@ Brief introduction of what this skill does.
 - [Anti-pattern one]
 - [Anti-pattern two]
 ```
+
+### User-Invocable Skills
+
+By default, skills are visible in the `/` menu (`user-invocable: true`). Set `user-invocable: false` only for internal skills that should never be invoked directly by users — for example, shared helper skills that are always triggered by other skills, not by user requests.
+
+The `ai-setup-automation` plugin sets `user-invocable: true` for all its skills except `aisa-principles`, which is an internal reference skill.
 
 ### Step 3: Add Supporting Files (Optional)
 

@@ -50,7 +50,7 @@ gets a fresh context window, preventing audit fatigue and token bloat in the orc
 - Use when: workstreams are independent and don't need to coordinate
 - Cost: ~2× tokens vs hypothetical single-threaded run, but faster and context-cleaner
 
-**To use Agent Teams for aisa-syncer:**
+**To use Agent Teams for aisa-sync:**
 ```
 Create an agent team for the evolution audit.
 Spawn teammates for each workstream:
@@ -93,7 +93,7 @@ Before performing any full scan, check for a cached snapshot:
 if [ -f .claude/cache/snapshot.json ]; then
   echo "Cache found — checking freshness..."
   # Compare current file hashes against cached hashes
-  # See .claude/skills/aisa-cacher/SKILL.md for protocol
+  # See .claude/skills/aisa-cache/SKILL.md for protocol
 else
   echo "No cache — full scan required"
 fi
@@ -282,7 +282,7 @@ The script executes Passes A-G mechanically across all skills and agents:
 - **Pass D** — Route verification: HTTP method+path patterns grepped in source
 - **Pass E** — Version info: go.mod / package.json versions extracted (semantic comparison flagged for LLM review)
 - **Pass F** — Code block extraction: fenced code blocks extracted for LLM semantic comparison
-- **Pass G** — Workflow maturity: P1-P3 / A1-A6 principle checks (same as `/aisa-linter`)
+- **Pass G** — Workflow maturity: P1-P3 / A1-A6 principle checks (same as `/aisa:aisa-lint`)
 
 Parse the `per_skill_summary` field for a quick overview. Drill into individual pass arrays for failure details.
 
@@ -894,7 +894,7 @@ Generate new `snapshot.json` with:
 - Fresh sha256 hashes for all skills, agents, CLAUDE.md, learnings log
 - Updated principle compliance flags (quality gates, learning capture, PCIDCI)
 - Updated project indicator hashes (go.mod, package.json, spec dirs, src dirs)
-- `generated_at` timestamp and `generated_by: "aisa-syncer v8.0"`
+- `generated_at` timestamp and `generated_by: "aisa-sync v8.0"`
 
 Also write `drift-report.json` with the final status of every audited file (CURRENT/OUTDATED/STALE/CRITICAL).
 
@@ -921,9 +921,9 @@ Key reminders for the evolution pipeline:
 
 These satellite commands extract specific phases from this pipeline:
 
-- `/aisa-checker` — Phase 1 + 2 only (read-only health check)
-- `/aisa-harvester` — Phase 3 only (promote learnings)
-- `/aisa-updater <change>` — Scoped Phase 1-2 + targeted updates
-- `/aisa-postmortem <incident>` — Incident → learning entries → skill fixes
-- `/aisa-linter` — Principle compliance only (no codebase accuracy)
-- `/aisa-cacher [rebuild|status|invalidate]` — Manage incremental scan cache
+- `/aisa:aisa-inspect` — Phase 1 + 2 only (read-only health check)
+- `/aisa:aisa-harvest` — Phase 3 only (promote learnings)
+- `/aisa:aisa-update <change>` — Scoped Phase 1-2 + targeted updates
+- `/aisa:aisa-postmortem <incident>` — Incident → learning entries → skill fixes
+- `/aisa:aisa-lint` — Principle compliance only (no codebase accuracy)
+- `/aisa:aisa-cache [rebuild|status|invalidate]` — Manage incremental scan cache

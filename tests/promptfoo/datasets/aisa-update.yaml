@@ -5,9 +5,9 @@
 #   learning-log  -- INVALID: learnings are harvested separately; not the updater's concern
 #   minimal       -- INVALID: no project structure to scope changes against
 
-- description: "aisa-updater: proposes scoped changes and flags out-of-scope drift"
+- description: "aisa-update: proposes scoped changes and flags out-of-scope drift"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-updater/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-update/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:update after adding a new pagination feature to the data-processor module"
   assert:
@@ -29,9 +29,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-updater: respects scope discipline on healthy project"
+- description: "aisa-update: respects scope discipline on healthy project"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-updater/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-update/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:update after renaming a function in report-generator module"
   assert:

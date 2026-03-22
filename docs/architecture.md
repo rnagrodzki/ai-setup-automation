@@ -74,8 +74,8 @@ with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<
 
 | Directory | `plugin.json` `name` | Resolved name |
 |---|---|---|
-| `skills/aisa-scaffolder/` | `aisa` | `aisa:aisa-scaffolder` |
-| `skills/aisa-syncer/` | `aisa` | `aisa:aisa-syncer` |
+| `skills/aisa-init/` | `aisa` | `aisa:aisa-init` |
+| `skills/aisa-sync/` | `aisa` | `aisa:aisa-sync` |
 
 The `name` field in `plugin.json` is the namespace prefix — **not** the directory name. Keep it
 stable — renaming it changes every command and skill name for all installed users.
@@ -90,9 +90,11 @@ contain a `SKILL.md` file with YAML frontmatter:
 name: skill-name
 description: "When Claude should invoke this skill (max 1024 characters)"
 argument-hint: "[optional-arg]"   # shown in the UI when user types the skill name
-user-invocable: false             # hide from the / menu (Claude can still auto-invoke)
+user-invocable: true              # show in the / menu for direct user invocation
 ---
 ```
+
+> **Note:** The `ai-setup-automation` plugin has no commands — all user-facing functionality is exposed as skills with `user-invocable: true`. The commands section below applies to other plugins in this marketplace.
 
 **Frontmatter fields:**
 

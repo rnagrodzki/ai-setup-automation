@@ -1,15 +1,15 @@
 ---
-name: aisa-linter
+name: aisa-lint
+user-invocable: true
 description: "Lint skills/agents for structural completeness and principle compliance (P1-P3, A1-A6) — does not check codebase accuracy. Use after introducing new skills/agents, or as a pre-flight check before committing."
 argument-hint: "[path-to-specific-file-or-directory]"
-user-invocable: false
 ---
 
 # Skills & Agents Principle Validation
 
 Validate `.claude/` skills and agents against architectural principles and workflow patterns.
 Checks structural correctness and required patterns — does NOT verify content accuracy
-against the codebase (that's `/aisa-checker`'s job).
+against the codebase (that's `/aisa:aisa-inspect`'s job).
 
 Use this when: new skills/agents are introduced, before committing skill changes, after manual edits,
 or as a pre-flight gate in any workflow that creates/modifies `.claude/` files.

@@ -5,9 +5,9 @@
 #   learning-log  -- INVALID: learning log state doesn't affect skill structure health
 #   minimal       -- INVALID: no project structure to check
 
-- description: "aisa-checker: drifted project shows OUTDATED classifications"
+- description: "aisa-inspect: drifted project shows OUTDATED classifications"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-inspect/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:check on the project"
   assert:
@@ -31,9 +31,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-checker: healthy project shows all CURRENT"
+- description: "aisa-inspect: healthy project shows all CURRENT"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-inspect/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:check on the project"
   assert:
@@ -55,14 +55,14 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-checker: no .claude/ directory reports nothing to check"
+- description: "aisa-inspect: no .claude/ directory reports nothing to check"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-checker/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-inspect/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
     user_request: "Run /aisa:check on the project"
   assert:
     - type: llm-rubric
-      value: "The response notes there is no .claude/ setup to check and does not fabricate health check results. It may recommend running aisa-scaffolder first."
+      value: "The response notes there is no .claude/ setup to check and does not fabricate health check results. It may recommend running aisa-init first."
     # Cross-cutting: principle compliance for edge cases (Rule 30, Rule 11)
     - type: llm-rubric
       value: >

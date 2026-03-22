@@ -5,9 +5,9 @@
 #   learning-log  -- INVALID: same reason
 #   minimal       -- INVALID: no project structure to scan
 
-- description: "aisa-cacher: rebuild produces snapshot with file hashes"
+- description: "aisa-cache: rebuild produces snapshot with file hashes"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:cache rebuild. After running, show a summary of what was written to snapshot.json — list each skill found, its hash, and the compliance flags detected."
   assert:
@@ -29,9 +29,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-cacher: status reports cache freshness"
+- description: "aisa-cache: status reports cache freshness"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:cache status — the cache has a snapshot.json from 3 days ago covering 2 skills (data-processor and report-generator). Both files are unchanged since the snapshot was taken."
   assert:
@@ -51,16 +51,16 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-cacher: no .claude/ directory reports missing cache"
+- description: "aisa-cache: no .claude/ directory reports missing cache"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-cacher/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
     user_request: "Run /aisa:cache status"
   assert:
     - type: regex
       value: "(MISSING|not found|no cache|does not exist)"
     - type: llm-rubric
-      value: "The response reports that no .claude/cache/ directory exists and does not fabricate snapshot data. It may recommend running aisa-scaffolder or aisa-syncer first."
+      value: "The response reports that no .claude/cache/ directory exists and does not fabricate snapshot data. It may recommend running aisa-init or aisa-sync first."
     # Cross-cutting: principle compliance for edge cases (Rule 30, Rule 11)
     - type: llm-rubric
       value: >

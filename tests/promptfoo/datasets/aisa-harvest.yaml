@@ -5,10 +5,10 @@
 #   drifted-setup -- INVALID: drifted fixture has no learnings log entries
 #   minimal       -- INVALID: no log to harvest from
 
-- description: "aisa-harvester: clusters ACTIVE entries and proposes promotions"
+- description: "aisa-harvest: clusters ACTIVE entries and proposes promotions"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
-    reference_path: "plugins/ai-setup-automation/skills/aisa-syncer/REFERENCE.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-harvest/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-sync/REFERENCE.md"
     project_context: "file://fixtures/learning-log-active.md"
     user_request: "Run /aisa:harvest on the learning log"
   assert:
@@ -30,9 +30,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-harvester: no ACTIVE entries produces minimal output"
+- description: "aisa-harvest: no ACTIVE entries produces minimal output"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-harvester/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-harvest/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
     user_request: "Run /aisa:harvest — there is no .claude/ directory and no learning log"
   assert:

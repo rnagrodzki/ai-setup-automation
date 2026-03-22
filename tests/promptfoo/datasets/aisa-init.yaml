@@ -5,9 +5,9 @@
 #   learning-log  -- INVALID: scaffolder doesn't process existing learnings
 #   minimal       -- INVALID: scaffolder needs real project structure to analyze tech stack
 
-- description: "aisa-scaffolder: new project generates complete setup with quality gates"
+- description: "aisa-init: new project generates complete setup with quality gates"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-scaffolder/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-init/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
     user_request: "Run /aisa:init to scaffold a new .claude/ setup for this project"
   assert:
@@ -31,9 +31,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-scaffolder: pauses at architecture critique quality gate"
+- description: "aisa-init: pauses at architecture critique quality gate"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-scaffolder/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-init/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
     user_request: "Run /aisa:init — proceed through Phase 3 (Architecture Critique) only"
   assert:

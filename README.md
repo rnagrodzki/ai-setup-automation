@@ -5,7 +5,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin marketpla
 ## What It Does
 
 - Detects your tech stack and scaffolds a `.claude/` directory with `CLAUDE.md`, skills, agents, and settings
-- Provides 10 commands in three categories — Essentials, Analysis, and Utilities — covering the full lifecycle: setup, review, sync, checks, and post-incident learning
+- Provides 11 skills in three categories — Essentials, Analysis, and Utilities — covering the full lifecycle: setup, review, sync, checks, and post-incident learning
 - Manages a cache layer to reduce token consumption by 60–80% on repeated audits
 - Keeps your AI configuration in sync with your codebase as it evolves
 
@@ -62,39 +62,39 @@ If you installed the plugin before this naming fix, uninstall the old entry and 
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:init`
+3. Run `/aisa:aisa-init`
 4. Follow the interactive prompts
 
-The command detects your tech stack, presents a setup plan for your approval, and scaffolds the full `.claude/` directory.
+The skill detects your tech stack, presents a setup plan for your approval, and scaffolds the full `.claude/` directory.
 
 ---
 
-## Commands
+## Skills
 
 ### Essentials
 
-| Command | Description |
+| Skill | Description |
 | --- | --- |
-| [`/aisa:init`](docs/commands/init.md) | Scaffold a new `.claude/` directory — detects tech stack, generates CLAUDE.md, skills, agents, learnings journal, and cache. One-time setup for new projects |
-| [`/aisa:sync`](docs/commands/sync.md) | Full maintenance cycle — runs drift detection, harvests learnings, identifies expansion needs, applies prioritized updates to `.claude/` skills and agents |
-| [`/aisa:postmortem`](docs/commands/postmortem.md) | Incident-to-prevention pipeline — gathers context from conversation or git history, maps root causes to skill gaps, encodes lessons into `.claude/` skills and learnings log |
+| [`/aisa:aisa-init`](docs/skills/aisa-init.md) | Scaffold a new `.claude/` directory — detects tech stack, generates CLAUDE.md, skills, agents, learnings journal, and cache. One-time setup for new projects |
+| [`/aisa:aisa-sync`](docs/skills/aisa-sync.md) | Full maintenance cycle — runs drift detection, harvests learnings, identifies expansion needs, applies prioritized updates to `.claude/` skills and agents |
+| [`/aisa:aisa-postmortem`](docs/skills/aisa-postmortem.md) | Incident-to-prevention pipeline — gathers context from conversation or git history, maps root causes to skill gaps, encodes lessons into `.claude/` skills and learnings log |
 
 ### Analysis
 
-| Command | Description |
+| Skill | Description |
 | --- | --- |
-| [`/aisa:audit`](docs/commands/audit.md) | Deep read-only review of `.claude/` content accuracy — mechanical validation, outdated code example detection, skill specificity check, coverage gap analysis. Reports HEALTHY / NEEDS_ATTENTION / CRITICAL |
-| [`/aisa:inspect`](docs/commands/inspect.md) | Quick read-only drift scan — compares `.claude/` skills and agents against current codebase state, reports CURRENT / OUTDATED / STALE / CRITICAL per file. Run weekly |
-| [`/aisa:lint`](docs/commands/lint.md) | Validate skill and agent structure against architectural principles (P1-P3, A1-A6) — checks frontmatter, self-learning directives, PCIDCI pattern. Does not verify codebase accuracy |
-| [`/aisa:update`](docs/commands/update.md) | Targeted skill/agent update after a specific code change — uses git diff to scope impact, updates only affected `.claude/` files, flags out-of-scope drift without fixing it |
+| [`/aisa:aisa-audit`](docs/skills/aisa-audit.md) | Deep read-only review of `.claude/` content accuracy — mechanical validation, outdated code example detection, skill specificity check, coverage gap analysis. Reports HEALTHY / NEEDS_ATTENTION / CRITICAL |
+| [`/aisa:aisa-inspect`](docs/skills/aisa-inspect.md) | Quick read-only drift scan — compares `.claude/` skills and agents against current codebase state, reports CURRENT / OUTDATED / STALE / CRITICAL per file. Run weekly |
+| [`/aisa:aisa-lint`](docs/skills/aisa-lint.md) | Validate skill and agent structure against architectural principles (P1-P3, A1-A6) — checks frontmatter, self-learning directives, PCIDCI pattern. Does not verify codebase accuracy |
+| [`/aisa:aisa-update`](docs/skills/aisa-update.md) | Targeted skill/agent update after a specific code change — uses git diff to scope impact, updates only affected `.claude/` files, flags out-of-scope drift without fixing it |
 
 ### Utilities
 
-| Command | Description |
+| Skill | Description |
 | --- | --- |
-| [`/aisa:harvest`](docs/commands/harvest.md) | Promote ACTIVE entries from `.claude/learnings/log.md` into skill gotchas, new skills, and documentation. Run when log has 10+ entries or oldest entry exceeds 2 weeks |
-| [`/aisa:cache`](docs/commands/cache.md) | Manage the `.claude/cache/` snapshot used by inspect and sync — sub-commands: rebuild (default), status, invalidate. Reduces token use by 60-80% |
-| [`/aisa:spec-check`](docs/commands/spec-check.md) | Check openspec CLI availability, project initialization status, and version currency — suggests install/init/update with user confirmation |
+| [`/aisa:aisa-harvest`](docs/skills/aisa-harvest.md) | Promote ACTIVE entries from `.claude/learnings/log.md` into skill gotchas, new skills, and documentation. Run when log has 10+ entries or oldest entry exceeds 2 weeks |
+| [`/aisa:aisa-cache`](docs/skills/aisa-cache.md) | Manage the `.claude/cache/` snapshot used by inspect and sync — sub-commands: rebuild (default), status, invalidate. Reduces token use by 60-80% |
+| [`/aisa:aisa-spec-check`](docs/skills/aisa-spec-check.md) | Check openspec CLI availability, project initialization status, and version currency — suggests install/init/update with user confirmation |
 
 ---
 
@@ -106,8 +106,8 @@ Behavioral regression tests use [promptfoo](https://promptfoo.dev/) to validate 
 | --- | --- |
 | `task test` | Run all skill tests |
 | `task test:skill` | Select one or more skills to test (interactive) |
-| `task test:skill -- aisa-linter` | Test a specific skill directly |
-| `task test:skill -- aisa-linter aisa-cacher` | Test multiple skills directly |
+| `task test:skill -- aisa-lint` | Test a specific skill directly |
+| `task test:skill -- aisa-lint aisa-cache` | Test multiple skills directly |
 | `task test:view` | Open the promptfoo web UI to inspect results |
 
 ---

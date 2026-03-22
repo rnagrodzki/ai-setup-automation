@@ -1,8 +1,8 @@
 ---
-name: aisa-syncer
+name: aisa-sync
+user-invocable: true
 description: "Full 7-phase sync cycle — snapshot, drift audit, learnings harvest, expansion analysis, change plan, critique, and execute. Keeps .claude/ in sync with the current codebase. Run every 2-4 weeks or after major features."
 argument-hint: "[focus-area]"
-user-invocable: false
 ---
 
 # Project Skills & Agents Evolver — Full Cycle
@@ -57,7 +57,7 @@ This structure is required regardless of whether REFERENCE.md is read. Each phas
 to the user that the phase ran and allows approval gates to fire at the right moment.
 
 **Before Phase 1**: Check `.claude/cache/snapshot.json` — if present, use incremental scanning
-(only deep-audit files whose hashes changed). See `aisa-cacher` skill for protocol.
+(only deep-audit files whose hashes changed). See `aisa-cache` skill for protocol.
 
 **Execution mode** — always parallel:
 - `≤ 15` items → subagent parallel via `Task` tool (workstreams)

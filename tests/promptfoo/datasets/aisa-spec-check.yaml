@@ -5,9 +5,9 @@
 #   learning-log  -- INVALID: same reason
 #   minimal       -- INVALID: openspec checker needs a real project context for init status
 
-- description: "aisa-openspec-checker: reports GOOD when openspec is installed and current"
+- description: "aisa-spec-check: reports GOOD when openspec is installed and current"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-openspec-checker/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-spec-check/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:spec-check — openspec v1.2.0 is installed and the project is initialized and up to date"
   assert:
@@ -29,9 +29,9 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-openspec-checker: NEEDS_ACTION when not installed, requires confirmation before installing"
+- description: "aisa-spec-check: NEEDS_ACTION when not installed, requires confirmation before installing"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-openspec-checker/SKILL.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-spec-check/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
     user_request: "Run /aisa:spec-check — openspec is not installed"
   assert:

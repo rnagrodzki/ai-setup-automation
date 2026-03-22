@@ -5,10 +5,10 @@
 #   learning-log  -- INVALID: learning log state doesn't affect skill structure
 #   minimal       -- INVALID: no skills to lint
 
-- description: "aisa-linter: drifted project detects all failures"
+- description: "aisa-lint: drifted project detects all failures"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
-    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-lint/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-lint/REFERENCE.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:lint on the project"
   assert:
@@ -42,10 +42,10 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-linter: healthy project reports COMPLIANT"
+- description: "aisa-lint: healthy project reports COMPLIANT"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
-    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-lint/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-lint/REFERENCE.md"
     project_context: "file://fixtures/healthy-setup.md"
     user_request: "Run /aisa:lint on the project"
   assert:
@@ -78,10 +78,10 @@
         Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
       threshold: 0.6
 
-- description: "aisa-linter: scoped to validator skill only"
+- description: "aisa-lint: scoped to validator skill only"
   vars:
-    skill_path: "plugins/ai-setup-automation/skills/aisa-linter/SKILL.md"
-    reference_path: "plugins/ai-setup-automation/skills/aisa-linter/REFERENCE.md"
+    skill_path: "plugins/ai-setup-automation/skills/aisa-lint/SKILL.md"
+    reference_path: "plugins/ai-setup-automation/skills/aisa-lint/REFERENCE.md"
     project_context: "file://fixtures/drifted-setup.md"
     user_request: "Run /aisa:lint on .claude/skills/validator only"
   assert:

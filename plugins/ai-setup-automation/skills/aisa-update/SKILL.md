@@ -1,8 +1,8 @@
 ---
-name: aisa-updater
+name: aisa-update
+user-invocable: true
 description: "Scoped update of skills/agents after a specific change — uses git diff to limit scope, flags out-of-scope drift without fixing it. Faster than full sync. Use after shipping a feature or completing a refactor."
 argument-hint: "<description of what changed>"
-user-invocable: false
 ---
 
 # Targeted Skills & Agents Update
@@ -124,9 +124,9 @@ chore: update skills/agents for {change description}
 
 - **DO**: Update everything affected by the described change
 - **DO**: Flag drift found outside the scope (in "Also Noticed")
-- **DO NOT**: Fix drift outside the described scope (save for `/aisa-syncer`)
+- **DO NOT**: Fix drift outside the described scope (save for `/aisa:aisa-sync`)
 - **DO NOT**: Create new skills for areas unrelated to the change
-- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa-syncer` territory
+- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa:aisa-sync` territory
 - **NOTE**: `openspec-*` are external framework skills — do not check/enforce workflow maturity patterns on them
 
 ## Quality Gate
@@ -147,8 +147,8 @@ After changes are committed, partially update `.claude/cache/snapshot.json`:
 
 ## See Also
 
-- After applying targeted fixes → run `/aisa-linter` on modified files
-- If "Also Noticed" section has many items → schedule full `/aisa-syncer`
+- After applying targeted fixes → run `/aisa:aisa-lint` on modified files
+- If "Also Noticed" section has many items → schedule full `/aisa:aisa-sync`
 - If the change caused an incident → use `/aisa-postmortem` instead
 
 ## Learning Capture

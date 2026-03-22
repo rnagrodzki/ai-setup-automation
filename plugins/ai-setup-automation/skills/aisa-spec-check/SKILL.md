@@ -1,7 +1,7 @@
 ---
-name: aisa-openspec-checker
+name: aisa-spec-check
+user-invocable: true
 description: "Check openspec CLI availability, project initialization, and version currency. Suggests installation, initialization, or update with user confirmation."
-user-invocable: false
 ---
 
 # OpenSpec Checker
@@ -141,7 +141,7 @@ After completing the skill (or if an unexpected condition is encountered), appen
 notable discoveries to `.claude/learnings/log.md` using the standard format:
 
 ```markdown
-- [{date}] [aisa-openspec-checker] {discovery}
+- [{date}] [aisa-spec-check] {discovery}
   context: {what triggered the discovery}
   status: ACTIVE
 ```
@@ -158,6 +158,6 @@ or the underlying script in the future.
 
 ## See Also
 
-- `aisa-checker` — general health check for skills and agents
+- `aisa-inspect` — general health check for skills and agents
 - `**/scripts/check-openspec.js` — the script this skill drives
 - `.claude/learnings/log.md` — shared learnings log

@@ -1,12 +1,12 @@
-# `/aisa:lint` — Lint skills and agents for structural completeness and principle compliance
+# `/aisa:aisa-lint` — Lint skills and agents for structural completeness and principle compliance
 
-Checks every skill and agent in `.claude/` against the plugin's architectural requirements: self-learning directives, the mandatory Plan→Critique→Improve→Do→Critique→Improve cycle, structural completeness, and valid frontmatter. Does **not** check whether skill content is accurate to your codebase — use [`/aisa:audit`](audit.md) for that.
+Checks every skill and agent in `.claude/` against the plugin's architectural requirements: self-learning directives, the mandatory Plan→Critique→Improve→Do→Critique→Improve cycle, structural completeness, and valid frontmatter. Does **not** check whether skill content is accurate to your codebase — use [`/aisa:aisa-audit`](audit.md) for that.
 
 ## Usage
 
 ```text
-/aisa:lint
-/aisa:lint <path>
+/aisa:aisa-lint
+/aisa:aisa-lint <path>
 ```
 
 ## Flags
@@ -18,19 +18,19 @@ Checks every skill and agent in `.claude/` against the plugin's architectural re
 ## Examples
 
 ```text
-/aisa:lint
+/aisa:aisa-lint
 ```
 
 > Validates all skills and agents in `.claude/`. Prints a PASS/FAIL verdict per check for each file, with a proposed fix for every failure.
 
 ```text
-/aisa:lint .claude/skills/my-new-skill/SKILL.md
+/aisa:aisa-lint .claude/skills/my-new-skill/SKILL.md
 ```
 
 > Validates only the specified skill file — useful after writing a new skill.
 
 ```text
-/aisa:lint .claude/agents/
+/aisa:aisa-lint .claude/agents/
 ```
 
 > Validates all agent files in the `agents/` directory.
@@ -41,10 +41,10 @@ Checks every skill and agent in `.claude/` against the plugin's architectural re
 
 ## What It Creates / Modifies
 
-Read-only by default. When failures are found, the command proposes fixes and asks for approval before applying any changes.
+Read-only by default. When failures are found, the skill proposes fixes and asks for approval before applying any changes.
 
-## Related Commands
+## Related Skills
 
-- [`/aisa:audit`](audit.md) — includes linting plus LLM spot-check of content accuracy
-- [`/aisa:update`](update.md) — update skills after lint reveals outdated content
-- [`/aisa:sync`](sync.md) — full cycle that includes linting as a built-in step
+- [`/aisa:aisa-audit`](audit.md) — includes linting plus LLM spot-check of content accuracy
+- [`/aisa:aisa-update`](update.md) — update skills after lint reveals outdated content
+- [`/aisa:aisa-sync`](sync.md) — full cycle that includes linting as a built-in step

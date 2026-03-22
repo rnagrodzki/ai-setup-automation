@@ -1,8 +1,8 @@
 ---
-name: aisa-scaffolder
-description: "Scan project tech stack and generate a complete .claude/ setup (CLAUDE.md, skills, agents, learnings, cache) from scratch. Use when setting up a new project or doing a full rebuild of the AI-assisted development configuration."
+name: aisa-init
+user-invocable: true
+description: "Use this skill when initializing or rebuilding AI-assisted development configuration for a project. Scans the project tech stack and generates a complete .claude/ setup (CLAUDE.md, skills, agents, learnings, cache) from scratch."
 argument-hint: "[specs-path]"
-user-invocable: false
 ---
 
 # Project Skills & Agents Architect
@@ -12,6 +12,42 @@ Build the complete `.claude/` configuration for this project from scratch.
 ## Quick Start
 
 Specs location: `$ARGUMENTS` (default: `specs/` or `openspec/` — auto-detected if not specified)
+
+## Step 0: Prerequisites — Check Existing Configuration
+
+Before starting the pipeline, check whether an AI configuration already exists in this project.
+
+Run the following checks:
+
+```bash
+test -f CLAUDE.md && echo "CLAUDE.md exists" || echo "CLAUDE.md missing"
+test -d .claude && echo ".claude/ exists" || echo ".claude/ missing"
+test -d .claude/skills && echo "skills/ exists" || echo "skills/ missing"
+test -d .claude/agents && echo "agents/ exists" || echo "agents/ missing"
+test -d .claude/learnings && echo "learnings/ exists" || echo "learnings/ missing"
+test -d .claude/cache && echo "cache/ exists" || echo "cache/ missing"
+```
+
+**If ANY of `CLAUDE.md`, `.claude/skills/`, or `.claude/agents/` already exist**, stop and present the following choice to the user:
+
+```text
+Existing AI configuration detected:
+  ✅ CLAUDE.md                  [present / missing]
+  ✅ .claude/skills/            (N skills)
+  ✅ .claude/agents/            (N agents)
+
+What would you like to do?
+
+  1. Audit  — review what exists, report gaps, suggest improvements (non-destructive)
+  2. Rebuild — remove existing .claude/ and CLAUDE.md, regenerate from scratch
+
+⚠️  Option 2 will DELETE all existing skills, agents, and learnings. This cannot be undone.
+```
+
+Wait for user choice:
+- If **"audit"** (or 1): Run the audit skill (`aisa:aisa-audit`). Do NOT proceed with setup.
+- If **"rebuild"** (or 2): Confirm once more, then continue to Phase 1 below.
+- If **nothing exists** (fresh project): proceed directly to Phase 1 — no prompt needed.
 
 ## Instructions
 
@@ -111,7 +147,7 @@ After Phase 5 (Generation Critique) — present quality scores, wait for approva
 ## Execution Mode Recommendation
 
 During Phase 2 (Architecture Design), assess the planned topology size and recommend an
-execution mode for `aisa-syncer` lifecycle. Include in CLAUDE.md if Agent Teams are warranted.
+execution mode for `aisa-sync` lifecycle. Include in CLAUDE.md if Agent Teams are warranted.
 
 ## Output
 
@@ -122,3 +158,40 @@ Creates:
 - `.claude/learnings/README.md` — learning system docs
 - `.claude/cache/snapshot.json` — initial cache for incremental evolution
 - `CLAUDE.md` — project configuration with spec-driven workflow
+
+## Post-Setup Verification
+
+After Phase 6 (Wiring & Validation) completes, run the following verification steps:
+
+1. Locate `verify-setup.js` by searching for `**/verify-setup.js` (Glob).
+2. Run health check:
+   ```bash
+   node <plugin-path>/scripts/verify-setup.js health --project-root . --markdown
+   ```
+3. Run principle compliance check:
+   ```bash
+   node <plugin-path>/scripts/verify-setup.js validate --project-root . --markdown
+   ```
+4. Present the verification report in this format:
+
+```text
+## Setup Complete — Verification Report
+
+### Files Created
+[list all files]
+
+### Health Check
+[paste output verbatim]
+
+### Principle Compliance
+[paste output verbatim]
+
+### Overall Verdict
+- Both scripts exit 0 → "Setup verified — all checks pass ✅"
+- Any FAIL items → list each one explicitly
+
+### Next Steps
+- To add more skills: see docs
+- If issues found: run `/aisa:aisa-lint`
+- For scoped updates later: run `/aisa:aisa-update <area>`
+```

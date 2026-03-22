@@ -1,17 +1,17 @@
-# `/aisa:spec-check` — Check openspec tooling
+# `/aisa:aisa-spec-check` — Check openspec tooling
 
 Verifies that the `openspec` CLI is installed, that the current project has been initialized with it, and that the installed version is current. Use it before relying on openspec-based workflows to confirm your environment is ready, or after a fresh clone to understand what setup steps remain.
 
 ## Usage
 
 ```text
-/aisa:spec-check
+/aisa:aisa-spec-check
 ```
 
 ## Examples
 
 ```text
-/aisa:spec-check
+/aisa:aisa-spec-check
 ```
 
 > Checks for the `openspec` CLI on `$PATH`, inspects the project for an existing openspec initialization, and compares the installed version against the latest published release. Reports one of:
@@ -24,16 +24,16 @@ Verifies that the `openspec` CLI is installed, that the current project has been
 
 - Node.js >= 16
 - npm (used for version comparison against the registry)
-- `openspec` CLI — optional; the command checks for it and offers to install it if absent
+- `openspec` CLI — optional; the skill checks for it and offers to install it if absent
 
 ## What It Creates / Modifies
 
-Read-only by default. When the check reveals a missing or outdated installation, the command describes the required action and asks for your confirmation before running any of the following:
+Read-only by default. When the check reveals a missing or outdated installation, the skill describes the required action and asks for your confirmation before running any of the following:
 
 - `npm install -g @fission-ai/openspec` — installs or upgrades the CLI
 - `openspec init` — initializes the current project
 
-## Related Commands
+## Related Skills
 
-- [`/aisa:inspect`](inspect.md) — read-only drift scan of the `.claude/` setup
-- [`/aisa:init`](init.md) — full AI project configuration scaffolding
+- [`/aisa:aisa-inspect`](inspect.md) — read-only drift scan of the `.claude/` setup
+- [`/aisa:aisa-init`](init.md) — full AI project configuration scaffolding

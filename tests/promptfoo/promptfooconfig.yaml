@@ -15,13 +15,13 @@ defaultTest:
     provider: "file://providers/claude-cli.js"
 
 tests:
-  - file://datasets/aisa-linter.yaml
-  - file://datasets/aisa-checker.yaml
-  - file://datasets/aisa-scaffolder.yaml
-  - file://datasets/aisa-syncer.yaml
-  - file://datasets/aisa-updater.yaml
-  - file://datasets/aisa-harvester.yaml
+  - file://datasets/aisa-lint.yaml
+  - file://datasets/aisa-inspect.yaml
+  - file://datasets/aisa-init.yaml
+  - file://datasets/aisa-sync.yaml
+  - file://datasets/aisa-update.yaml
+  - file://datasets/aisa-harvest.yaml
   - file://datasets/aisa-postmortem.yaml
-  - file://datasets/aisa-cacher.yaml
-  - file://datasets/aisa-openspec-checker.yaml
+  - file://datasets/aisa-cache.yaml
+  - file://datasets/aisa-spec-check.yaml
   - file://datasets/aisa-principles.yaml

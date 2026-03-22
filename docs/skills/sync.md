@@ -1,12 +1,12 @@
-# `/aisa:sync` — Full sync cycle
+# `/aisa:aisa-sync` — Full sync cycle
 
 Runs the complete 7-phase sync pipeline: snapshot the current state, detect drift between skills and the live codebase, harvest accumulated learnings, identify expansion needs, produce a prioritized change plan, critique it, then execute. User approval is required at three points — after the drift audit, after the change plan, and after critique — before proceeding.
 
 ## Usage
 
 ```text
-/aisa:sync
-/aisa:sync <focus-area>
+/aisa:aisa-sync
+/aisa:aisa-sync <focus-area>
 ```
 
 ## Flags
@@ -18,28 +18,28 @@ Runs the complete 7-phase sync pipeline: snapshot the current state, detect drif
 ## Examples
 
 ```text
-/aisa:sync
+/aisa:aisa-sync
 ```
 
 > Full cycle across all skills and agents. Pauses for approval after the drift audit, the change plan, and the critique. Rebuilds the cache on completion.
 
 ```text
-/aisa:sync payment-integration
+/aisa:aisa-sync payment-integration
 ```
 
 > Same cycle, but drift analysis and expansion suggestions concentrate on payment-related skills first.
 
 ```text
-/aisa:sync auth module refactor
+/aisa:aisa-sync auth module refactor
 ```
 
 > Focuses the evolution on authentication-related skills and agents.
 
 ## Prerequisites
 
-- An existing `.claude/` directory (run [`/aisa:init`](init.md) first)
+- An existing `.claude/` directory (run [`/aisa:aisa-init`](init.md) first)
 - Node.js >= 16
-- Sufficient Claude context budget — full evolution on large setups consumes significant tokens; use [`/aisa:cache`](cache.md) to reduce repeat costs
+- Sufficient Claude context budget — full evolution on large setups consumes significant tokens; use [`/aisa:aisa-cache`](cache.md) to reduce repeat costs
 
 ## What It Creates / Modifies
 
@@ -50,11 +50,11 @@ Runs the complete 7-phase sync pipeline: snapshot the current state, detect drif
 | `.claude/learnings/log.md` | Promotes ACTIVE entries that were harvested |
 | `.claude/cache/snapshot.json` | Rebuilt automatically after a successful cycle |
 
-The command will not delete skills or agents without explicit user approval.
+The skill will not delete skills or agents without explicit user approval.
 
-## Related Commands
+## Related Skills
 
-- [`/aisa:inspect`](inspect.md) — lighter-weight read-only scan for weekly use
-- [`/aisa:update`](update.md) — scoped update after a single feature or refactor (faster)
-- [`/aisa:cache`](cache.md) — manually manage the snapshot cache to reduce token use
-- [`/aisa:harvest`](harvest.md) — promote learnings without running a full sync cycle
+- [`/aisa:aisa-inspect`](inspect.md) — lighter-weight read-only scan for weekly use
+- [`/aisa:aisa-update`](update.md) — scoped update after a single feature or refactor (faster)
+- [`/aisa:aisa-cache`](cache.md) — manually manage the snapshot cache to reduce token use
+- [`/aisa:aisa-harvest`](harvest.md) — promote learnings without running a full sync cycle

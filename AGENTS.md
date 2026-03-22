@@ -41,13 +41,15 @@ scripts/                     # Node.js helper scripts (optional; invoked via Bas
 
 ### Adding a command
 
-1. Create `plugins/ai-setup-automation/commands/<command>.md` — follow `docs/adding-commands.md` for the required frontmatter and structure
+> **Note:** The `ai-setup-automation` plugin uses skills exclusively — it has no commands. The command system exists for other plugins in this marketplace. If you are adding functionality to this plugin, add a skill instead (see below).
+
+1. Create `plugins/<plugin-name>/commands/<command>.md` — follow `docs/adding-commands.md` for the required frontmatter and structure
 2. Create `docs/commands/<command>.md` using `docs/commands/_TEMPLATE.md` as the base — every command must have a dedicated documentation page
-3. Link the new doc in the README command table: `[/aisa:<command>](docs/commands/<command>.md)`
+3. Link the new doc in the README command table
 
 ### Adding a skill
 
-Place the skill under `plugins/ai-setup-automation/skills/<skill-name>/SKILL.md`. Follow `docs/adding-skills.md`. Skills have `user-invocable: false` — they are invoked by commands, not directly by users.
+Place the skill under `plugins/ai-setup-automation/skills/<skill-name>/SKILL.md`. Follow `docs/adding-skills.md`. Skills in this plugin use `user-invocable: true` so they are directly accessible to users (except `aisa-principles`, which uses `user-invocable: false` and is invoked internally).
 
 ### Adding a hook
 
@@ -55,7 +57,7 @@ Edit `plugins/ai-setup-automation/hooks/hooks.json`. Follow `docs/adding-hooks.m
 
 ### Testing with Promptfoo
 
-**NEVER run `promptfoo eval` on the full test suite automatically.** Only single-skill verification is allowed (e.g., `promptfoo eval -c promptfooconfig.yaml --filter-pattern <skill-name>`). Running all tests consumes excessive resources and must be triggered manually by the user.
+**NEVER run `promptfoo eval` on the full test suite automatically.** Only single-skill verification is allowed (e.g., `promptfoo eval -c promptfooconfig.yaml --filter-pattern aisa-lint` or `--filter-pattern aisa-cache`). Running all tests consumes excessive resources and must be triggered manually by the user.
 
 ### Plugin manifest fields
 

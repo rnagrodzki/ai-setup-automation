@@ -335,7 +335,7 @@ Agent: test-writer
 
 **2.4 · Execution Mode Recommendation**
 
-Based on the planned topology size, recommend the default execution mode for `aisa-syncer` and other lifecycle skills:
+Based on the planned topology size, recommend the default execution mode for `aisa-sync` and other lifecycle skills:
 
 ```
 Planned items (skills + agents)     Recommended default
@@ -355,7 +355,7 @@ If recommending subagent parallel, include in CLAUDE.md:
 - Workstream assignment table
 - Priority ordering across workstreams
 
-Record the recommendation in the Architecture Plan so `aisa-syncer` inherits it.
+Record the recommendation in the Architecture Plan so `aisa-sync` inherits it.
 
 **2.5 · Validate Against Principles**
 
@@ -854,13 +854,13 @@ NOT acceptable to mock:
 - `/plan` — Enter plan mode, load relevant specs, design approach
 - `/learn-review` — Review accumulated learnings, promote to skills/docs
 - `/learn-stats` — Show learning entry counts by category and status
-- `/aisa-syncer` — Full evolution cycle (every 2-4 weeks or after major features)
-- `/aisa-checker` — Quick health check (weekly or before sprints)
-- `/aisa-updater <change>` — Targeted update after a feature/refactor
-- `/aisa-harvester` — Promote accumulated learnings to skills
-- `/aisa-postmortem <incident>` — Learn from incidents
-- `/aisa-linter` — Principle compliance check
-- `/aisa-cacher [rebuild|status|invalidate]` — Manage incremental scan cache
+- `/aisa:aisa-sync` — Full evolution cycle (every 2-4 weeks or after major features)
+- `/aisa:aisa-inspect` — Quick health check (weekly or before sprints)
+- `/aisa:aisa-update <change>` — Targeted update after a feature/refactor
+- `/aisa:aisa-harvest` — Promote accumulated learnings to skills
+- `/aisa:aisa-postmortem <incident>` — Learn from incidents
+- `/aisa:aisa-lint` — Principle compliance check
+- `/aisa:aisa-cache [rebuild|status|invalidate]` — Manage incremental scan cache
 {Add project-specific commands based on generated agents}
 
 ## Execution Mode
@@ -1113,7 +1113,7 @@ git commit -m "feat: generate project-specific skills & agents architecture
 
 **6.4 · Initialize Cache**
 
-Build the initial cache so the first `aisa-syncer` run can start incrementally:
+Build the initial cache so the first `aisa-sync` run can start incrementally:
 
 ```bash
 mkdir -p .claude/cache
@@ -1123,7 +1123,7 @@ Generate `snapshot.json` with sha256 hashes of all created skills, agents, CLAUD
 learnings log, and project indicators (dependency files, spec dirs, src dirs).
 Include principle compliance flags for each file.
 
-This allows `aisa-checker` to run incrementally from day one.
+This allows `aisa-inspect` to run incrementally from day one.
 
 ---
 
@@ -1177,10 +1177,10 @@ This allows `aisa-checker` to run incrementally from day one.
 
 After initial setup, use the evolution lifecycle to maintain the architecture:
 
-- `/aisa-syncer` — Full evolution cycle (every 2-4 weeks)
-- `/aisa-checker` — Quick health check (weekly)
-- `/aisa-linter` — Principle compliance check (after manual edits)
-- `/aisa-harvester` — Promote accumulated learnings
-- `/aisa-updater <change>` — Scoped update after a feature/refactor
-- `/aisa-postmortem <incident>` — Learn from incidents
-- `/aisa-cacher` — Manage incremental scan cache
+- `/aisa:aisa-sync` — Full evolution cycle (every 2-4 weeks)
+- `/aisa:aisa-inspect` — Quick health check (weekly)
+- `/aisa:aisa-lint` — Principle compliance check (after manual edits)
+- `/aisa:aisa-harvest` — Promote accumulated learnings
+- `/aisa:aisa-update <change>` — Scoped update after a feature/refactor
+- `/aisa:aisa-postmortem <incident>` — Learn from incidents
+- `/aisa:aisa-cache` — Manage incremental scan cache

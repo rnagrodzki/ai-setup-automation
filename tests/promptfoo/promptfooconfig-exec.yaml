@@ -16,4 +16,4 @@ defaultTest:
     transformVars: "file://scripts/extract-skill-content.js"
 
 tests:
-  - file://datasets/aisa-cacher-exec.yaml
+  - file://datasets/aisa-cache-exec.yaml

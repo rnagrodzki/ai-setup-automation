@@ -1,0 +1,72 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: has a .claude/cache/snapshot.json to rebuild or report on
+#   no-setup      -- CORRECT (edge): validates graceful handling of missing .claude/ directory
+#   drifted-setup -- INVALID: drift state is irrelevant to cache operations
+#   learning-log  -- INVALID: same reason
+#   minimal       -- INVALID: no project structure to scan
+
+- description: "aisa-cache: rebuild produces snapshot with file hashes"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa-cache rebuild. After running, show a summary of what was written to snapshot.json — list each skill found, its hash, and the compliance flags detected."
+  assert:
+    - type: icontains
+      value: "snapshot"
+    - type: regex
+      value: "(UNCHANGED|MODIFIED|NEW|rebuild)"
+    - type: llm-rubric
+      value: "The response describes rebuilding the cache snapshot, scanning skill files, and producing a snapshot.json that records file hashes and compliance flags"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
+
+- description: "aisa-cache: status reports cache freshness"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa-cache status — the cache has a snapshot.json from 3 days ago covering 2 skills (data-processor and report-generator). Both files are unchanged since the snapshot was taken."
+  assert:
+    - type: regex
+      value: "(snapshot|cache|UNCHANGED|MODIFIED)"
+    - type: llm-rubric
+      value: "The response reports the cache as fresh/current with both skills showing as UNCHANGED, and does not rebuild the cache"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
+
+- description: "aisa-cache: no .claude/ directory reports missing cache"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa-cache status"
+  assert:
+    - type: regex
+      value: "(MISSING|not found|no cache|does not exist)"
+    - type: llm-rubric
+      value: "The response reports that no .claude/cache/ directory exists and does not fabricate snapshot data. It may recommend running aisa-init or aisa-sync first."
+    # Cross-cutting: principle compliance for edge cases (Rule 30, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance for edge cases. Verify:
+        1. NON-EMPTY OUTPUT: The response is a structured text report, not empty or near-empty. [Rule 30]
+        2. EXPLICIT NOTHING-FOUND: The response explicitly states what was not found or why no action was taken. [Rule 30]
+        3. HONEST CONFIDENCE: No unsubstantiated claims without evidence. [Rule 11]
+        Score 1.0 if all pass, 0.5 if only 1-2 pass, 0.0 if none pass.
+      threshold: 0.5

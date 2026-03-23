@@ -1,0 +1,52 @@
+# Fixture appropriateness:
+#   healthy-setup -- CORRECT: initialized project tests the "all good" path
+#   no-setup      -- CORRECT: uninitialized project tests NEEDS_ACTION + confirmation gate
+#   drifted-setup -- INVALID: openspec status is independent of skill structure drift
+#   learning-log  -- INVALID: same reason
+#   minimal       -- INVALID: openspec checker needs a real project context for init status
+
+- description: "aisa-spec-check: reports GOOD when openspec is installed and current"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-spec-check/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa-spec-check — openspec v1.2.0 is installed and the project is initialized and up to date"
+  assert:
+    - type: regex
+      value: "(GOOD|NEEDS_ACTION)"
+    - type: icontains
+      value: "openspec"
+    - type: llm-rubric
+      value: "The response classifies the openspec status as GOOD and does not suggest any remediations"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
+
+- description: "aisa-spec-check: NEEDS_ACTION when not installed, requires confirmation before installing"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-spec-check/SKILL.md"
+    project_context: "file://fixtures/no-setup.md"
+    user_request: "Run /aisa-spec-check — openspec is not installed"
+  assert:
+    - type: icontains
+      value: "install"
+    - type: regex
+      value: "(NEEDS_ACTION|confirm|confirmation|approve|Proceed)"
+    - type: llm-rubric
+      value: "The response classifies status as NEEDS_ACTION and asks for explicit confirmation before running the install command — it does NOT auto-install without user approval"
+    # Cross-cutting: principle compliance for edge cases (Rule 30, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance for edge cases. Verify:
+        1. NON-EMPTY OUTPUT: The response is a structured text report, not empty or near-empty. [Rule 30]
+        2. EXPLICIT NOTHING-FOUND: The response explicitly states what was not found or why no action was taken. [Rule 30]
+        3. HONEST CONFIDENCE: No unsubstantiated claims without evidence. [Rule 11]
+        Score 1.0 if all pass, 0.5 if only 1-2 pass, 0.0 if none pass.
+      threshold: 0.5

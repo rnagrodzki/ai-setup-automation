@@ -1,8 +1,8 @@
 ---
 name: aisa-postmortem
-description: "Turn incidents into prevention — root-cause-to-skill-gap analysis, learning entries, and targeted skill updates. Use after any painful debugging session, production issue, or difficult bug."
+user-invocable: true
+description: "Use this skill when running a post-mortem after an incident, debugging session, production bug, or any situation involving a hotfix, outage, or revert. Turns incidents into prevention — root-cause-to-skill-gap analysis, learning entries, and targeted skill updates."
 argument-hint: "<describe the incident or bug>"
-user-invocable: false
 ---
 
 # Post-Mortem Integration
@@ -15,27 +15,83 @@ Incident: `$ARGUMENTS`
 
 ## Instructions
 
-### Step 1 — Understand the Incident
+### Step 0 — Prerequisites
 
-Gather evidence in priority order — stop when you have enough to proceed:
-
-1. **From `$ARGUMENTS`**: If provided, use it as the primary incident description.
-2. **From conversation history**: Review the current conversation for debugging sessions, error messages, stack traces, failed tests, or problem-solving discussion. Extract what went wrong, how it was discovered, how it was resolved, and what area was affected.
-3. **From git history**:
+Run the following checks:
 
 ```bash
-# Check recent commits for fixes
+test -d .claude && echo "OK" || echo "MISSING: .claude/ directory not found"
+test -d .claude/skills && echo "OK" || echo "MISSING: .claude/skills/ not found"
+```
+
+If `.claude/` is missing, stop and tell the user:
+
+```text
+This project doesn't have AI skills configured yet.
+Run /aisa-init first to set up the AI configuration, then come back for the post-mortem.
+```
+
+### Step 1 — Gather Incident Context
+
+Use a three-tier approach — stop at the first tier that yields enough context:
+
+**Tier 1 — Fast mode**: If `$ARGUMENTS` is provided, use that as the incident description and skip to Step 1b (git context).
+
+**Tier 2 — Conversation-aware mode**: If `$ARGUMENTS` is empty, review the current conversation history for: debugging sessions, error messages, stack traces, failed tests, production issues, agent mistakes. If found, extract and present:
+
+```text
+I found context in our conversation. Here's what I'll use for the post-mortem:
+
+Incident:    [what happened]
+Discovered:  [how it was found]
+Resolution:  [how it was fixed / still open]
+Diagnosis:   [estimated time]
+Area:        [affected part]
+
+Does this look right? I'll fill in any gaps below if anything is missing.
+```
+
+Then ask only for genuinely missing pieces.
+
+**Tier 3 — Interactive mode**: If no conversation context exists, ask these questions ONE AT A TIME:
+
+1. "What went wrong?"
+2. "How was it discovered?"
+3. "How was it resolved?"
+4. "How long did it take to diagnose?"
+5. "What area was affected?"
+
+### Step 1b — Git Context
+
+After incident context is collected, run:
+
+```bash
 git log --oneline -20
-# Check for related changes
 git diff HEAD~5 --stat
 ```
 
-Ask follow-up questions **only for gaps not covered** by the above sources:
+Identify commits that look like fixes by scanning for keywords: `fix`, `revert`, `hotfix`, `patch`.
 
-- What went wrong? _(if not in conversation or arguments)_
-- How was it discovered? _(if not in conversation or arguments)_
-- How was it fixed? _(if not in conversation or arguments)_
-- How long did it take to diagnose? _(if not inferable from conversation)_
+### Step 1c — Summary and Confirm
+
+Present a summary before proceeding to analysis:
+
+```text
+Post-Mortem Summary
+───────────────────
+Incident:    [what happened]
+Discovered:  [how it was found]
+Resolution:  [how it was fixed / still open]
+Diagnosis:   [how long it took]
+Area:        [affected part]
+
+Recent fix-looking commits:
+  [list any relevant commits]
+
+Ready to run a full post-mortem analysis? (yes/no)
+```
+
+Wait for explicit confirmation before proceeding to root cause analysis.
 
 ### Step 2 — Root Cause → Skill Gap Analysis
 
@@ -149,9 +205,9 @@ for modified/new skills and agents. Update `drift-report.json` to mark fixed fil
 
 ## See Also
 
-- After applying fixes → run `/aisa-linter` to verify principle compliance
-- If many skills were updated → run `/aisa-checker` to check overall health
-- To process accumulated learning entries → run `/aisa-harvester`
+- After applying fixes → run `/aisa-lint` to verify principle compliance
+- If many skills were updated → run `/aisa-inspect` to check overall health
+- To process accumulated learning entries → run `/aisa-harvest`
 
 ## Learning Capture
 

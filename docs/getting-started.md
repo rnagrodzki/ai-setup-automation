@@ -20,11 +20,10 @@
 After installation, start a new Claude Code session. You should see a message from the plugin:
 
 ```text
-[ai-setup-automation] Plugin loaded. Use /aisa:init to initialize AI configuration for your project.
+[ai-setup-automation] Plugin loaded. Use /aisa-init to initialize AI configuration for your project.
 ```
 
-> **Note:** Commands and skills are namespaced with the plugin name. The `/setup` command
-> becomes `/aisa:init`. See [Architecture](architecture.md#name-resolution) for details.
+> **Note:** Skills are namespaced with the plugin name. The `aisa-init` skill becomes `/aisa-init`. See [Architecture](architecture.md#name-resolution) for details.
 
 ## Updating
 
@@ -56,41 +55,41 @@ See [Troubleshooting](../README.md#troubleshooting) in the README if you encount
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:init`
+3. Run `/aisa-init`
 4. Follow the interactive prompts
 
-The command will:
+The skill will:
 - Detect your project's tech stack (language, framework, build tool)
 - Present a setup plan for your approval
 - Create `CLAUDE.md` with project context
 - Scaffold the `.claude/` directory structure
-- Recommend skills and commands tailored to your stack
+- Recommend skills and agents tailored to your stack
 
 ### Auditing an Existing Setup
 
 If your project already has some AI configuration:
 
 ```text
-/aisa:audit
+/aisa-audit
 ```
 
 This reviews what exists and suggests improvements without modifying any files.
 
 ---
 
-## Commands
+## Skills
 
-| Command | Description |
+| Skill | Description |
 | --- | --- |
-| [`/aisa:init`](commands/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:audit`](commands/audit.md) | Audit existing setup and suggest improvements |
-| [`/aisa:lint`](commands/lint.md) | Validate skills and agents against architectural principles |
-| [`/aisa:postmortem`](commands/postmortem.md) | Guided incident analysis; encode lessons into skills |
-| [`/aisa:sync`](commands/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:inspect`](commands/inspect.md) | Quick read-only health check; reports drift status per file |
-| [`/aisa:update`](commands/update.md) | Targeted update after a specific feature, refactor, or integration |
-| [`/aisa:harvest`](commands/harvest.md) | Promote accumulated learnings into skills and docs |
-| [`/aisa:cache`](commands/cache.md) | Manage the snapshot cache for incremental scanning |
+| [`/aisa-init`](skills/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa-audit`](skills/audit.md) | Audit existing setup and suggest improvements |
+| [`/aisa-lint`](skills/lint.md) | Validate skills and agents against architectural principles |
+| [`/aisa-postmortem`](skills/postmortem.md) | Guided incident analysis; encode lessons into skills |
+| [`/aisa-sync`](skills/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa-inspect`](skills/inspect.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa-update`](skills/update.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa-harvest`](skills/harvest.md) | Promote accumulated learnings into skills and docs |
+| [`/aisa-cache`](skills/cache.md) | Manage the snapshot cache for incremental scanning |
 
 ## What Gets Created
 
@@ -107,5 +106,5 @@ This reviews what exists and suggests improvements without modifying any files.
 
 - Read [Architecture](architecture.md) to understand how the plugin works
 - Read [Adding Skills](adding-skills.md) to create project-specific skills
-- Read [Adding Commands](adding-commands.md) to create custom slash commands
+- Read [Adding Commands](adding-commands.md) to create custom slash commands for other plugins
 - Read [Adding Hooks](adding-hooks.md) to set up automated actions

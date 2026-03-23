@@ -113,7 +113,7 @@ Edit `plugins/<plugin>/hooks/hooks.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Plugin loaded. Use /aisa:init to get started.'"
+            "command": "echo 'Plugin loaded. Use /aisa-init to get started.'"
           }
         ]
       }

@@ -1,0 +1,41 @@
+---
+interface Props {
+  category: 'essentials' | 'analysis' | 'utilities' | 'internal';
+}
+
+const { category } = Astro.props;
+
+const colorMap: Record<string, string> = {
+  essentials: 'var(--color-essentials)',
+  analysis: 'var(--color-analysis)',
+  utilities: 'var(--color-utilities)',
+  internal: 'var(--color-internal)',
+};
+
+const color = colorMap[category] ?? 'var(--color-internal)';
+---
+
+<span
+  class="cat-badge"
+  style={`--badge-color: ${color};`}
+>
+  {category}
+</span>
+
+<style>
+  .cat-badge {
+    display: inline-block;
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--badge-color);
+    background: color-mix(in srgb, var(--badge-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--badge-color) 25%, transparent);
+    border-radius: 4px;
+    padding: 1px 7px;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+</style>

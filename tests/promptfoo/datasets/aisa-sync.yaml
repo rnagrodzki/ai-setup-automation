@@ -1,0 +1,78 @@
+# Fixture appropriateness:
+#   drifted-setup -- CORRECT: primary use case; reveals drift needing fixes
+#   healthy-setup -- CORRECT: validates "no drift" boundary (syncer should not invent problems)
+#   no-setup      -- INVALID: nothing to sync (use scaffolder first)
+#   learning-log  -- INVALID: learnings are an input to sync, not the main test target
+#   minimal       -- INVALID: no project structure to analyze
+
+- description: "aisa-sync: drifted project produces prioritized change plan"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa-sync on the project"
+  assert:
+    - type: regex
+      value: "(Drift Audit|Change Plan|Phase [1-7])"
+    - type: regex
+      value: "(P0|P1|P2|P3|P4|P5)"
+    - type: llm-rubric
+      value: "The response describes a multi-phase sync process and produces a prioritized change manifest with at least one entry flagged for the drifted skills"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
+
+- description: "aisa-sync: healthy project reports minimal/no drift"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
+    project_context: "file://fixtures/healthy-setup.md"
+    user_request: "Run /aisa-sync on the project"
+  assert:
+    - type: regex
+      value: "(Phase [1-7]|Phase 1|Phase 2)"
+    - type: not-icontains
+      value: "CRITICAL"
+    - type: llm-rubric
+      value: "The response runs sync phases and finds no critical drift or stale content. Both skills pass principle checks. The change plan is empty or contains only minor enhancements."
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6
+
+- description: "aisa-sync: pauses after drift audit for approval"
+  vars:
+    skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
+    project_context: "file://fixtures/drifted-setup.md"
+    user_request: "Run /aisa-sync — complete Phase 2 (Drift Audit) and show findings before continuing"
+  assert:
+    - type: icontains
+      value: "Drift"
+    - type: regex
+      value: "(OUTDATED|STALE|CRITICAL|drift)"
+    - type: llm-rubric
+      value: "The response completes the drift audit phase and pauses to present findings before proceeding to later phases"
+    # Cross-cutting: principle compliance (Rule 30, P1, P2, P3, Rule 11)
+    - type: llm-rubric
+      value: >
+        Cross-cutting principle compliance check. Verify ALL of the following:
+        1. NON-EMPTY OUTPUT: The response is a substantial, structured text report (not empty or near-empty). [Rule 30]
+        2. LEARNING AWARENESS: The response mentions capturing learnings, discoveries, or references the learning log — OR explicitly states no new learnings were found. [P1]
+        3. QUALITY EVIDENCE: The response shows evidence of validation, verification, or quality checking of its own output. [P2]
+        4. CRITIQUE EVIDENCE: The response shows signs of self-critique or review before delivery (e.g., reviewing findings, validating classifications, checking for missed items). [P3]
+        5. HONEST CONFIDENCE: No unsubstantiated claims of HIGH confidence or certainty without supporting evidence. [Rule 11]
+        Score 1.0 if all 5 pass, 0.6 if 3-4 pass, 0.3 if 1-2 pass, 0.0 if none pass.
+      threshold: 0.6

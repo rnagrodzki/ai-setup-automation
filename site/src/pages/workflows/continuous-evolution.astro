@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkflowGraph from '../../components/WorkflowGraph.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Continuous Evolution Workflow" description="How aisa-inspect, aisa-update, and aisa-sync keep your AI configuration accurate.">
+  <section class="wd-hero">
+    <div class="wd-hero-inner">
+      <a href={`${base}/workflows/`} class="wd-back">&larr; All Workflows</a>
+      <span class="wd-overline" style="--lane-color: var(--color-analysis);">Maintain Lane</span>
+      <h1 class="wd-title">Continuous Evolution</h1>
+      <p class="wd-subtitle">
+        Your project evolves. Here's how to keep your AI configuration in sync with your codebase.
+      </p>
+    </div>
+  </section>
+
+  <section class="wd-graph-section">
+    <div class="wd-graph-container">
+      <WorkflowGraph highlightSlugs={['inspect', 'update', 'sync']} />
+    </div>
+  </section>
+
+  <section class="wd-content">
+    <div class="wd-content-inner">
+      <div class="wd-steps">
+        <div class="wd-step" style="--step-color: var(--color-analysis);">
+          <div class="wd-step-marker">1</div>
+          <div class="wd-step-body">
+            <h2 class="wd-step-title">Weekly check with <code>/aisa-inspect</code></h2>
+            <p>
+              Run this weekly or before sprints. The skill uses cached snapshots for incremental scanning — only files that changed since the last check get a full audit. Each file gets a classification: CURRENT, OUTDATED, STALE, or CRITICAL.
+            </p>
+            <p>
+              Critical issues get auto-fix offers with your approval. Everything else goes into a report you can act on when ready.
+            </p>
+          </div>
+        </div>
+
+        <div class="wd-step" style="--step-color: var(--color-analysis);">
+          <div class="wd-step-marker">2</div>
+          <div class="wd-step-body">
+            <h2 class="wd-step-title">Targeted fix with <code>/aisa-update</code></h2>
+            <p>
+              After shipping a feature or completing a refactor, run update with a description of what changed. It uses git diff to scope the impact — only affected skills and agents get checked. Out-of-scope drift is flagged but not fixed, keeping the update fast and focused.
+            </p>
+            <p>
+              This is the most common skill in daily development. It keeps your AI configuration incrementally accurate without the overhead of a full sync.
+            </p>
+          </div>
+        </div>
+
+        <div class="wd-step" style="--step-color: var(--color-essentials);">
+          <div class="wd-step-marker">3</div>
+          <div class="wd-step-body">
+            <h2 class="wd-step-title">Full cycle with <code>/aisa-sync</code></h2>
+            <p>
+              Run every 2-4 weeks. The sync skill runs all 7 phases: snapshot, drift audit, learnings harvest, expansion analysis, change planning, critique, and execution. It finds everything — missing skills, outdated examples, coverage gaps, stale learnings.
+            </p>
+            <p>
+              The cache is rebuilt automatically after sync completes, so the next inspect run benefits from fresh baselines.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wd-after">
+        <h2 class="wd-after-title">What happens next?</h2>
+        <div class="wd-after-paths">
+          <a href={`${base}/workflows/learning-improvement/`} class="wd-after-path" style="--path-color: var(--color-utilities);">
+            <span class="wd-path-label">Learn from incidents</span>
+            <span class="wd-path-desc">When incidents happen, postmortem encodes lessons into your skills</span>
+          </a>
+          <a href={`${base}/workflows/first-setup/`} class="wd-after-path" style="--path-color: var(--color-essentials);">
+            <span class="wd-path-label">Start fresh</span>
+            <span class="wd-path-desc">For new projects, scaffold from scratch with init</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wd-hero {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
+  .wd-hero-inner {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  .wd-back {
+    display: inline-block;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: color 0.12s ease;
+  }
+
+  .wd-back:hover {
+    color: var(--color-text);
+  }
+
+  .wd-overline {
+    display: inline-block;
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lane-color);
+    margin-bottom: 0.75rem;
+    padding: 3px 10px;
+    border: 1px solid color-mix(in srgb, var(--lane-color) 30%, transparent);
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--lane-color) 8%, transparent);
+  }
+
+  .wd-title {
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .wd-subtitle {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .wd-graph-section {
+    padding: 1rem 1.5rem 2rem;
+  }
+
+  .wd-graph-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg);
+    padding: 1.5rem;
+    overflow: hidden;
+  }
+
+  .wd-content {
+    padding: 0 1.5rem 3rem;
+  }
+
+  .wd-content-inner {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  /* --- Steps --- */
+  .wd-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .wd-step {
+    display: flex;
+    gap: 1.25rem;
+    position: relative;
+  }
+
+  .wd-step-marker {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--step-color) 15%, transparent);
+    border: 1.5px solid color-mix(in srgb, var(--step-color) 40%, transparent);
+    color: var(--step-color);
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.125rem;
+  }
+
+  .wd-step-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .wd-step-title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 0.625rem;
+    line-height: 1.4;
+  }
+
+  .wd-skill-link {
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.9375rem;
+    color: var(--step-color);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--step-color) 30%, transparent);
+    transition: border-color 0.12s ease;
+  }
+
+  .wd-skill-link:hover {
+    border-color: var(--step-color);
+  }
+
+  .wd-step-body p {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .wd-step-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* --- After section --- */
+  .wd-after-title {
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .wd-after-paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .wd-after-path {
+    display: block;
+    padding: 1rem 1rem 1rem 1.125rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--path-color);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .wd-after-path:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 12px -2px color-mix(in srgb, var(--path-color) 15%, transparent);
+  }
+
+  .wd-path-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.375rem;
+  }
+
+  .wd-path-desc {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 640px) {
+    .wd-hero {
+      padding: 2rem 1rem 1rem;
+    }
+
+    .wd-graph-section,
+    .wd-content {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .wd-graph-container {
+      padding: 1rem;
+    }
+
+    .wd-after-paths {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

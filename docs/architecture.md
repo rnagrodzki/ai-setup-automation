@@ -60,25 +60,27 @@ Each plugin has its own `.claude-plugin/plugin.json` that declares:
 
 ### Name Resolution
 
-When a plugin is loaded from a marketplace, Claude Code prefixes all commands and skills
-with the plugin's `name` (from `plugin.json`), using the format `<plugin-name>:<item-name>`.
-
-**Commands** — invoked as `/<plugin-name>:<command-name>`:
+**Commands** are invoked as `/<plugin-name>:<command-filename>` (the filename without `.md`):
 
 | File | `plugin.json` `name` | Resolved command |
 |---|---|---|
 | `commands/init.md` | `aisa` | `/aisa:init` |
 | `commands/audit.md` | `aisa` | `/aisa:audit` |
 
-**Skills** — referenced as `<plugin-name>:<skill-name>`:
+**Skills** are invoked directly by their SKILL.md frontmatter `name` field — the plugin name
+is **not** added as a prefix:
 
-| Directory | `plugin.json` `name` | Resolved name |
+| Directory | Frontmatter `name` | Invocation |
 |---|---|---|
-| `skills/aisa-scaffolder/` | `aisa` | `aisa:aisa-scaffolder` |
-| `skills/aisa-syncer/` | `aisa` | `aisa:aisa-syncer` |
+| `skills/aisa-init/` | `aisa-init` | `/aisa-init` |
+| `skills/aisa-sync/` | `aisa-sync` | `/aisa-sync` |
 
-The `name` field in `plugin.json` is the namespace prefix — **not** the directory name. Keep it
-stable — renaming it changes every command and skill name for all installed users.
+> **Important:** Skills and commands use different naming rules. Commands get a
+> `<plugin-name>:` prefix; skills do not. When writing docs or cross-references
+> for skills, use the frontmatter name directly (e.g., `/aisa-init`).
+
+The `name` field in `plugin.json` is the namespace prefix for commands — **not** the directory name.
+Keep it stable — renaming it changes every command name for all installed users.
 
 ### Skills
 
@@ -90,9 +92,11 @@ contain a `SKILL.md` file with YAML frontmatter:
 name: skill-name
 description: "When Claude should invoke this skill (max 1024 characters)"
 argument-hint: "[optional-arg]"   # shown in the UI when user types the skill name
-user-invocable: false             # hide from the / menu (Claude can still auto-invoke)
+user-invocable: true              # show in the / menu for direct user invocation
 ---
 ```
+
+> **Note:** The `ai-setup-automation` plugin has no commands — all user-facing functionality is exposed as skills with `user-invocable: true`. The commands section below applies to other plugins in this marketplace.
 
 **Frontmatter fields:**
 

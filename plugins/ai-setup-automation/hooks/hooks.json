@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "command -v openspec >/dev/null 2>&1 && echo \"openspec: v$(openspec --version 2>/dev/null) installed$([ -d .openspec ] && echo ', project initialized' || echo ', project NOT initialized — run /aisa:spec-check')\" || echo \"openspec: not installed — run /aisa:spec-check to set up spec-driven development\"",
+            "command": "command -v openspec >/dev/null 2>&1 && echo \"openspec: v$(openspec --version 2>/dev/null) installed$([ -d .openspec ] && echo ', project initialized' || echo ', project NOT initialized — run /aisa-spec-check')\" || echo \"openspec: not installed — run /aisa-spec-check to set up spec-driven development\"",
             "timeout": 5000
           }
         ]

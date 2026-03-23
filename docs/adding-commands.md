@@ -16,7 +16,7 @@ touch plugins/ai-setup-automation/commands/<command-name>.md
 The filename (without `.md`) becomes the slash command name, prefixed with the plugin name:
 - `init.md` in the `ai-setup-automation` plugin → `/aisa:init`
 - `audit.md` in the `ai-setup-automation` plugin → `/aisa:audit`
-- `review.md` in a plugin named `my-plugin` → `/my-plugin:audit`
+- `review.md` in a plugin named `my-plugin` → `/my-plugin:review`
 
 ### Step 2: Write the Command File
 

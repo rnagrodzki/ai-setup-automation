@@ -20,9 +20,15 @@ used in this repo:
 
 Use lowercase and hyphens only. Avoid vague names (`setup`, `utils`) — names should be specific.
 
-> **Name resolution:** When loaded from a marketplace plugin, skills are referenced as
-> `<plugin-name>:<skill-name>` (e.g., `aisa:aisa-init`). The plugin name
-> comes from the `name` field in `plugin.json`.
+> **Name resolution:** Skills are invoked directly by their frontmatter `name` — the plugin
+> name is **not** added as a prefix. For example, a skill named `aisa-init` is invoked as
+> `/aisa-init`.
+>
+> This differs from commands, which do get a `<plugin-name>:` prefix. See
+> [Architecture — Name Resolution](architecture.md#name-resolution) for details.
+>
+> When writing documentation or cross-references, always use the frontmatter name
+> (e.g., `/aisa-init`). Never add a `<plugin-name>:` prefix to skill invocations.
 
 ### Step 2: Create SKILL.md
 

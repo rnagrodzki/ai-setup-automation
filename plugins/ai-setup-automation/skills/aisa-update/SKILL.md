@@ -124,9 +124,9 @@ chore: update skills/agents for {change description}
 
 - **DO**: Update everything affected by the described change
 - **DO**: Flag drift found outside the scope (in "Also Noticed")
-- **DO NOT**: Fix drift outside the described scope (save for `/aisa:aisa-sync`)
+- **DO NOT**: Fix drift outside the described scope (save for `/aisa-sync`)
 - **DO NOT**: Create new skills for areas unrelated to the change
-- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa:aisa-sync` territory
+- **DO NOT**: Reorganize or restructure the `.claude/` setup — that's `/aisa-sync` territory
 - **NOTE**: `openspec-*` are external framework skills — do not check/enforce workflow maturity patterns on them
 
 ## Quality Gate
@@ -147,8 +147,8 @@ After changes are committed, partially update `.claude/cache/snapshot.json`:
 
 ## See Also
 
-- After applying targeted fixes → run `/aisa:aisa-lint` on modified files
-- If "Also Noticed" section has many items → schedule full `/aisa:aisa-sync`
+- After applying targeted fixes → run `/aisa-lint` on modified files
+- If "Also Noticed" section has many items → schedule full `/aisa-sync`
 - If the change caused an incident → use `/aisa-postmortem` instead
 
 ## Learning Capture

@@ -1,11 +1,11 @@
-# `/aisa:aisa-init` — Initialize AI configuration for a project
+# `/aisa-init` — Initialize AI configuration for a project
 
 Scaffolds a complete `.claude/` directory and `CLAUDE.md` for any codebase. It detects your tech stack, presents a plan for approval, then generates tailored skills, agents, and a learning journal. If AI configuration already exists, it offers to audit or rebuild instead of overwriting.
 
 ## Usage
 
 ```text
-/aisa:aisa-init
+/aisa-init
 ```
 
 ## Flags
@@ -17,7 +17,7 @@ This skill takes no arguments.
 **New project — no existing `.claude/`**
 
 ```text
-/aisa:aisa-init
+/aisa-init
 ```
 
 > Detects stack, presents a setup plan with the list of files that will be created, waits for confirmation, then scaffolds `.claude/` and runs verification.
@@ -25,7 +25,7 @@ This skill takes no arguments.
 **Project with existing configuration**
 
 ```text
-/aisa:aisa-init
+/aisa-init
 ```
 
 > Detects existing skills/agents, presents a choice:
@@ -54,6 +54,6 @@ After creation, runs `verify-setup.js` automatically and prints a health + compl
 
 ## Related Skills
 
-- [`/aisa:aisa-audit`](audit.md) — non-destructive review of existing configuration
-- [`/aisa:aisa-lint`](lint.md) — check new skills against architectural principles
-- [`/aisa:aisa-update`](update.md) — update specific skills after shipping a feature
+- [`/aisa-audit`](audit.md) — non-destructive review of existing configuration
+- [`/aisa-lint`](lint.md) — check new skills against architectural principles
+- [`/aisa-update`](update.md) — update specific skills after shipping a feature

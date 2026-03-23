@@ -1,13 +1,13 @@
-# `/aisa:aisa-cache` — Manage the snapshot cache
+# `/aisa-cache` — Manage the snapshot cache
 
-Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file. Evolution skills use this snapshot to skip unchanged files, reducing token consumption by 60–80% on repeat runs. The cache is rebuilt automatically after every full [`/aisa:aisa-sync`](sync.md) cycle; use this skill to inspect or manually control it.
+Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file. Evolution skills use this snapshot to skip unchanged files, reducing token consumption by 60–80% on repeat runs. The cache is rebuilt automatically after every full [`/aisa-sync`](sync.md) cycle; use this skill to inspect or manually control it.
 
 ## Usage
 
 ```text
-/aisa:aisa-cache
-/aisa:aisa-cache status
-/aisa:aisa-cache invalidate
+/aisa-cache
+/aisa-cache status
+/aisa-cache invalidate
 ```
 
 ## Flags
@@ -21,22 +21,22 @@ Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file
 ## Examples
 
 ```text
-/aisa:aisa-cache
+/aisa-cache
 ```
 
 > Hashes all files in `.claude/skills/` and `.claude/agents/`, writes the snapshot, and reports how many files were added, updated, or unchanged.
 
 ```text
-/aisa:aisa-cache status
+/aisa-cache status
 ```
 
 > Reports: total files tracked, number modified since last snapshot, cache age, and estimated token savings on the next evolution run.
 
 ```text
-/aisa:aisa-cache invalidate
+/aisa-cache invalidate
 ```
 
-> Deletes the snapshot. The next [`/aisa:aisa-sync`](sync.md) or [`/aisa:aisa-inspect`](inspect.md) run will do a full scan of all files.
+> Deletes the snapshot. The next [`/aisa-sync`](sync.md) or [`/aisa-inspect`](inspect.md) run will do a full scan of all files.
 
 ## Prerequisites
 
@@ -51,5 +51,5 @@ Maintains `.claude/cache/snapshot.json` — a hash of every skill and agent file
 
 ## Related Skills
 
-- [`/aisa:aisa-sync`](sync.md) — rebuilds the cache automatically on completion
-- [`/aisa:aisa-inspect`](inspect.md) — uses the cache to skip unchanged files during drift scans
+- [`/aisa-sync`](sync.md) — rebuilds the cache automatically on completion
+- [`/aisa-inspect`](inspect.md) — uses the cache to skip unchanged files during drift scans

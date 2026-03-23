@@ -20,10 +20,10 @@
 After installation, start a new Claude Code session. You should see a message from the plugin:
 
 ```text
-[ai-setup-automation] Plugin loaded. Use /aisa:aisa-init to initialize AI configuration for your project.
+[ai-setup-automation] Plugin loaded. Use /aisa-init to initialize AI configuration for your project.
 ```
 
-> **Note:** Skills are namespaced with the plugin name. The `aisa-init` skill becomes `/aisa:aisa-init`. See [Architecture](architecture.md#name-resolution) for details.
+> **Note:** Skills are namespaced with the plugin name. The `aisa-init` skill becomes `/aisa-init`. See [Architecture](architecture.md#name-resolution) for details.
 
 ## Updating
 
@@ -55,7 +55,7 @@ See [Troubleshooting](../README.md#troubleshooting) in the README if you encount
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:aisa-init`
+3. Run `/aisa-init`
 4. Follow the interactive prompts
 
 The skill will:
@@ -70,7 +70,7 @@ The skill will:
 If your project already has some AI configuration:
 
 ```text
-/aisa:aisa-audit
+/aisa-audit
 ```
 
 This reviews what exists and suggests improvements without modifying any files.
@@ -81,15 +81,15 @@ This reviews what exists and suggests improvements without modifying any files.
 
 | Skill | Description |
 | --- | --- |
-| [`/aisa:aisa-init`](skills/aisa-init.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:aisa-audit`](skills/aisa-audit.md) | Audit existing setup and suggest improvements |
-| [`/aisa:aisa-lint`](skills/aisa-lint.md) | Validate skills and agents against architectural principles |
-| [`/aisa:aisa-postmortem`](skills/aisa-postmortem.md) | Guided incident analysis; encode lessons into skills |
-| [`/aisa:aisa-sync`](skills/aisa-sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:aisa-inspect`](skills/aisa-inspect.md) | Quick read-only health check; reports drift status per file |
-| [`/aisa:aisa-update`](skills/aisa-update.md) | Targeted update after a specific feature, refactor, or integration |
-| [`/aisa:aisa-harvest`](skills/aisa-harvest.md) | Promote accumulated learnings into skills and docs |
-| [`/aisa:aisa-cache`](skills/aisa-cache.md) | Manage the snapshot cache for incremental scanning |
+| [`/aisa-init`](skills/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa-audit`](skills/audit.md) | Audit existing setup and suggest improvements |
+| [`/aisa-lint`](skills/lint.md) | Validate skills and agents against architectural principles |
+| [`/aisa-postmortem`](skills/postmortem.md) | Guided incident analysis; encode lessons into skills |
+| [`/aisa-sync`](skills/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa-inspect`](skills/inspect.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa-update`](skills/update.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa-harvest`](skills/harvest.md) | Promote accumulated learnings into skills and docs |
+| [`/aisa-cache`](skills/cache.md) | Manage the snapshot cache for incremental scanning |
 
 ## What Gets Created
 

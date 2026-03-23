@@ -27,7 +27,7 @@ export const skillsMeta: SkillMeta[] = [
   // ── essentials ────────────────────────────────────────────────────────
   {
     slug: 'init',
-    command: '/aisa:aisa-init',
+    command: '/aisa-init',
     category: 'essentials',
     userInvocable: true,
     tagline:
@@ -84,7 +84,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'sync',
-    command: '/aisa:aisa-sync',
+    command: '/aisa-sync',
     category: 'essentials',
     userInvocable: true,
     tagline:
@@ -144,7 +144,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'postmortem',
-    command: '/aisa:aisa-postmortem',
+    command: '/aisa-postmortem',
     category: 'essentials',
     userInvocable: true,
     tagline:
@@ -196,7 +196,7 @@ export const skillsMeta: SkillMeta[] = [
   // ── analysis ──────────────────────────────────────────────────────────
   {
     slug: 'audit',
-    command: '/aisa:aisa-audit',
+    command: '/aisa-audit',
     category: 'analysis',
     userInvocable: true,
     tagline:
@@ -239,7 +239,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'inspect',
-    command: '/aisa:aisa-inspect',
+    command: '/aisa-inspect',
     category: 'analysis',
     userInvocable: true,
     tagline:
@@ -282,7 +282,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'lint',
-    command: '/aisa:aisa-lint',
+    command: '/aisa-lint',
     category: 'analysis',
     userInvocable: true,
     tagline:
@@ -331,7 +331,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'update',
-    command: '/aisa:aisa-update',
+    command: '/aisa-update',
     category: 'analysis',
     userInvocable: true,
     tagline:
@@ -381,7 +381,7 @@ export const skillsMeta: SkillMeta[] = [
   // ── utilities ─────────────────────────────────────────────────────────
   {
     slug: 'harvest',
-    command: '/aisa:aisa-harvest',
+    command: '/aisa-harvest',
     category: 'utilities',
     userInvocable: true,
     tagline:
@@ -423,7 +423,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'cache',
-    command: '/aisa:aisa-cache',
+    command: '/aisa-cache',
     category: 'utilities',
     userInvocable: true,
     tagline:
@@ -458,7 +458,7 @@ export const skillsMeta: SkillMeta[] = [
   },
   {
     slug: 'spec-check',
-    command: '/aisa:aisa-spec-check',
+    command: '/aisa-spec-check',
     category: 'utilities',
     userInvocable: true,
     tagline:

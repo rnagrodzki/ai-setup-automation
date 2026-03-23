@@ -114,7 +114,7 @@ marketplace root, or can be located with `Glob` pattern `**/cache-snapshot.js`.
 - For each skill: detects Quality Gates, Learning Capture, and PCIDCI workflow via regex patterns
 - For each agent: validates frontmatter fields, tool list, self-review, and learning capture
 - During incremental scans: trust cached flags for hash-matching files (don't re-read to verify)
-- Flags are only re-evaluated when the file hash changes or when `/aisa:aisa-lint` runs explicitly
+- Flags are only re-evaluated when the file hash changes or when `/aisa-lint` runs explicitly
 
 Write to `.claude/cache/snapshot.json`.
 
@@ -193,7 +193,7 @@ When any `aisa-*` skill starts, it should:
 The cache should be fully rebuilt when:
 - `aisa-sync` completes a full cycle (it rebuilds automatically)
 - `aisa-init` generates a new setup
-- User runs `/aisa:aisa-cache rebuild`
+- User runs `/aisa-cache rebuild`
 
 The cache should be partially invalidated when:
 - `aisa-update` updates specific skills (update only those entries)

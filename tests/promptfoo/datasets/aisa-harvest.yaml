@@ -10,7 +10,7 @@
     skill_path: "plugins/ai-setup-automation/skills/aisa-harvest/SKILL.md"
     reference_path: "plugins/ai-setup-automation/skills/aisa-sync/REFERENCE.md"
     project_context: "file://fixtures/learning-log-active.md"
-    user_request: "Run /aisa:harvest on the learning log"
+    user_request: "Run /aisa-harvest on the learning log"
   assert:
     - type: regex
       value: "(ACTIVE|PROMOTED|harvest)"
@@ -34,7 +34,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-harvest/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
-    user_request: "Run /aisa:harvest — there is no .claude/ directory and no learning log"
+    user_request: "Run /aisa-harvest — there is no .claude/ directory and no learning log"
   assert:
     - type: llm-rubric
       value: "The response notes there is no learning log or .claude/ setup to harvest from and does not fabricate harvest proposals"

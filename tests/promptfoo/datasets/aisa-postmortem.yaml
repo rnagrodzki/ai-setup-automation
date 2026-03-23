@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:postmortem — incident: the data-processor skill didn't mention that CSV files from vendor X have BOM characters, causing a data import failure in production"
+    user_request: "Run /aisa-postmortem — incident: the data-processor skill didn't mention that CSV files from vendor X have BOM characters, causing a data import failure in production"
   assert:
     - type: icontains
       value: "data-processor"
@@ -33,7 +33,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-postmortem/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:postmortem — incident: a sync operation completed without validating skill structure, and a skill with broken frontmatter ended up deployed"
+    user_request: "Run /aisa-postmortem — incident: a sync operation completed without validating skill structure, and a skill with broken frontmatter ended up deployed"
   assert:
     - type: regex
       value: "(Root Cause|root cause)"

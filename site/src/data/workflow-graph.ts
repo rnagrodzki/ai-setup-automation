@@ -18,7 +18,7 @@ export const workflowNodes: WorkflowNode[] = [
   // SETUP lane
   {
     slug: 'spec-check',
-    command: '/aisa:aisa-spec-check',
+    command: '/aisa-spec-check',
     category: 'utilities',
     lane: 'setup',
     col: 0,
@@ -26,7 +26,7 @@ export const workflowNodes: WorkflowNode[] = [
   },
   {
     slug: 'init',
-    command: '/aisa:aisa-init',
+    command: '/aisa-init',
     category: 'essentials',
     lane: 'setup',
     col: 1,
@@ -34,7 +34,7 @@ export const workflowNodes: WorkflowNode[] = [
   },
   {
     slug: 'audit',
-    command: '/aisa:aisa-audit',
+    command: '/aisa-audit',
     category: 'analysis',
     lane: 'setup',
     col: 2,
@@ -44,7 +44,7 @@ export const workflowNodes: WorkflowNode[] = [
   // MAINTAIN lane
   {
     slug: 'inspect',
-    command: '/aisa:aisa-inspect',
+    command: '/aisa-inspect',
     category: 'analysis',
     lane: 'maintain',
     col: 0,
@@ -52,7 +52,7 @@ export const workflowNodes: WorkflowNode[] = [
   },
   {
     slug: 'update',
-    command: '/aisa:aisa-update',
+    command: '/aisa-update',
     category: 'analysis',
     lane: 'maintain',
     col: 1,
@@ -60,7 +60,7 @@ export const workflowNodes: WorkflowNode[] = [
   },
   {
     slug: 'sync',
-    command: '/aisa:aisa-sync',
+    command: '/aisa-sync',
     category: 'essentials',
     lane: 'maintain',
     col: 2,
@@ -70,7 +70,7 @@ export const workflowNodes: WorkflowNode[] = [
   // LEARN lane
   {
     slug: 'postmortem',
-    command: '/aisa:aisa-postmortem',
+    command: '/aisa-postmortem',
     category: 'essentials',
     lane: 'learn',
     col: 0,
@@ -78,7 +78,7 @@ export const workflowNodes: WorkflowNode[] = [
   },
   {
     slug: 'harvest',
-    command: '/aisa:aisa-harvest',
+    command: '/aisa-harvest',
     category: 'utilities',
     lane: 'learn',
     col: 1,
@@ -86,7 +86,7 @@ export const workflowNodes: WorkflowNode[] = [
   },
   {
     slug: 'lint',
-    command: '/aisa:aisa-lint',
+    command: '/aisa-lint',
     category: 'analysis',
     lane: 'learn',
     col: 2,

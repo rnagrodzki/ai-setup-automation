@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-update/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
-    user_request: "Run /aisa:update after adding a new pagination feature to the data-processor module"
+    user_request: "Run /aisa-update after adding a new pagination feature to the data-processor module"
   assert:
     - type: regex
       value: "(P0|P1|P2|P3|P4|P5)"
@@ -33,7 +33,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-update/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:update after renaming a function in report-generator module"
+    user_request: "Run /aisa-update after renaming a function in report-generator module"
   assert:
     - type: icontains
       value: "report-generator"

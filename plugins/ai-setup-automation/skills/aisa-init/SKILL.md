@@ -45,7 +45,7 @@ What would you like to do?
 ```
 
 Wait for user choice:
-- If **"audit"** (or 1): Run the audit skill (`aisa:aisa-audit`). Do NOT proceed with setup.
+- If **"audit"** (or 1): Run the audit skill (`aisa-audit`). Do NOT proceed with setup.
 - If **"rebuild"** (or 2): Confirm once more, then continue to Phase 1 below.
 - If **nothing exists** (fresh project): proceed directly to Phase 1 — no prompt needed.
 
@@ -192,6 +192,6 @@ After Phase 6 (Wiring & Validation) completes, run the following verification st
 
 ### Next Steps
 - To add more skills: see docs
-- If issues found: run `/aisa:aisa-lint`
-- For scoped updates later: run `/aisa:aisa-update <area>`
+- If issues found: run `/aisa-lint`
+- For scoped updates later: run `/aisa-update <area>`
 ```

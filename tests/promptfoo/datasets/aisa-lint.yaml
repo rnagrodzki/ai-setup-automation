@@ -10,7 +10,7 @@
     skill_path: "plugins/ai-setup-automation/skills/aisa-lint/SKILL.md"
     reference_path: "plugins/ai-setup-automation/skills/aisa-lint/REFERENCE.md"
     project_context: "file://fixtures/drifted-setup.md"
-    user_request: "Run /aisa:lint on the project"
+    user_request: "Run /aisa-lint on the project"
   assert:
     # Must produce a markdown table structure
     - type: regex
@@ -47,7 +47,7 @@
     skill_path: "plugins/ai-setup-automation/skills/aisa-lint/SKILL.md"
     reference_path: "plugins/ai-setup-automation/skills/aisa-lint/REFERENCE.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:lint on the project"
+    user_request: "Run /aisa-lint on the project"
   assert:
     # Must produce a markdown table structure
     - type: regex
@@ -83,7 +83,7 @@
     skill_path: "plugins/ai-setup-automation/skills/aisa-lint/SKILL.md"
     reference_path: "plugins/ai-setup-automation/skills/aisa-lint/REFERENCE.md"
     project_context: "file://fixtures/drifted-setup.md"
-    user_request: "Run /aisa:lint on .claude/skills/validator only"
+    user_request: "Run /aisa-lint on .claude/skills/validator only"
   assert:
     # Must mention the target skill
     - type: icontains

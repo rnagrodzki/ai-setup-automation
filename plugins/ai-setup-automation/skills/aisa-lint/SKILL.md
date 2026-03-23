@@ -9,7 +9,7 @@ argument-hint: "[path-to-specific-file-or-directory]"
 
 Validate `.claude/` skills and agents against architectural principles and workflow patterns.
 Checks structural correctness and required patterns — does NOT verify content accuracy
-against the codebase (that's `/aisa:aisa-inspect`'s job).
+against the codebase (that's `/aisa-inspect`'s job).
 
 Use this when: new skills/agents are introduced, before committing skill changes, after manual edits,
 or as a pre-flight gate in any workflow that creates/modifies `.claude/` files.

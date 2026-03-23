@@ -10,17 +10,15 @@ const { highlightSlugs } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const colorMap: Record<string, string> = {
-  planning: 'var(--color-planning)',
-  review: 'var(--color-review)',
-  gitops: 'var(--color-gitops)',
-  integrations: 'var(--color-integrations)',
+  essentials: 'var(--color-essentials)',
+  analysis: 'var(--color-analysis)',
+  utilities: 'var(--color-utilities)',
 };
 
 const colorHex: Record<string, string> = {
-  planning: '#3b82f6',
-  review: '#f59e0b',
-  gitops: '#22c55e',
-  integrations: '#a855f7',
+  essentials: '#3b82f6',
+  analysis: '#f59e0b',
+  utilities: '#10b981',
 };
 
 // --- Layout constants ---
@@ -163,50 +161,78 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
     aria-label="Skill workflow diagram showing how 10 SDLC skills connect across Plan, Review, and Ship lanes"
   >
     <defs>
-      {/* Arrowhead markers */}
-      <marker id="wf-arrow" viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 4 L 0 8 z" fill="#475569" />
-      </marker>
+      {/* Per-category arrowhead markers */}
+      {Object.entries(colorHex).map(([cat, hex]) => (
+        <marker id={`wf-arrow-${cat}`} viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 4 L 0 8 z" fill={hex} opacity="0.7" />
+        </marker>
+      ))}
       <marker id="wf-arrow-cross" viewBox="0 0 10 8" refX="10" refY="4" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
-        <path d="M 0 0 L 10 4 L 0 8 z" fill="#64748b" opacity="0.6" />
+        <path d="M 0 0 L 10 4 L 0 8 z" fill="#94a3b8" opacity="0.5" />
       </marker>
-      {/* Signal glow filter */}
+      {/* Signal glow filter — boosted radius */}
       <filter id="wf-signal-glow" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="3" result="blur" />
+        <feGaussianBlur stdDeviation="4" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
       {/* Node glow filter */}
-      <filter id="wf-node-glow" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur stdDeviation="6" result="blur" />
+      <filter id="wf-node-glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="8" result="blur" />
         <feMerge>
           <feMergeNode in="blur" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
+      {/* Per-category node gradient fills */}
+      <linearGradient id="wf-node-fill-essentials" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.03" />
+        <stop offset="100%" stop-color="#0f172a" stop-opacity="1" />
+      </linearGradient>
+      <linearGradient id="wf-node-fill-analysis" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.03" />
+        <stop offset="100%" stop-color="#0f172a" stop-opacity="1" />
+      </linearGradient>
+      <linearGradient id="wf-node-fill-utilities" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#10b981" stop-opacity="0.03" />
+        <stop offset="100%" stop-color="#0f172a" stop-opacity="1" />
+      </linearGradient>
     </defs>
 
-    {/* Lane background stripes */}
+    {/* Lane background stripes — richer fill with subtle left accent */}
     {laneOrder.map((lane, i) => {
       const y = PAD_TOP + i * (NODE_H + ROW_GAP) - 8;
       const h = NODE_H + 16;
+      const laneColors = ['rgba(59,130,246,0.02)', 'rgba(245,158,11,0.02)', 'rgba(16,185,129,0.02)'];
       return (
-        <rect
-          x={PAD_LEFT + LANE_LABEL_W - 8}
-          y={y}
-          width={svgW - PAD_LEFT - LANE_LABEL_W - PAD_RIGHT + 16}
-          height={h}
-          rx="4"
-          fill={i % 2 === 0 ? 'rgba(30,41,59,0.4)' : 'rgba(30,41,59,0.15)'}
-        />
+        <>
+          <rect
+            x={PAD_LEFT + LANE_LABEL_W - 8}
+            y={y}
+            width={svgW - PAD_LEFT - LANE_LABEL_W - PAD_RIGHT + 16}
+            height={h}
+            rx="6"
+            fill={i % 2 === 0 ? 'rgba(30,41,59,0.5)' : 'rgba(30,41,59,0.25)'}
+          />
+          {/* Subtle category-tinted overlay per lane */}
+          <rect
+            x={PAD_LEFT + LANE_LABEL_W - 8}
+            y={y}
+            width={svgW - PAD_LEFT - LANE_LABEL_W - PAD_RIGHT + 16}
+            height={h}
+            rx="6"
+            fill={laneColors[i]}
+          />
+        </>
       );
     })}
 
-    {/* Lane labels */}
+    {/* Lane labels — brighter */}
     {laneOrder.map((lane, i) => {
       const y = PAD_TOP + i * (NODE_H + ROW_GAP) + NODE_H / 2;
+      const labelColors = ['#60a5fa', '#fbbf24', '#34d399'];
       return (
         <text
           x={PAD_LEFT + 4}
@@ -215,7 +241,8 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
           font-size="10"
           font-weight="700"
           letter-spacing="0.14em"
-          fill="#475569"
+          fill={labelColors[i]}
+          opacity="0.5"
           dominant-baseline="central"
         >
           {laneLabels[lane]}
@@ -223,15 +250,15 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
       );
     })}
 
-    {/* Render edges */}
+    {/* Render edges — colored by target category */}
     {edgePaths.map((ep) => {
       const isCross = ep.edge.style === 'cross-lane';
       const isDashed = ep.edge.style === 'dashed';
-      const edgeColor = isCross ? '#64748b' : '#475569';
+      const targetColor = colorHex[ep.toNode.category];
+      const edgeColor = isCross ? '#94a3b8' : targetColor;
       const dashArray = isDashed ? '6 4' : isCross ? '4 6' : 'none';
-      const opacity = isCross ? 0.5 : 0.7;
-      const markerEnd = isCross ? 'url(#wf-arrow-cross)' : 'url(#wf-arrow)';
-      const signalColor = colorHex[ep.toNode.category];
+      const opacity = isCross ? 0.35 : 0.5;
+      const markerEnd = isCross ? 'url(#wf-arrow-cross)' : `url(#wf-arrow-${ep.toNode.category})`;
 
       return (
         <g
@@ -250,8 +277,8 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
             opacity={opacity}
             marker-end={markerEnd}
           />
-          {/* Animated signal dot traveling along the path */}
-          <circle r="3" fill={signalColor} class="wf-signal-dot" filter="url(#wf-signal-glow)">
+          {/* Animated signal dot — larger and brighter */}
+          <circle r="4" fill={targetColor} class="wf-signal-dot" filter="url(#wf-signal-glow)">
             <animateMotion dur={isCross ? '2.5s' : '2s'} repeatCount="indefinite" calcMode="linear">
               <mpath href={`#wf-edge-path-${ep.edge.from}-${ep.edge.to}`} />
             </animateMotion>
@@ -270,7 +297,7 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
               y={ep.labelY}
               font-family="system-ui, -apple-system, sans-serif"
               font-size="9"
-              fill="#64748b"
+              fill="#94a3b8"
               text-anchor="middle"
               class="wf-edge-label"
             >
@@ -293,37 +320,38 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
           data-node={node.slug}
           style={`--node-accent: ${accentHex};`}
         >
-          {/* Glow rect (hidden until hover) */}
+          {/* Glow rect — subtle ambient glow, stronger on hover */}
           <rect
-            x={pos.x - 3}
-            y={pos.y - 3}
-            width={NODE_W + 6}
-            height={NODE_H + 6}
-            rx="9"
+            x={pos.x - 4}
+            y={pos.y - 4}
+            width={NODE_W + 8}
+            height={NODE_H + 8}
+            rx="10"
             fill={accentHex}
-            opacity="0"
+            opacity="0.03"
             class="wf-node-glow"
             filter="url(#wf-node-glow)"
           />
-          {/* Node background */}
+          {/* Node background — gradient tinted by category */}
           <rect
             x={pos.x}
             y={pos.y}
             width={NODE_W}
             height={NODE_H}
             rx="6"
-            fill="#1e293b"
+            fill={`url(#wf-node-fill-${node.category})`}
             stroke={accentHex}
             stroke-width="1"
+            stroke-opacity="0.35"
             class="wf-node-bg"
           />
-          {/* Left accent bar */}
+          {/* Left accent bar — bolder */}
           <rect
             x={pos.x}
-            y={pos.y + 4}
-            width="3"
-            height={NODE_H - 8}
-            rx="1.5"
+            y={pos.y + 3}
+            width="4"
+            height={NODE_H - 6}
+            rx="2"
             fill={accentHex}
           />
           {/* Command name */}
@@ -349,7 +377,7 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
           >
             {node.tagline.length > 26 ? node.tagline.slice(0, 26) + '…' : node.tagline}
           </text>
-          {/* Category badge */}
+          {/* Category badge — more visible */}
           <rect
             x={pos.x + 14}
             y={pos.y + 49}
@@ -504,13 +532,13 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Subtle dot grid background */
+  /* Dot grid background — slightly more visible */
   .wf-grid-bg {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, #334155 0.7px, transparent 0.7px);
+    background-image: radial-gradient(circle, #475569 0.7px, transparent 0.7px);
     background-size: 20px 20px;
-    opacity: 0.3;
+    opacity: 0.25;
     pointer-events: none;
   }
 
@@ -533,29 +561,29 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
   }
 
   .wf-node-glow {
-    transition: opacity 0.2s ease;
+    transition: opacity 0.25s ease;
   }
 
   .wf-node--active .wf-node-bg {
-    stroke-width: 2;
+    stroke-width: 2.5;
   }
 
   .wf-node--active .wf-node-glow {
-    opacity: 0.1;
+    opacity: 0.18;
   }
 
   .wf-node--dimmed {
-    opacity: 0.2;
+    opacity: 0.15;
   }
 
   .wf-node:hover .wf-node-bg,
   .wf-node:focus-within .wf-node-bg {
-    stroke-width: 2;
+    stroke-width: 2.5;
   }
 
   .wf-node:hover .wf-node-glow,
   .wf-node:focus-within .wf-node-glow {
-    opacity: 0.1;
+    opacity: 0.18;
   }
 
   .wf-node-link {
@@ -563,7 +591,7 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
   }
 
   .wf-node-link:focus-visible .wf-node-hitarea {
-    stroke: var(--color-planning);
+    stroke: var(--color-essentials);
     stroke-width: 2;
     stroke-dasharray: 4 2;
   }
@@ -591,13 +619,17 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
     opacity: 0;
   }
 
-  /* --- Signal dots --- */
+  /* --- Signal dots — brighter by default --- */
   .wf-signal-dot {
-    opacity: 0.7;
+    opacity: 0.85;
   }
 
   .wf-edge--dimmed .wf-signal-dot {
     opacity: 0;
+  }
+
+  .wf-edge--active .wf-signal-dot {
+    opacity: 1;
   }
 
   /* --- Mobile fallback --- */
@@ -659,18 +691,19 @@ const hasHighlight = highlightSlugs && highlightSlugs.length > 0;
     .wf-mobile-node {
       display: block;
       padding: 0.625rem 0.75rem 0.625rem 1rem;
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-left: 3px solid var(--node-accent);
+      background: color-mix(in srgb, var(--node-accent) 4%, var(--color-bg));
+      border: 1px solid color-mix(in srgb, var(--node-accent) 20%, var(--color-border));
+      border-left: 4px solid var(--node-accent);
       border-radius: 6px;
       text-decoration: none;
       color: var(--color-text);
-      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
     }
 
     .wf-mobile-node:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 2px 12px -2px color-mix(in srgb, var(--node-accent) 20%, transparent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px -4px color-mix(in srgb, var(--node-accent) 25%, transparent);
+      border-color: color-mix(in srgb, var(--node-accent) 40%, var(--color-border));
     }
 
     .wf-mobile-node--dimmed {

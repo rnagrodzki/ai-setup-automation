@@ -1,11 +1,11 @@
-# `/aisa:aisa-harvest` — Promote learnings into skills
+# `/aisa-harvest` — Promote learnings into skills
 
 Processes ACTIVE entries in `.claude/learnings/log.md` and promotes them into permanent improvements: recurring patterns become skill gotchas, uncovered domains get new skills, and documentation gaps get filled. Run this when the log has accumulated enough raw learnings to be worth processing.
 
 ## Usage
 
 ```text
-/aisa:aisa-harvest
+/aisa-harvest
 ```
 
 ## Flags
@@ -15,7 +15,7 @@ This skill takes no arguments.
 ## Examples
 
 ```text
-/aisa:aisa-harvest
+/aisa-harvest
 ```
 
 > Reads all ACTIVE entries in `.claude/learnings/log.md`, groups them by theme, promotes recurring patterns into relevant skill files, creates new skills for uncovered areas, and marks processed entries as PROMOTED.
@@ -35,6 +35,6 @@ This skill takes no arguments.
 
 ## Related Skills
 
-- [`/aisa:aisa-postmortem`](postmortem.md) — creates learning log entries from incidents
-- [`/aisa:aisa-sync`](sync.md) — includes harvesting as one phase of the full sync cycle
-- [`/aisa:aisa-lint`](lint.md) — check newly created or updated skills against principles
+- [`/aisa-postmortem`](postmortem.md) — creates learning log entries from incidents
+- [`/aisa-sync`](sync.md) — includes harvesting as one phase of the full sync cycle
+- [`/aisa-lint`](lint.md) — check newly created or updated skills against principles

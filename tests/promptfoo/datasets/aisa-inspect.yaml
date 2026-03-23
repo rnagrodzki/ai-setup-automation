@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-inspect/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
-    user_request: "Run /aisa:check on the project"
+    user_request: "Run /aisa-check on the project"
   assert:
     - type: regex
       value: "\\|.*\\|"
@@ -35,7 +35,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-inspect/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:check on the project"
+    user_request: "Run /aisa-check on the project"
   assert:
     - type: icontains
       value: "CURRENT"
@@ -59,7 +59,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-inspect/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
-    user_request: "Run /aisa:check on the project"
+    user_request: "Run /aisa-check on the project"
   assert:
     - type: llm-rubric
       value: "The response notes there is no .claude/ setup to check and does not fabricate health check results. It may recommend running aisa-init first."

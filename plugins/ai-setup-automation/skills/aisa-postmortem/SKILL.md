@@ -28,7 +28,7 @@ If `.claude/` is missing, stop and tell the user:
 
 ```text
 This project doesn't have AI skills configured yet.
-Run /aisa:aisa-init first to set up the AI configuration, then come back for the post-mortem.
+Run /aisa-init first to set up the AI configuration, then come back for the post-mortem.
 ```
 
 ### Step 1 — Gather Incident Context
@@ -205,9 +205,9 @@ for modified/new skills and agents. Update `drift-report.json` to mark fixed fil
 
 ## See Also
 
-- After applying fixes → run `/aisa:aisa-lint` to verify principle compliance
-- If many skills were updated → run `/aisa:aisa-inspect` to check overall health
-- To process accumulated learning entries → run `/aisa:aisa-harvest`
+- After applying fixes → run `/aisa-lint` to verify principle compliance
+- If many skills were updated → run `/aisa-inspect` to check overall health
+- To process accumulated learning entries → run `/aisa-harvest`
 
 ## Learning Capture
 

@@ -1,17 +1,17 @@
-# `/aisa:aisa-spec-check` — Check openspec tooling
+# `/aisa-spec-check` — Check openspec tooling
 
 Verifies that the `openspec` CLI is installed, that the current project has been initialized with it, and that the installed version is current. Use it before relying on openspec-based workflows to confirm your environment is ready, or after a fresh clone to understand what setup steps remain.
 
 ## Usage
 
 ```text
-/aisa:aisa-spec-check
+/aisa-spec-check
 ```
 
 ## Examples
 
 ```text
-/aisa:aisa-spec-check
+/aisa-spec-check
 ```
 
 > Checks for the `openspec` CLI on `$PATH`, inspects the project for an existing openspec initialization, and compares the installed version against the latest published release. Reports one of:
@@ -35,5 +35,5 @@ Read-only by default. When the check reveals a missing or outdated installation,
 
 ## Related Skills
 
-- [`/aisa:aisa-inspect`](inspect.md) — read-only drift scan of the `.claude/` setup
-- [`/aisa:aisa-init`](init.md) — full AI project configuration scaffolding
+- [`/aisa-inspect`](inspect.md) — read-only drift scan of the `.claude/` setup
+- [`/aisa-init`](init.md) — full AI project configuration scaffolding

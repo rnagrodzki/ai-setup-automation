@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
-    user_request: "Run /aisa:sync on the project"
+    user_request: "Run /aisa-sync on the project"
   assert:
     - type: regex
       value: "(Drift Audit|Change Plan|Phase [1-7])"
@@ -33,7 +33,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:sync on the project"
+    user_request: "Run /aisa-sync on the project"
   assert:
     - type: regex
       value: "(Phase [1-7]|Phase 1|Phase 2)"
@@ -57,7 +57,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-sync/SKILL.md"
     project_context: "file://fixtures/drifted-setup.md"
-    user_request: "Run /aisa:sync — complete Phase 2 (Drift Audit) and show findings before continuing"
+    user_request: "Run /aisa-sync — complete Phase 2 (Drift Audit) and show findings before continuing"
   assert:
     - type: icontains
       value: "Drift"

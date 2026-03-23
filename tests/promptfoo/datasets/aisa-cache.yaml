@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:cache rebuild. After running, show a summary of what was written to snapshot.json — list each skill found, its hash, and the compliance flags detected."
+    user_request: "Run /aisa-cache rebuild. After running, show a summary of what was written to snapshot.json — list each skill found, its hash, and the compliance flags detected."
   assert:
     - type: icontains
       value: "snapshot"
@@ -33,7 +33,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:cache status — the cache has a snapshot.json from 3 days ago covering 2 skills (data-processor and report-generator). Both files are unchanged since the snapshot was taken."
+    user_request: "Run /aisa-cache status — the cache has a snapshot.json from 3 days ago covering 2 skills (data-processor and report-generator). Both files are unchanged since the snapshot was taken."
   assert:
     - type: regex
       value: "(snapshot|cache|UNCHANGED|MODIFIED)"
@@ -55,7 +55,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-cache/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
-    user_request: "Run /aisa:cache status"
+    user_request: "Run /aisa-cache status"
   assert:
     - type: regex
       value: "(MISSING|not found|no cache|does not exist)"

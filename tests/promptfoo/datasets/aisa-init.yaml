@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-init/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
-    user_request: "Run /aisa:init to scaffold a new .claude/ setup for this project"
+    user_request: "Run /aisa-init to scaffold a new .claude/ setup for this project"
   assert:
     - type: regex
       value: "(Phase [1-6]|Phase 1|Phase 2)"
@@ -35,7 +35,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-init/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
-    user_request: "Run /aisa:init — proceed through Phase 3 (Architecture Critique) only"
+    user_request: "Run /aisa-init — proceed through Phase 3 (Architecture Critique) only"
   assert:
     - type: icontains
       value: "Architecture"

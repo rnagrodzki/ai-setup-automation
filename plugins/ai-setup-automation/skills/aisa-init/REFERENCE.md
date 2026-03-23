@@ -854,13 +854,13 @@ NOT acceptable to mock:
 - `/plan` — Enter plan mode, load relevant specs, design approach
 - `/learn-review` — Review accumulated learnings, promote to skills/docs
 - `/learn-stats` — Show learning entry counts by category and status
-- `/aisa:aisa-sync` — Full evolution cycle (every 2-4 weeks or after major features)
-- `/aisa:aisa-inspect` — Quick health check (weekly or before sprints)
-- `/aisa:aisa-update <change>` — Targeted update after a feature/refactor
-- `/aisa:aisa-harvest` — Promote accumulated learnings to skills
-- `/aisa:aisa-postmortem <incident>` — Learn from incidents
-- `/aisa:aisa-lint` — Principle compliance check
-- `/aisa:aisa-cache [rebuild|status|invalidate]` — Manage incremental scan cache
+- `/aisa-sync` — Full evolution cycle (every 2-4 weeks or after major features)
+- `/aisa-inspect` — Quick health check (weekly or before sprints)
+- `/aisa-update <change>` — Targeted update after a feature/refactor
+- `/aisa-harvest` — Promote accumulated learnings to skills
+- `/aisa-postmortem <incident>` — Learn from incidents
+- `/aisa-lint` — Principle compliance check
+- `/aisa-cache [rebuild|status|invalidate]` — Manage incremental scan cache
 {Add project-specific commands based on generated agents}
 
 ## Execution Mode
@@ -1177,10 +1177,10 @@ This allows `aisa-inspect` to run incrementally from day one.
 
 After initial setup, use the evolution lifecycle to maintain the architecture:
 
-- `/aisa:aisa-sync` — Full evolution cycle (every 2-4 weeks)
-- `/aisa:aisa-inspect` — Quick health check (weekly)
-- `/aisa:aisa-lint` — Principle compliance check (after manual edits)
-- `/aisa:aisa-harvest` — Promote accumulated learnings
-- `/aisa:aisa-update <change>` — Scoped update after a feature/refactor
-- `/aisa:aisa-postmortem <incident>` — Learn from incidents
-- `/aisa:aisa-cache` — Manage incremental scan cache
+- `/aisa-sync` — Full evolution cycle (every 2-4 weeks)
+- `/aisa-inspect` — Quick health check (weekly)
+- `/aisa-lint` — Principle compliance check (after manual edits)
+- `/aisa-harvest` — Promote accumulated learnings
+- `/aisa-update <change>` — Scoped update after a feature/refactor
+- `/aisa-postmortem <incident>` — Learn from incidents
+- `/aisa-cache` — Manage incremental scan cache

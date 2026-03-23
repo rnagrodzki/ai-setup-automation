@@ -62,7 +62,7 @@ If you installed the plugin before this naming fix, uninstall the old entry and 
 
 1. Navigate to your project directory
 2. Start Claude Code
-3. Run `/aisa:aisa-init`
+3. Run `/aisa-init`
 4. Follow the interactive prompts
 
 The skill detects your tech stack, presents a setup plan for your approval, and scaffolds the full `.claude/` directory.
@@ -75,26 +75,26 @@ The skill detects your tech stack, presents a setup plan for your approval, and 
 
 | Skill | Description |
 | --- | --- |
-| [`/aisa:aisa-init`](docs/skills/aisa-init.md) | Scaffold a new `.claude/` directory — detects tech stack, generates CLAUDE.md, skills, agents, learnings journal, and cache. One-time setup for new projects |
-| [`/aisa:aisa-sync`](docs/skills/aisa-sync.md) | Full maintenance cycle — runs drift detection, harvests learnings, identifies expansion needs, applies prioritized updates to `.claude/` skills and agents |
-| [`/aisa:aisa-postmortem`](docs/skills/aisa-postmortem.md) | Incident-to-prevention pipeline — gathers context from conversation or git history, maps root causes to skill gaps, encodes lessons into `.claude/` skills and learnings log |
+| [`/aisa-init`](docs/skills/init.md) | Scaffold a new `.claude/` directory — detects tech stack, generates CLAUDE.md, skills, agents, learnings journal, and cache. One-time setup for new projects |
+| [`/aisa-sync`](docs/skills/sync.md) | Full maintenance cycle — runs drift detection, harvests learnings, identifies expansion needs, applies prioritized updates to `.claude/` skills and agents |
+| [`/aisa-postmortem`](docs/skills/postmortem.md) | Incident-to-prevention pipeline — gathers context from conversation or git history, maps root causes to skill gaps, encodes lessons into `.claude/` skills and learnings log |
 
 ### Analysis
 
 | Skill | Description |
 | --- | --- |
-| [`/aisa:aisa-audit`](docs/skills/aisa-audit.md) | Deep read-only review of `.claude/` content accuracy — mechanical validation, outdated code example detection, skill specificity check, coverage gap analysis. Reports HEALTHY / NEEDS_ATTENTION / CRITICAL |
-| [`/aisa:aisa-inspect`](docs/skills/aisa-inspect.md) | Quick read-only drift scan — compares `.claude/` skills and agents against current codebase state, reports CURRENT / OUTDATED / STALE / CRITICAL per file. Run weekly |
-| [`/aisa:aisa-lint`](docs/skills/aisa-lint.md) | Validate skill and agent structure against architectural principles (P1-P3, A1-A6) — checks frontmatter, self-learning directives, PCIDCI pattern. Does not verify codebase accuracy |
-| [`/aisa:aisa-update`](docs/skills/aisa-update.md) | Targeted skill/agent update after a specific code change — uses git diff to scope impact, updates only affected `.claude/` files, flags out-of-scope drift without fixing it |
+| [`/aisa-audit`](docs/skills/audit.md) | Deep read-only review of `.claude/` content accuracy — mechanical validation, outdated code example detection, skill specificity check, coverage gap analysis. Reports HEALTHY / NEEDS_ATTENTION / CRITICAL |
+| [`/aisa-inspect`](docs/skills/inspect.md) | Quick read-only drift scan — compares `.claude/` skills and agents against current codebase state, reports CURRENT / OUTDATED / STALE / CRITICAL per file. Run weekly |
+| [`/aisa-lint`](docs/skills/lint.md) | Validate skill and agent structure against architectural principles (P1-P3, A1-A6) — checks frontmatter, self-learning directives, PCIDCI pattern. Does not verify codebase accuracy |
+| [`/aisa-update`](docs/skills/update.md) | Targeted skill/agent update after a specific code change — uses git diff to scope impact, updates only affected `.claude/` files, flags out-of-scope drift without fixing it |
 
 ### Utilities
 
 | Skill | Description |
 | --- | --- |
-| [`/aisa:aisa-harvest`](docs/skills/aisa-harvest.md) | Promote ACTIVE entries from `.claude/learnings/log.md` into skill gotchas, new skills, and documentation. Run when log has 10+ entries or oldest entry exceeds 2 weeks |
-| [`/aisa:aisa-cache`](docs/skills/aisa-cache.md) | Manage the `.claude/cache/` snapshot used by inspect and sync — sub-commands: rebuild (default), status, invalidate. Reduces token use by 60-80% |
-| [`/aisa:aisa-spec-check`](docs/skills/aisa-spec-check.md) | Check openspec CLI availability, project initialization status, and version currency — suggests install/init/update with user confirmation |
+| [`/aisa-harvest`](docs/skills/harvest.md) | Promote ACTIVE entries from `.claude/learnings/log.md` into skill gotchas, new skills, and documentation. Run when log has 10+ entries or oldest entry exceeds 2 weeks |
+| [`/aisa-cache`](docs/skills/cache.md) | Manage the `.claude/cache/` snapshot used by inspect and sync — sub-commands: rebuild (default), status, invalidate. Reduces token use by 60-80% |
+| [`/aisa-spec-check`](docs/skills/spec-check.md) | Check openspec CLI availability, project initialization status, and version currency — suggests install/init/update with user confirmation |
 
 ---
 

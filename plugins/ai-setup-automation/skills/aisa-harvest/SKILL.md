@@ -113,8 +113,8 @@ This partial update keeps the cache fresh without requiring a full rebuild.
 
 ## See Also
 
-- After promoting learnings → run `/aisa:aisa-lint` to verify new/updated skills
-- If promotions reveal deep drift → run `/aisa:aisa-inspect` or full `/aisa:aisa-sync`
+- After promoting learnings → run `/aisa-lint` to verify new/updated skills
+- If promotions reveal deep drift → run `/aisa-inspect` or full `/aisa-sync`
 - For incident-driven learnings → use `/aisa-postmortem` instead
 
 ## Learning Capture

@@ -62,7 +62,7 @@ classified as MODIFIED or OUTDATED, pick the single most critical code example
 from the skill and compare against the actual source file. Skip pure rule/convention
 skills with no code examples.
 
-**Checks NOT run in health mode** (save for full `/aisa:aisa-sync`):
+**Checks NOT run in health mode** (save for full `/aisa-sync`):
 - Symbol verification (Pass B) — expensive grep across src
 - Error code verification (Pass C) — expensive cross-reference
 - Route/endpoint verification (Pass D) — needs router analysis
@@ -122,7 +122,7 @@ Present a concise health report:
 
 ### Learnings Inbox
 - ACTIVE entries: {N} (oldest: {date})
-- Recommended: {run /aisa:aisa-harvest if >10 ACTIVE entries or oldest >2 weeks}
+- Recommended: {run /aisa-harvest if >10 ACTIVE entries or oldest >2 weeks}
 
 ### Recommended Actions
 1. {highest priority action}
@@ -136,7 +136,7 @@ If CRITICAL drift is found (a skill states something actively wrong):
 
 - Present the issue and ask for permission to apply a targeted fix
 - If approved: fix only the CRITICAL items, commit with message `fix: correct critical skill drift in {file}`
-- Do NOT fix OUTDATED or STALE items — those require the full `/aisa:aisa-sync` cycle
+- Do NOT fix OUTDATED or STALE items — those require the full `/aisa-sync` cycle
 
 ## Quality Gate
 
@@ -158,10 +158,10 @@ with their hashes and principle compliance flags.
 
 ## See Also
 
-- If CRITICAL drift found → apply fix, then run `/aisa:aisa-lint` to verify principle compliance
-- If >10 ACTIVE learning entries → run `/aisa:aisa-harvest`
-- If significant drift across many skills → run full `/aisa:aisa-sync`
-- If OUTDATED skills need updating → run `/aisa:aisa-update <area>` for scoped fixes
+- If CRITICAL drift found → apply fix, then run `/aisa-lint` to verify principle compliance
+- If >10 ACTIVE learning entries → run `/aisa-harvest`
+- If significant drift across many skills → run full `/aisa-sync`
+- If OUTDATED skills need updating → run `/aisa-update <area>` for scoped fixes
 
 ## Learning Capture
 

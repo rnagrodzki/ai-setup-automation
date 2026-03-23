@@ -1,11 +1,11 @@
-# `/aisa:aisa-audit` — Deep review of existing AI configuration
+# `/aisa-audit` — Deep review of existing AI configuration
 
 Runs a read-only mechanical audit of your `.claude/` setup. It checks every skill and agent against structural and principle requirements, verifies that file references exist on disk, and spots content accuracy issues that automated scripts cannot catch. No files are created or modified.
 
 ## Usage
 
 ```text
-/aisa:aisa-audit
+/aisa-audit
 ```
 
 ## Flags
@@ -15,7 +15,7 @@ This skill takes no arguments.
 ## Examples
 
 ```text
-/aisa:aisa-audit
+/aisa-audit
 ```
 
 > Prints a two-part report:
@@ -26,19 +26,19 @@ This skill takes no arguments.
 
 ## Prerequisites
 
-- An existing `.claude/` directory (run [`/aisa:aisa-init`](init.md) first if one doesn't exist)
+- An existing `.claude/` directory (run [`/aisa-init`](init.md) first if one doesn't exist)
 - Node.js >= 16 (for `verify-setup.js`)
 
 ## What It Creates / Modifies
 
 Nothing — this skill is fully read-only. To act on findings:
 
-- Principle compliance failures → [`/aisa:aisa-lint`](lint.md) (can auto-fix with approval)
-- Outdated or missing skills → [`/aisa:aisa-update`](update.md)
-- Setup too far from current codebase → [`/aisa:aisa-sync`](sync.md) or [`/aisa:aisa-init`](init.md)
+- Principle compliance failures → [`/aisa-lint`](lint.md) (can auto-fix with approval)
+- Outdated or missing skills → [`/aisa-update`](update.md)
+- Setup too far from current codebase → [`/aisa-sync`](sync.md) or [`/aisa-init`](init.md)
 
 ## Related Skills
 
-- [`/aisa:aisa-lint`](lint.md) — structural principle compliance check with proposed fixes
-- [`/aisa:aisa-inspect`](inspect.md) — lighter-weight weekly drift scan
-- [`/aisa:aisa-sync`](sync.md) — full update cycle when audit reveals significant drift
+- [`/aisa-lint`](lint.md) — structural principle compliance check with proposed fixes
+- [`/aisa-inspect`](inspect.md) — lighter-weight weekly drift scan
+- [`/aisa-sync`](sync.md) — full update cycle when audit reveals significant drift

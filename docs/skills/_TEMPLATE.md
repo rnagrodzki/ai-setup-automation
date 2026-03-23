@@ -1,11 +1,11 @@
-# `/aisa:aisa-<skill>` — <One-line purpose>
+# `/aisa-<skill>` — <One-line purpose>
 
 <2-3 sentence overview of what this skill does, when you'd reach for it, and the value it provides.>
 
 ## Usage
 
 ```text
-/aisa:aisa-<skill>
+/aisa-<skill>
 ```
 
 ## Flags
@@ -19,13 +19,13 @@
 ## Examples
 
 ```text
-/aisa:aisa-<skill>
+/aisa-<skill>
 ```
 
 > Expected output or behavior description.
 
 ```text
-/aisa:aisa-<skill> <arg>
+/aisa-<skill> <arg>
 ```
 
 > Expected output or behavior description.

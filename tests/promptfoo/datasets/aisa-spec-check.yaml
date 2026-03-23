@@ -9,7 +9,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-spec-check/SKILL.md"
     project_context: "file://fixtures/healthy-setup.md"
-    user_request: "Run /aisa:spec-check — openspec v1.2.0 is installed and the project is initialized and up to date"
+    user_request: "Run /aisa-spec-check — openspec v1.2.0 is installed and the project is initialized and up to date"
   assert:
     - type: regex
       value: "(GOOD|NEEDS_ACTION)"
@@ -33,7 +33,7 @@
   vars:
     skill_path: "plugins/ai-setup-automation/skills/aisa-spec-check/SKILL.md"
     project_context: "file://fixtures/no-setup.md"
-    user_request: "Run /aisa:spec-check — openspec is not installed"
+    user_request: "Run /aisa-spec-check — openspec is not installed"
   assert:
     - type: icontains
       value: "install"

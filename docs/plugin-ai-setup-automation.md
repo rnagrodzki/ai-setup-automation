@@ -12,15 +12,15 @@ All functionality is exposed through user-invocable skills.
 
 | Skill | Description |
 | --- | --- |
-| [`/aisa:aisa-init`](skills/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
-| [`/aisa:aisa-audit`](skills/audit.md) | Audit existing setup and suggest improvements |
-| [`/aisa:aisa-lint`](skills/lint.md) | Validate skills and agents against architectural principles |
-| [`/aisa:aisa-postmortem`](skills/postmortem.md) | Guided incident analysis; encode lessons into skills |
-| [`/aisa:aisa-sync`](skills/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
-| [`/aisa:aisa-inspect`](skills/inspect.md) | Quick read-only health check; reports drift status per file |
-| [`/aisa:aisa-update`](skills/update.md) | Targeted update after a specific feature, refactor, or integration |
-| [`/aisa:aisa-harvest`](skills/harvest.md) | Promote accumulated learnings into skills and docs |
-| [`/aisa:aisa-cache`](skills/cache.md) | Manage the snapshot cache for incremental scanning |
+| [`/aisa-init`](skills/init.md) | Detect tech stack and scaffold full `.claude/` configuration |
+| [`/aisa-audit`](skills/audit.md) | Audit existing setup and suggest improvements |
+| [`/aisa-lint`](skills/lint.md) | Validate skills and agents against architectural principles |
+| [`/aisa-postmortem`](skills/postmortem.md) | Guided incident analysis; encode lessons into skills |
+| [`/aisa-sync`](skills/sync.md) | Full evolution cycle — verify, update, and expand `.claude/` |
+| [`/aisa-inspect`](skills/inspect.md) | Quick read-only health check; reports drift status per file |
+| [`/aisa-update`](skills/update.md) | Targeted update after a specific feature, refactor, or integration |
+| [`/aisa-harvest`](skills/harvest.md) | Promote accumulated learnings into skills and docs |
+| [`/aisa-cache`](skills/cache.md) | Manage the snapshot cache for incremental scanning |
 
 Each skill has a dedicated doc with usage, examples, prerequisites, and what it creates or modifies.
 
@@ -30,28 +30,28 @@ Each skill has a dedicated doc with usage, examples, prerequisites, and what it 
 
 | When | Skill |
 | --- | --- |
-| New project or full rebuild | `/aisa:aisa-init` |
-| After shipping a feature or refactor | `/aisa:aisa-update <description>` |
-| Weekly or before a sprint | `/aisa:aisa-inspect` |
-| Every 2–4 weeks | `/aisa:aisa-sync` |
-| When 10+ learning log entries accumulate | `/aisa:aisa-harvest` |
-| After an incident or painful bug | `/aisa:aisa-postmortem` |
-| After writing new skills or agents | `/aisa:aisa-lint` |
+| New project or full rebuild | `/aisa-init` |
+| After shipping a feature or refactor | `/aisa-update <description>` |
+| Weekly or before a sprint | `/aisa-inspect` |
+| Every 2–4 weeks | `/aisa-sync` |
+| When 10+ learning log entries accumulate | `/aisa-harvest` |
+| After an incident or painful bug | `/aisa-postmortem` |
+| After writing new skills or agents | `/aisa-lint` |
 
 ---
 
 ## Lifecycle Diagram
 
 ```text
-New project ──→ /aisa:aisa-init ──→ daily development ──→ /aisa:aisa-update (after features)
+New project ──→ /aisa-init ──→ daily development ──→ /aisa-update (after features)
                     │                      │                          │
-                    │                      ├── /aisa:aisa-inspect (weekly)
-                    │                      ├── /aisa:aisa-harvest (when log fills up)
-                    │                      ├── /aisa:aisa-lint (after adding/editing skills)
-                    │                      ├── /aisa:aisa-sync (every 2-4 weeks)
-                    │                      └── /aisa:aisa-postmortem (after incidents)
+                    │                      ├── /aisa-inspect (weekly)
+                    │                      ├── /aisa-harvest (when log fills up)
+                    │                      ├── /aisa-lint (after adding/editing skills)
+                    │                      ├── /aisa-sync (every 2-4 weeks)
+                    │                      └── /aisa-postmortem (after incidents)
                     │
-                    └── /aisa:aisa-cache (auto-rebuilt after each /aisa:aisa-sync)
+                    └── /aisa-cache (auto-rebuilt after each /aisa-sync)
 ```
 
 ---
@@ -61,24 +61,24 @@ New project ──→ /aisa:aisa-init ──→ daily development ──→ /ais
 ```text
 .claude/skills/
 ├── aisa-init/
-│   ├── SKILL.md          # aisa:aisa-init — build from scratch
+│   ├── SKILL.md          # aisa-init — build from scratch
 │   └── REFERENCE.md      # Full pipeline specification
 ├── aisa-sync/
-│   ├── SKILL.md          # aisa:aisa-sync — full sync cycle
+│   ├── SKILL.md          # aisa-sync — full sync cycle
 │   └── REFERENCE.md      # Full Evolver pipeline specification
 ├── aisa-inspect/
-│   └── SKILL.md          # aisa:aisa-inspect
+│   └── SKILL.md          # aisa-inspect
 ├── aisa-harvest/
-│   └── SKILL.md          # aisa:aisa-harvest
+│   └── SKILL.md          # aisa-harvest
 ├── aisa-update/
-│   └── SKILL.md          # aisa:aisa-update
+│   └── SKILL.md          # aisa-update
 ├── aisa-lint/
-│   ├── SKILL.md          # aisa:aisa-lint
+│   ├── SKILL.md          # aisa-lint
 │   └── REFERENCE.md      # Validation checks specification
 ├── aisa-cache/
-│   └── SKILL.md          # aisa:aisa-cache
+│   └── SKILL.md          # aisa-cache
 ├── aisa-postmortem/
-│   └── SKILL.md          # aisa:aisa-postmortem
+│   └── SKILL.md          # aisa-postmortem
 └── aisa-principles/
     └── SKILL.md          # Shared principles and rules (dependency only, not user-facing)
 ```
@@ -107,7 +107,7 @@ All skills check `.claude/cache/snapshot.json` before scanning:
 - **NEW** files (not in cache) → full audit
 - **DELETED** files (in cache, not on disk) → flag for cleanup
 
-Token savings: **60-80%** on typical runs where <30% of files changed. Cache is rebuilt automatically after every full `/aisa:aisa-sync` cycle.
+Token savings: **60-80%** on typical runs where <30% of files changed. Cache is rebuilt automatically after every full `/aisa-sync` cycle.
 
 ---
 

@@ -282,7 +282,7 @@ The script executes Passes A-G mechanically across all skills and agents:
 - **Pass D** — Route verification: HTTP method+path patterns grepped in source
 - **Pass E** — Version info: go.mod / package.json versions extracted (semantic comparison flagged for LLM review)
 - **Pass F** — Code block extraction: fenced code blocks extracted for LLM semantic comparison
-- **Pass G** — Workflow maturity: P1-P3 / A1-A6 principle checks (same as `/aisa:aisa-lint`)
+- **Pass G** — Workflow maturity: P1-P3 / A1-A6 principle checks (same as `/aisa-lint`)
 
 Parse the `per_skill_summary` field for a quick overview. Drill into individual pass arrays for failure details.
 
@@ -921,9 +921,9 @@ Key reminders for the evolution pipeline:
 
 These satellite commands extract specific phases from this pipeline:
 
-- `/aisa:aisa-inspect` — Phase 1 + 2 only (read-only health check)
-- `/aisa:aisa-harvest` — Phase 3 only (promote learnings)
-- `/aisa:aisa-update <change>` — Scoped Phase 1-2 + targeted updates
-- `/aisa:aisa-postmortem <incident>` — Incident → learning entries → skill fixes
-- `/aisa:aisa-lint` — Principle compliance only (no codebase accuracy)
-- `/aisa:aisa-cache [rebuild|status|invalidate]` — Manage incremental scan cache
+- `/aisa-inspect` — Phase 1 + 2 only (read-only health check)
+- `/aisa-harvest` — Phase 3 only (promote learnings)
+- `/aisa-update <change>` — Scoped Phase 1-2 + targeted updates
+- `/aisa-postmortem <incident>` — Incident → learning entries → skill fixes
+- `/aisa-lint` — Principle compliance only (no codebase accuracy)
+- `/aisa-cache [rebuild|status|invalidate]` — Manage incremental scan cache
